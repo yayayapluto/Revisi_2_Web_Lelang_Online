@@ -1,0 +1,1 @@
+export const DateFormatter = (value: string | number | Date) =>  new Date(value).toUTCString()
