@@ -17,11 +17,14 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger
 } from "@/components/ui/alert-dialog";
+import {DataTableColumnHeader} from "@/components/data-table-column-header";
 
 export const ObjectTypeColumn: ColumnDef<ObjectType>[] = [
     {
         accessorKey: "name",
-        header: "Name"
+        header: ({column}) => (
+            <DataTableColumnHeader column={column} title={"Name"}/>
+        ),
     },
     {
         accessorKey: "items",

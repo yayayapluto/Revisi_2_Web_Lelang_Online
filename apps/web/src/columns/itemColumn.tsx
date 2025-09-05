@@ -26,6 +26,7 @@ import { Button } from "@/components/ui/button"
 import type {Item} from "@/types/item";
 import {CurrencyFormatter} from "@/utils/currency-formatter";
 import {Checkbox} from "@/components/ui/checkbox";
+import {HoverCard, HoverCardContent, HoverCardTrigger} from "@/components/ui/hover-card";
 
 export const ItemColumn: ColumnDef<Item>[] = [
     {
@@ -60,7 +61,14 @@ export const ItemColumn: ColumnDef<Item>[] = [
     {
         accessorKey: "file",
         header: "Main Thumbnail",
-        cell : ({row}) => row.original.file.path
+        cell : ({row}) => (
+            <HoverCard>
+                <HoverCardTrigger>{row.original.file.path}</HoverCardTrigger>
+                <HoverCardContent className={"w-full p-2"}>
+                    <img src={row.original.file.path} className={"size-16"} alt=""/>
+                </HoverCardContent>
+            </HoverCard>
+        )
     },
     {
         accessorKey: "created_at",
