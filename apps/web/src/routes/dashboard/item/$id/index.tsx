@@ -10,6 +10,7 @@ import {type ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent} fro
 import {Bar, BarChart, CartesianGrid, LabelList, XAxis} from 'recharts';
 import {getCoreRowModel, getPaginationRowModel, getSortedRowModel, useReactTable} from "@tanstack/react-table";
 import {CurrencyFormatter} from "@/utils/currency-formatter";
+import type {Item} from "@/types/item";
 
 export const Route = createFileRoute('/dashboard/item/$id/')({
     component: RouteComponent,
@@ -17,51 +18,13 @@ export const Route = createFileRoute('/dashboard/item/$id/')({
 
 function RouteComponent() {
     const {id} = Route.useParams()
-    const {data, isLoading, isFetching} = useQuery({
-        queryKey: ["object-type", id],
-        queryFn: () => GetEntityDetail<ObjectType>({
+    const {data} = useQuery({
+        queryKey: ["items", id],
+        queryFn: () => GetEntityDetail<Item>({
             id: id,
-            entityName: "objectTypes"
+            entityName: "items"
         })
     })
-
-    const CARD_DATA = [
-        {
-            title: "Highest Price",
-            value: data?.content?.items
-                ?.sort((a, b) => b.price - a.price)[0],
-        },
-        {
-            title: "Lowest Price",
-            value: data?.content?.items
-                ?.sort((a, b) => a.price - b.price)[0],
-        },
-        {
-            title: "Average Price",
-            value: data?.content?.items
-                ? data.content.items.reduce((prev, val) => prev + val.price, 0) /
-                data.content.items.length
-                : 0,
-        },
-        {
-            title: "Total Deposit Price",
-            value: data?.content?.items
-                ? data.content.items.reduce((prev, val) => prev + val.deposit_price, 0)
-                : 0,
-        },
-    ]
-
-    const chartData = data?.content?.items?.sort((a, b) => b.price - a.price).map(item => ({
-        name: item.name,
-        value: item.price,
-    })) ?? []
-
-    const chartConfig = {
-        name: {
-            label: "Name",
-            color: "blue",
-        },
-    } satisfies ChartConfig
 
     return (
         <div className={"space-y-4"}>
@@ -90,139 +53,34 @@ function RouteComponent() {
                 </div>
             </div>
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-6">
-                <div className="col-span-6 grid gap-4 lg:grid-cols-4">
-                    {CARD_DATA.map((data) => {
-                        return (
-                            <Card>
-                                <CardHeader>
-                                    <CardDescription>
-                                        {data.title}
-                                    </CardDescription>
-                                    <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
-                                        {CurrencyFormatter(typeof data?.value === "number"
-                                            ? data?.value
-                                            : data?.value?.price ?? 0)}
-                                    </CardTitle>
-                                    <CardAction>
-                                        {
-                                            typeof data?.value === "number"
-                                                ? <></>
-                                                : (
-                                                    <Link to={"/dashboard"} params={{id: data?.value?.id?.toString()!}}>
-                                                        <Button variant={"link"}>
-                                                            See Details
-                                                            <ArrowUpRight/>
-                                                        </Button>
-                                                    </Link>
-                                                )
-                                        }
-                                    </CardAction>
-                                </CardHeader>
-                                <CardFooter className="flex-col items-start gap-1.5 text-sm">
-                                    <div className="line-clamp-1 flex gap-2 font-medium">
-                                        Current {data.title}
-                                    </div>
-                                    <div className="text-muted-foreground">
-                                        {
-                                            typeof data?.value !== "number" ? (
-                                                <>Item Name: {data?.value?.name ?? "-"}</>
-                                            ) : (
-                                                <>-</>
-                                            )
-                                        }
-                                    </div>
-                                </CardFooter>
-                            </Card>
-                        )
-                    })}
+                <div className="col-span-2 w-full flex items-center justify-center">
+                    <img src={data?.content?.file.path} loading={"lazy"} className={"size-full"} alt=""/>
                 </div>
-                <div className="col-span-6 grid lg:grid-cols-2 gap-4">
+                <div className="col-span-4 space-y-4">
                     <Card>
-                        <CardHeader>
-                            <CardTitle>Item Chart</CardTitle>
-                            <CardDescription>Highest to lowest by price</CardDescription>
-                        </CardHeader>
-                        <CardContent>
-                            <ChartContainer config={chartConfig}>
-                                <BarChart
-                                    accessibilityLayer
-                                    data={chartData}
-                                    margin={{
-                                        top: 20,
-                                    }}
-                                >
-                                    <CartesianGrid vertical={false}/>
-                                    <XAxis
-                                        dataKey="name"
-                                        tickLine={false}
-                                        tickMargin={10}
-                                        axisLine={false}
-                                    />
-                                    <ChartTooltip
-                                        cursor={true}
-                                        content={<ChartTooltipContent/>}
-                                    />
-                                    <Bar dataKey="value" fill="oklch(87% 0 0)" radius={8}>
-                                        <LabelList
-                                            position="top"
-                                            offset={10}
-                                            className="fill-foreground hidden lg:block"
-                                            fontSize={12}
-                                            formatter={(value: number) => CurrencyFormatter(value)}
-                                        />
-                                    </Bar>
-                                </BarChart>
-                            </ChartContainer>
+                        {/*<CardHeader>*/}
+                        {/*    <CardTitle>Card Title</CardTitle>*/}
+                        {/*    <CardDescription>Card Description</CardDescription>*/}
+                        {/*    <CardAction>Card Action</CardAction>*/}
+                        {/*</CardHeader>*/}
+                        <CardContent className={"space-y-4"}>
+                            <div className="space-y-1">
+                                <h1 className="text-lg font-semibold">Deposit Price</h1>
+                                <p className={"line-clamp-4 truncate text-justify text-muted-foreground"}>{CurrencyFormatter(data?.content?.deposit_price!)}</p>
+                            </div>
+                            <div className="space-y-1">
+                                <h1 className="text-lg font-semibold">Price</h1>
+                                <p className={"line-clamp-4 truncate text-justify text-muted-foreground"}>{CurrencyFormatter(data?.content?.price!)}</p>
+                            </div>
+                            <div className="space-y-1">
+                                <h1 className="text-lg font-semibold">Description</h1>
+                                <p className={"line-clamp-4 truncate text-justify text-muted-foreground"}>{data?.content?.description}</p>
+                            </div>
                         </CardContent>
-                        <CardFooter className="flex-col items-start gap-2 text-sm">
-                            <div className="flex gap-2 leading-none font-medium">
-                                Trending up by 5.2% this month <TrendingUp className="h-4 w-4"/>
-                            </div>
-                            <div className="text-muted-foreground leading-none">
-                                Showing total visitors for the last 6 months
-                            </div>
-                        </CardFooter>
+                        {/*<CardFooter>*/}
+                        {/*    <p>Card Footer</p>*/}
+                        {/*</CardFooter>*/}
                     </Card>
-                    <Skeleton className={"w-full flex items-center justify-center"}>
-                        Chart untuk lelang dengan tipe objek ini
-                    </Skeleton>
-                </div>
-                <div className="col-span-6 space-y-2">
-                    <h1 className="text-xl font-semibold">Items List</h1>
-                    <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
-                        {data?.content?.items!.map((item) => {
-                            return (
-                                <Card>
-                                    <CardHeader>
-                                        <img className={"rounded-sm size-full"} src={item.file.path} alt=""/>
-                                        <CardTitle className={"capitalize"}>
-                                            {item.name}
-                                        </CardTitle>
-                                        <CardDescription className={"grid grid-cols-2 w-full"}>
-                                            <p>(Deposit)</p>
-                                            <p className={"text-end"}>{CurrencyFormatter(item.deposit_price)}</p>
-                                            <p>(Price)</p>
-                                            <p className={"text-end"}>{CurrencyFormatter(item.price)}</p>
-                                        </CardDescription>
-                                    </CardHeader>
-                                    <CardContent>
-                                        <p className={"text-justify line-clamp-3 "}>{item.description} Lorem
-                                            ipsum dolor sit amet, consectetur adipisicing elit. Aspernatur consectetur
-                                            culpa cumque cupiditate, dolores eius expedita illo ipsam, mollitia nemo
-                                            numquam officiis quae qui quisquam velit! Commodi, est magni nemo
-                                            perferendis porro quaerat recusandae temporibus totam voluptatum. Cum
-                                            distinctio, error explicabo incidunt neque similique suscipit. Cumque
-                                            dignissimos modi quibusdam quidem?</p>
-                                    </CardContent>
-                                    <CardFooter>
-                                        <Button variant={"outline"} className={"w-full"}>
-                                            See Details
-                                        </Button>
-                                    </CardFooter>
-                                </Card>
-                            )
-                        })}
-                    </div>
                 </div>
             </div>
         </div>
