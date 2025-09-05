@@ -7,8 +7,7 @@ import {Button} from "@/components/ui/button";
 import {ArrowUpRight, EditIcon, Trash, TrendingUp} from "lucide-react";
 import {Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from '@/components/ui/card';
 import {type ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent} from "@/components/ui/chart";
-import {Bar, BarChart, CartesianGrid, LabelList, XAxis} from 'recharts';
-import {ItemColumn} from "@/columns/itemColumn";
+import {Bar, BarChart, CartesianGrid, LabelList, XAxis, YAxis} from 'recharts';
 import {getCoreRowModel, getPaginationRowModel, getSortedRowModel, useReactTable} from "@tanstack/react-table";
 import {CurrencyFormatter} from "@/utils/currency-formatter";
 
@@ -63,14 +62,6 @@ function RouteComponent() {
             color: "blue",
         },
     } satisfies ChartConfig
-
-    const itemTable = useReactTable({
-        data: data?.content?.items!,
-        columns: ItemColumn,
-        getCoreRowModel: getCoreRowModel(),
-        getPaginationRowModel: getPaginationRowModel(),
-        getSortedRowModel: getSortedRowModel(),
-    })
 
     return (
         <div className={"space-y-4"}>
@@ -156,29 +147,27 @@ function RouteComponent() {
                                 <BarChart
                                     accessibilityLayer
                                     data={chartData}
+                                    layout="vertical"
                                     margin={{
-                                        top: 20,
+                                        left: -20,
                                     }}
                                 >
-                                    <CartesianGrid vertical={false}/>
-                                    <XAxis
+                                    <XAxis type="number" dataKey="value" hide />
+                                    <YAxis
                                         dataKey="name"
+                                        type="category"
                                         tickLine={false}
                                         tickMargin={10}
                                         axisLine={false}
+                                        // tickFormatter={(value) => value.slice(0, 3)}
+                                        hide
                                     />
                                     <ChartTooltip
                                         cursor={true}
-                                        content={<ChartTooltipContent/>}
+                                        content={<ChartTooltipContent />}
                                     />
-                                    <Bar dataKey="value" fill="oklch(87% 0 0)" radius={8}>
-                                        <LabelList
-                                            position="top"
-                                            offset={10}
-                                            className="fill-foreground hidden lg:block"
-                                            fontSize={12}
-                                            formatter={(value: number) => CurrencyFormatter(value)}
-                                        />
+
+                                    <Bar dataKey="value" fill="oklch(87% 0 0)" radius={5}>
                                     </Bar>
                                 </BarChart>
                             </ChartContainer>

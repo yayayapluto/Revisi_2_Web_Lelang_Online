@@ -1,4 +1,3 @@
-// api/objectTypes.ts
 import axios from "axios"
 import type {ApiResponse} from "@/types/apiResponse"
 import type {Pagination} from "@/types/pagination"

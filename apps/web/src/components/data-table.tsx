@@ -37,10 +37,10 @@ export function DataTable<TData, TValue>({
     }
 
     return (
-        <div>
+        <div className={"space-y-4"}>
             {/* View Options */}
             <motion.div
-                className={"flex items-center gap-2 lg:justify-between py-4"}
+                className={"flex items-center gap-2 lg:justify-between"}
                 initial={{opacity: 0}}
                 animate={{opacity: 1}}
                 transition={{duration: 0.3}}

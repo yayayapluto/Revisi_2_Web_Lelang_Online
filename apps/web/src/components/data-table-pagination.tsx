@@ -13,7 +13,7 @@ export function DataTablePagination<TData>({
                                            }: DataTablePaginationProps<TData>) {
     return (
         <motion.div
-            className="flex items-center justify-between space-x-6 lg:space-x-8 py-4"
+            className="flex items-center justify-between space-x-6 lg:space-x-8"
             initial={{opacity: 0}}
             animate={{opacity: 1}}
             transition={{duration: 0.3}}

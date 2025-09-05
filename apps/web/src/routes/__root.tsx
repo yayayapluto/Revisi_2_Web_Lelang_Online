@@ -48,13 +48,13 @@ function RootComponent() {
 				disableTransitionOnChange
 				storageKey="vite-ui-theme"
 			>
-				<div className="grid grid-rows-[auto_1fr] h-svh">
-					<Header />
+				<div className="grid grid-rows-[auto_1fr] h-full max-w-screen">
+					{/*<Header />*/}
 					{isFetching ? <Loader /> : <Outlet />}
 				</div>
 				<Toaster richColors />
 			</ThemeProvider>
-			<TanStackRouterDevtools position="bottom-left" />
+			{/*<TanStackRouterDevtools position="bottom-left" />*/}
 		</>
 	);
 }

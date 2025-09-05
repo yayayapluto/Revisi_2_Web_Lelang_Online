@@ -1,7 +1,5 @@
-// api/objectTypes.ts
 import axios from "axios"
 import type {ApiResponse} from "@/types/apiResponse"
-
 
 export const GetEntityDetail = <T>({
                                        entityName,

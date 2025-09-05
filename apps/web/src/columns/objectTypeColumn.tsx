@@ -1,35 +1,27 @@
 import type {ColumnDef} from "@tanstack/react-table";
 import type {ObjectType} from "@/types/objectType";
-import {DataTableColumnHeader} from "@/components/data-table-column-header";
+import { Button } from "@/components/ui/button"
+import {EllipsisIcon} from "lucide-react";
 import {
     DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
+    DropdownMenuContent, DropdownMenuItem,
     DropdownMenuLabel,
     DropdownMenuSeparator,
     DropdownMenuTrigger
-} from "@/components/animate-ui/radix/dropdown-menu";
-import {EllipsisIcon} from "lucide-react";
+} from "@/components/ui/dropdown-menu";
 import {Link} from "@tanstack/react-router";
 import {
-    AlertDialog,
-    AlertDialogAction,
-    AlertDialogCancel,
-    AlertDialogContent,
-    AlertDialogDescription,
-    AlertDialogFooter,
+    AlertDialog, AlertDialogAction, AlertDialogCancel,
+    AlertDialogContent, AlertDialogDescription, AlertDialogFooter,
     AlertDialogHeader,
     AlertDialogTitle,
-    AlertDialogTrigger,
-} from "@/components/ui/alert-dialog"
-import { Button } from "@/components/ui/button"
+    AlertDialogTrigger
+} from "@/components/ui/alert-dialog";
 
 export const ObjectTypeColumn: ColumnDef<ObjectType>[] = [
     {
         accessorKey: "name",
-        header: ({column}) => (
-            <DataTableColumnHeader column={column} title={"Name"}/>
-        ),
+        header: "Name"
     },
     {
         accessorKey: "items",

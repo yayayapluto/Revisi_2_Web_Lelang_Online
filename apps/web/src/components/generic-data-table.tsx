@@ -83,13 +83,15 @@ export function GenericDataTable<T>({
         getSortedRowModel: getSortedRowModel(),
     })
     return (
-        <DataTable
-            columns={columns}
-            data={data?.content?.data ?? []}
-            table={table}
-            isLoading={isFetching && !isLoading}
-            onSearchChange={setSearch}
-            currentEntity={currentEntity}
-        />
+        <>
+            <DataTable
+                columns={columns}
+                data={data?.content?.data ?? []}
+                table={table}
+                isLoading={isFetching && !isLoading}
+                onSearchChange={setSearch}
+                currentEntity={currentEntity}
+            />
+        </>
     )
 }

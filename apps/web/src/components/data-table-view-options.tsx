@@ -8,7 +8,7 @@ import {
     DropdownMenuCheckboxItem,
     DropdownMenuContent,
     DropdownMenuTrigger
-} from "@/components/animate-ui/radix/dropdown-menu";
+} from "@/components/ui/dropdown-menu";
 import {motion} from "framer-motion";
 
 export function DataTableViewOptions<TData>({

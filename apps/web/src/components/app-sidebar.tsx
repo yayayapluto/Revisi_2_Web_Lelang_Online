@@ -1,5 +1,5 @@
 import * as React from "react"
-import {BookOpen, Bot, BoxIcon, ChevronRight, Settings2, Wheat} from "lucide-react"
+import {BoxIcon, ChevronRight, FileTextIcon, Wheat} from "lucide-react"
 
 import {
     Sidebar,
@@ -22,85 +22,31 @@ const DATA = {
     navMain: [
         {
             title: 'Object Type',
-            url: '/dashboard/object-type',
+            url: '#',
             icon: BoxIcon,
             items: [
                 {
-                    title: "Dashboard",
+                    title: 'List',
                     url: "/dashboard/object-type",
                 },
                 {
+                    title: 'Add New',
+                    url: "#",
+                },
+            ],
+        },
+        {
+            title: 'Item',
+            url: '#',
+            icon: FileTextIcon,
+            items: [
+                {
                     title: 'List',
-                    url: '/dashboard/object-type/list',
+                    url: "/dashboard/item",
                 },
                 {
                     title: 'Add New',
-                    url: '/dashboard/object-type/create',
-                },
-            ],
-        },
-        {
-            title: 'Models',
-            url: '#',
-            icon: Bot,
-            items: [
-                {
-                    title: 'Genesis',
-                    url: '#',
-                },
-                {
-                    title: 'Explorer',
-                    url: '#',
-                },
-                {
-                    title: 'Quantum',
-                    url: '#',
-                },
-            ],
-        },
-        {
-            title: 'Documentation',
-            url: '#',
-            icon: BookOpen,
-            items: [
-                {
-                    title: 'Introduction',
-                    url: '#',
-                },
-                {
-                    title: 'Get Started',
-                    url: '#',
-                },
-                {
-                    title: 'Tutorials',
-                    url: '#',
-                },
-                {
-                    title: 'Changelog',
-                    url: '#',
-                },
-            ],
-        },
-        {
-            title: 'Settings',
-            url: '#',
-            icon: Settings2,
-            items: [
-                {
-                    title: 'General',
-                    url: '#',
-                },
-                {
-                    title: 'Team',
-                    url: '#',
-                },
-                {
-                    title: 'Billing',
-                    url: '#',
-                },
-                {
-                    title: 'Limits',
-                    url: '#',
+                    url: "#",
                 },
             ],
         },
@@ -183,47 +129,3 @@ export function AppSidebar({...props}: React.ComponentProps<typeof Sidebar>) {
         </Sidebar>
     )
 }
-
-
-// export const AppSideBar = () => {
-//     const isMobile = useIsMobile();
-//     const [activeTeam, setActiveTeam] = React.useState(DATA.teams[0]);
-//
-//     if (!activeTeam) return null;
-//
-//     return (
-//         <SidebarProvider>
-//
-//
-//             <SidebarInset>
-//                 <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
-//                     <div className="flex items-center gap-2 px-4">
-//                         <SidebarTrigger className="-ml-1" />
-//                         <Separator orientation="vertical" className="mr-2 h-4" />
-//                         <Breadcrumb>
-//                             <BreadcrumbList>
-//                                 <BreadcrumbItem className="hidden md:block">
-//                                     <BreadcrumbLink href="#">
-//                                         Building Your Application
-//                                     </BreadcrumbLink>
-//                                 </BreadcrumbItem>
-//                                 <BreadcrumbSeparator className="hidden md:block" />
-//                                 <BreadcrumbItem>
-//                                     <BreadcrumbPage>Data Fetching</BreadcrumbPage>
-//                                 </BreadcrumbItem>
-//                             </BreadcrumbList>
-//                         </Breadcrumb>
-//                     </div>
-//                 </header>
-//                 <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-//                     <div className="grid auto-rows-min gap-4 md:grid-cols-3">
-//                         <div className="aspect-video rounded-xl bg-muted/50" />
-//                         <div className="aspect-video rounded-xl bg-muted/50" />
-//                         <div className="aspect-video rounded-xl bg-muted/50" />
-//                     </div>
-//                     <div className="min-h-[100vh] flex-1 rounded-xl bg-muted/50 md:min-h-min" />
-//                 </div>
-//             </SidebarInset>
-//         </SidebarProvider>
-//     );
-// };

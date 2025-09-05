@@ -8,7 +8,7 @@ import {
     DropdownMenuLabel,
     DropdownMenuSeparator,
     DropdownMenuTrigger
-} from "@/components/animate-ui/radix/dropdown-menu";
+} from "@/components/ui/dropdown-menu";
 import {EllipsisIcon} from "lucide-react";
 import {Link} from "@tanstack/react-router";
 import {
@@ -24,6 +24,8 @@ import {
 } from "@/components/ui/alert-dialog"
 import { Button } from "@/components/ui/button"
 import type {Item} from "@/types/item";
+import {CurrencyFormatter} from "@/utils/currency-formatter";
+import {Checkbox} from "@/components/ui/checkbox";
 
 export const ItemColumn: ColumnDef<Item>[] = [
     {
@@ -34,11 +36,17 @@ export const ItemColumn: ColumnDef<Item>[] = [
     },
     {
         accessorKey: "price",
-        header: "Price"
+        header: ({column}) => (
+            <DataTableColumnHeader column={column} title={"Price"}/>
+        ),
+        cell: ({row}) => CurrencyFormatter(row.original.price),
     },
     {
         accessorKey: "deposit_price",
-        header: "Deposit Price"
+        header: ({column}) => (
+            <DataTableColumnHeader column={column} title={"Deposit Price"}/>
+        ),
+        cell: ({row}) => CurrencyFormatter(row.original.deposit_price),
     },
     {
         accessorKey: "description",

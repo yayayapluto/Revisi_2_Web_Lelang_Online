@@ -5,13 +5,15 @@ import {Skeleton} from "@/components/ui/skeleton";
 import {GenericDataTable} from "@/components/generic-data-table";
 import type {ObjectType} from "@/types/objectType";
 import {ObjectTypeColumn} from "@/columns/objectTypeColumn";
+import {ItemColumn} from "@/columns/itemColumn";
+import type {Item} from "@/types/item";
 
 export const Route = createFileRoute('/dashboard/item/')({
     component: RouteComponent,
 })
 
 function RouteComponent() {
-    const entity = "Object Type"
+    const entity = "Item"
     const navigate = useNavigate()
     return (
         <div className={"space-y-4"}>
@@ -26,9 +28,9 @@ function RouteComponent() {
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
                 {[1, 2, 3, 4].map(() => (<Skeleton className={"h-40 rounded-lg"}/>))}
             </div>
-            <GenericDataTable<ObjectType>
-                entity="objectTypes"
-                columns={ObjectTypeColumn}
+            <GenericDataTable<Item>
+                entity="items"
+                columns={ItemColumn}
                 debounceDelay={200}
                 initialPageSize={10}
                 defaultSortBy="id"
