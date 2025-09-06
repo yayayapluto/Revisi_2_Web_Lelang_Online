@@ -28,6 +28,11 @@ export const PicColumn: ColumnDef<Pic>[] = [
         ),
     },
     {
+        accessorKey: "auctions",
+        header: "Auction Count",
+        cell: ({row}) => row.original.auctions.length,
+    },
+    {
         accessorKey: "phone_number",
         header: "Phone Number"
     },
