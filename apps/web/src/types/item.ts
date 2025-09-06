@@ -15,8 +15,8 @@ export type Item = Mandatory & {
     file_id: number
     object_type: ObjectType
     file: File
-    itemDetail?: ItemDetail
-    ItemDocument?: ItemDocument
-    ItemGrade?: ItemGrade
-    ItemThumbnails?: ItemThumbnail[]
+    item_detail?: ItemDetail
+    item_document?: ItemDocument
+    item_grade?: ItemGrade
+    item_thumbnails?: ItemThumbnail[]
 }

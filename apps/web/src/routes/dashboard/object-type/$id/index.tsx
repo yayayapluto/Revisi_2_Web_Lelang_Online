@@ -108,7 +108,7 @@ function RouteComponent() {
                                             typeof data?.value === "number"
                                                 ? <></>
                                                 : (
-                                                    <Link to={"/dashboard"} params={{id: data?.value?.id?.toString()!}}>
+                                                    <Link to={"/dashboard/item/$id"} params={{id: data?.value?.id?.toString()!}}>
                                                         <Button variant={"link"}>
                                                             See Details
                                                             <ArrowUpRight/>
@@ -213,9 +213,11 @@ function RouteComponent() {
                                             dignissimos modi quibusdam quidem?</p>
                                     </CardContent>
                                     <CardFooter>
-                                        <Button variant={"outline"} className={"w-full"}>
-                                            See Details
-                                        </Button>
+                                        <Link to={"/dashboard/item/$id"} params={{id: item.id.toString()}}>
+                                            <Button variant={"outline"} className={"w-full"}>
+                                                See Details
+                                            </Button>
+                                        </Link>
                                     </CardFooter>
                                 </Card>
                             )

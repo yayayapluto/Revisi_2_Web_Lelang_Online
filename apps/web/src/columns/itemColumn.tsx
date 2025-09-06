@@ -65,7 +65,7 @@ export const ItemColumn: ColumnDef<Item>[] = [
             <HoverCard>
                 <HoverCardTrigger>{row.original.file.path}</HoverCardTrigger>
                 <HoverCardContent className={"w-full p-2"}>
-                    <img src={row.original.file.path} className={"size-16"} alt=""/>
+                    <img src={row.original.file.path} loading={"lazy"} className={"size-16"} alt=""/>
                 </HoverCardContent>
             </HoverCard>
         )
