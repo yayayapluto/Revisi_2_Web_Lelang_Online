@@ -43,6 +43,15 @@ const DATA = [
                 ],
             },
             {
+                title: 'Item',
+                url: '/dashboard/item',
+                icon: FileTextIcon,
+                items: [
+                    { title: 'All', url: "/dashboard/item" },
+                    { title: 'Add New', url: "#" },
+                ],
+            },
+            {
                 title: 'Organizer',
                 url: '/dashboard/organizer',
                 icon: Users,
@@ -57,15 +66,6 @@ const DATA = [
                 icon: Contact,
                 items: [
                     { title: 'All', url: "/dashboard/pic" },
-                    { title: 'Add New', url: "#" },
-                ],
-            },
-            {
-                title: 'Item',
-                url: '/dashboard/item',
-                icon: FileTextIcon,
-                items: [
-                    { title: 'All', url: "/dashboard/item" },
                     { title: 'Add New', url: "#" },
                 ],
             },
