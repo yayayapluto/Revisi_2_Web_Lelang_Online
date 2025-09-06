@@ -1,5 +1,16 @@
 import * as React from "react"
-import {BoxIcon, ChevronRight, FileTextIcon, Wheat} from "lucide-react"
+import {
+    BoxIcon,
+    ChevronRight,
+    Contact,
+    FileTextIcon,
+    Gavel,
+    Medal,
+    TrendingUp,
+    UserPlus,
+    Users,
+    Wheat
+} from "lucide-react"
 
 import {
     Sidebar,
@@ -18,40 +29,89 @@ import {
 import {Link, useLocation} from "@tanstack/react-router";
 import {Collapsible, CollapsibleContent, CollapsibleTrigger} from "./animate-ui/radix/collapsible";
 
-const DATA = {
-    navMain: [
-        {
-            title: 'Object Type',
-            url: '#',
-            icon: BoxIcon,
-            items: [
-                {
-                    title: 'List',
-                    url: "/dashboard/object-type",
-                },
-                {
-                    title: 'Add New',
-                    url: "#",
-                },
-            ],
-        },
-        {
-            title: 'Item',
-            url: '#',
-            icon: FileTextIcon,
-            items: [
-                {
-                    title: 'List',
-                    url: "/dashboard/item",
-                },
-                {
-                    title: 'Add New',
-                    url: "#",
-                },
-            ],
-        },
-    ],
-};
+const DATA = [
+    {
+        label: "Dashboards",
+        items: [
+            {
+                title: 'Object Type',
+                url: '#',
+                icon: BoxIcon,
+                items: [
+                    { title: 'All', url: "/dashboard/object-type" },
+                    { title: 'Add New', url: "#" },
+                ],
+            },
+            {
+                title: 'Organizer',
+                url: '#',
+                icon: Users,
+                items: [
+                    { title: 'All', url: "#" },
+                    { title: 'Add New', url: "#" },
+                ],
+            },
+            {
+                title: 'PIC',
+                url: '#',
+                icon: Contact,
+                items: [
+                    { title: 'All', url: "#" },
+                    { title: 'Add New', url: "#" },
+                ],
+            },
+            {
+                title: 'Item',
+                url: '#',
+                icon: FileTextIcon,
+                items: [
+                    { title: 'All', url: "/dashboard/item" },
+                    { title: 'Add New', url: "#" },
+                ],
+            },
+        ],
+    },
+    {
+        label: "Auction Managements",
+        items: [
+            {
+                title: 'Auction',
+                url: '#',
+                icon: Gavel,
+                items: [
+                    { title: 'All', url: "#" },
+                    { title: 'Add New', url: "#" },
+                ],
+            },
+            {
+                title: 'Bidders',
+                url: '#',
+                icon: UserPlus,
+                items: [
+                    { title: 'All', url: "/dashboard/auction-bidders" },
+                ],
+            },
+            {
+                title: 'Bids',
+                url: '#',
+                icon: TrendingUp,
+                items: [
+                    { title: 'All', url: "/dashboard/bids" },
+                    { title: 'Live Monitor', url: "/dashboard/bids/live" },
+                ],
+            },
+            {
+                title: 'Winners',
+                url: '#',
+                icon: Medal,
+                items: [
+                    { title: 'All', url: "/dashboard/winners" },
+                    { title: 'Unpaid', url: "/dashboard/winners?status=pending" },
+                ],
+            },
+        ],
+    },
+];
 
 export function AppSidebar({...props}: React.ComponentProps<typeof Sidebar>) {
     let location = useLocation()
@@ -78,52 +138,52 @@ export function AppSidebar({...props}: React.ComponentProps<typeof Sidebar>) {
             </SidebarHeader>
 
             <SidebarContent>
-                {/* Nav Main */}
-                <SidebarGroup>
-                    <SidebarGroupLabel>Dashboards</SidebarGroupLabel>
-                    <SidebarMenu>
-                        {DATA.navMain.map((item) => (
-                            (item.items && item.items.length > 0) ? (
-                                <Collapsible
-                                    key={item.title}
-                                    asChild
-                                    defaultOpen={location.pathname.includes(item.url)}
-                                    className="group/collapsible"
-                                >
+                {DATA.map((data) => (
+                    <SidebarGroup>
+                        <SidebarGroupLabel>{data.label}</SidebarGroupLabel>
+                        <SidebarMenu>
+                            {data.items.map((item) => (
+                                (item.items && item.items.length > 0) ? (
+                                    <Collapsible
+                                        key={item.title}
+                                        asChild
+                                        defaultOpen={location.pathname.includes(item.url)}
+                                        className="group/collapsible"
+                                    >
+                                        <SidebarMenuItem>
+                                            <CollapsibleTrigger asChild>
+                                                <SidebarMenuButton tooltip={item.title}>
+                                                    {item.icon && <item.icon/>}
+                                                    <span>{item.title}</span>
+                                                    <ChevronRight
+                                                        className="ml-auto transition-transform duration-300 group-data-[state=open]/collapsible:rotate-90"/>
+                                                </SidebarMenuButton>
+                                            </CollapsibleTrigger>
+                                            <CollapsibleContent>
+                                                <SidebarMenuSub>
+                                                    {item.items?.map((subItem) => (
+                                                        <SidebarMenuSubItem key={subItem.title}>
+                                                            <SidebarMenuSubButton asChild>
+                                                                <Link to={subItem.url} className={"capitalize"}>{subItem.title}</Link>
+                                                            </SidebarMenuSubButton>
+                                                        </SidebarMenuSubItem>
+                                                    ))}
+                                                </SidebarMenuSub>
+                                            </CollapsibleContent>
+                                        </SidebarMenuItem>
+                                    </Collapsible>
+                                ) : (
                                     <SidebarMenuItem>
-                                        <CollapsibleTrigger asChild>
-                                            <SidebarMenuButton tooltip={item.title}>
-                                                {item.icon && <item.icon/>}
-                                                <span>{item.title}</span>
-                                                <ChevronRight
-                                                    className="ml-auto transition-transform duration-300 group-data-[state=open]/collapsible:rotate-90"/>
-                                            </SidebarMenuButton>
-                                        </CollapsibleTrigger>
-                                        <CollapsibleContent>
-                                            <SidebarMenuSub>
-                                                {item.items?.map((subItem) => (
-                                                    <SidebarMenuSubItem key={subItem.title}>
-                                                        <SidebarMenuSubButton asChild>
-                                                            <Link to={subItem.url} className={"capitalize"}>{subItem.title}</Link>
-                                                        </SidebarMenuSubButton>
-                                                    </SidebarMenuSubItem>
-                                                ))}
-                                            </SidebarMenuSub>
-                                        </CollapsibleContent>
+                                        <SidebarMenuButton>
+                                            {item.icon && <item.icon/>}
+                                            <span>{item.title}</span>
+                                        </SidebarMenuButton>
                                     </SidebarMenuItem>
-                                </Collapsible>
-                            ) : (
-                                <SidebarMenuItem>
-                                    <SidebarMenuButton>
-                                        {item.icon && <item.icon/>}
-                                        <span>{item.title}</span>
-                                    </SidebarMenuButton>
-                                </SidebarMenuItem>
-                            )
-                        ))}
-                    </SidebarMenu>
-                </SidebarGroup>
-                {/* Nav Main */}
+                                )
+                            ))}
+                        </SidebarMenu>
+                    </SidebarGroup>
+                ))}
             </SidebarContent>
             <SidebarRail/>
         </Sidebar>
