@@ -147,8 +147,8 @@ function RouteComponent() {
                                         value: data?.content?.description
                                     },
                                 ].map((item) => (
-                                    <div className={`space-y-1 ${item.name === "Description" && "lg:col-span-2"}`}>
-                                        <h1 className="text-lg font-semibold">{item.name}</h1>
+                                    <div className={`${item.name === "Description" && "lg:col-span-2"}`}>
+                                        <h1 className="text-md font-semibold">{item.name}</h1>
                                         <p className={"line-clamp-4 truncate text-justify text-muted-foreground"}>{item.value}</p>
                                     </div>
                                 ))
@@ -172,9 +172,9 @@ function RouteComponent() {
                                 }
                                 return (
                                     <div>
-                                        <h1 className="text-md font-semibold capitalize">{k}</h1>
+                                        <h1 className="text-md font-semibold capitalize">{k.split("_").join(" ")}</h1>
                                         <p className={"line-clamp-4 truncate text-justify text-muted-foreground"}>{
-                                            (v != null && (DateFormatter(v) === "Invalid Date" ? v : DateFormatter(v)))
+                                            (k === "stnk_date" ? DateFormatter(v, false) : v)
                                         }</p>
                                     </div>
                                 )
@@ -198,7 +198,7 @@ function RouteComponent() {
                                 }
                                 return (
                                     <div>
-                                        <h1 className="text-md font-semibold capitalize">{k}</h1>
+                                        <h1 className="text-md font-semibold capitalize">{k.split("_").join(" ")}</h1>
                                         <p className={"line-clamp-4 truncate text-justify text-muted-foreground"}>{v ? "Yes" : "No"}</p>
                                     </div>
                                 )
