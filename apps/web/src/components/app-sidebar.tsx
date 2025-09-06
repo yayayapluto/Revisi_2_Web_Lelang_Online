@@ -35,7 +35,7 @@ const DATA = [
         items: [
             {
                 title: 'Object Type',
-                url: '#',
+                url: '/dashboard/object-type',
                 icon: BoxIcon,
                 items: [
                     { title: 'All', url: "/dashboard/object-type" },
@@ -44,25 +44,25 @@ const DATA = [
             },
             {
                 title: 'Organizer',
-                url: '#',
+                url: '/dashboard/organizer',
                 icon: Users,
                 items: [
-                    { title: 'All', url: "#" },
+                    { title: 'All', url: "/dashboard/organizer" },
                     { title: 'Add New', url: "#" },
                 ],
             },
             {
                 title: 'PIC',
-                url: '#',
+                url: '/dashboard/pic',
                 icon: Contact,
                 items: [
-                    { title: 'All', url: "#" },
+                    { title: 'All', url: "/dashboard/pic" },
                     { title: 'Add New', url: "#" },
                 ],
             },
             {
                 title: 'Item',
-                url: '#',
+                url: '/dashboard/item',
                 icon: FileTextIcon,
                 items: [
                     { title: 'All', url: "/dashboard/item" },
@@ -76,10 +76,10 @@ const DATA = [
         items: [
             {
                 title: 'Auction',
-                url: '#',
+                url: '/dashboard/auction',
                 icon: Gavel,
                 items: [
-                    { title: 'All', url: "#" },
+                    { title: 'All', url: "/dashboard/auction" },
                     { title: 'Add New', url: "#" },
                 ],
             },

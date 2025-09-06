@@ -11,14 +11,26 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as DashboardRouteRouteImport } from './routes/dashboard/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as DashboardPicIndexRouteImport } from './routes/dashboard/pic/index'
+import { Route as DashboardOrganizerIndexRouteImport } from './routes/dashboard/organizer/index'
 import { Route as DashboardObjectTypeIndexRouteImport } from './routes/dashboard/object-type/index'
 import { Route as DashboardItemIndexRouteImport } from './routes/dashboard/item/index'
+import { Route as DashboardAuctionIndexRouteImport } from './routes/dashboard/auction/index'
+import { Route as DashboardPicCreateRouteImport } from './routes/dashboard/pic/create'
+import { Route as DashboardOrganizerCreateRouteImport } from './routes/dashboard/organizer/create'
 import { Route as DashboardObjectTypeCreateRouteImport } from './routes/dashboard/object-type/create'
 import { Route as DashboardItemCreateRouteImport } from './routes/dashboard/item/create'
+import { Route as DashboardAuctionCreateRouteImport } from './routes/dashboard/auction/create'
+import { Route as DashboardPicIdIndexRouteImport } from './routes/dashboard/pic/$id/index'
+import { Route as DashboardOrganizerIdIndexRouteImport } from './routes/dashboard/organizer/$id/index'
 import { Route as DashboardObjectTypeIdIndexRouteImport } from './routes/dashboard/object-type/$id/index'
 import { Route as DashboardItemIdIndexRouteImport } from './routes/dashboard/item/$id/index'
+import { Route as DashboardAuctionIdIndexRouteImport } from './routes/dashboard/auction/$id/index'
+import { Route as DashboardPicIdEditRouteImport } from './routes/dashboard/pic/$id/edit'
+import { Route as DashboardOrganizerIdEditRouteImport } from './routes/dashboard/organizer/$id/edit'
 import { Route as DashboardObjectTypeIdEditRouteImport } from './routes/dashboard/object-type/$id/edit'
 import { Route as DashboardItemIdEditRouteImport } from './routes/dashboard/item/$id/edit'
+import { Route as DashboardAuctionIdEditRouteImport } from './routes/dashboard/auction/$id/edit'
 
 const DashboardRouteRoute = DashboardRouteRouteImport.update({
   id: '/dashboard',
@@ -29,6 +41,16 @@ const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardPicIndexRoute = DashboardPicIndexRouteImport.update({
+  id: '/pic/',
+  path: '/pic/',
+  getParentRoute: () => DashboardRouteRoute,
+} as any)
+const DashboardOrganizerIndexRoute = DashboardOrganizerIndexRouteImport.update({
+  id: '/organizer/',
+  path: '/organizer/',
+  getParentRoute: () => DashboardRouteRoute,
 } as any)
 const DashboardObjectTypeIndexRoute =
   DashboardObjectTypeIndexRouteImport.update({
@@ -41,6 +63,22 @@ const DashboardItemIndexRoute = DashboardItemIndexRouteImport.update({
   path: '/item/',
   getParentRoute: () => DashboardRouteRoute,
 } as any)
+const DashboardAuctionIndexRoute = DashboardAuctionIndexRouteImport.update({
+  id: '/auction/',
+  path: '/auction/',
+  getParentRoute: () => DashboardRouteRoute,
+} as any)
+const DashboardPicCreateRoute = DashboardPicCreateRouteImport.update({
+  id: '/pic/create',
+  path: '/pic/create',
+  getParentRoute: () => DashboardRouteRoute,
+} as any)
+const DashboardOrganizerCreateRoute =
+  DashboardOrganizerCreateRouteImport.update({
+    id: '/organizer/create',
+    path: '/organizer/create',
+    getParentRoute: () => DashboardRouteRoute,
+  } as any)
 const DashboardObjectTypeCreateRoute =
   DashboardObjectTypeCreateRouteImport.update({
     id: '/object-type/create',
@@ -52,6 +90,22 @@ const DashboardItemCreateRoute = DashboardItemCreateRouteImport.update({
   path: '/item/create',
   getParentRoute: () => DashboardRouteRoute,
 } as any)
+const DashboardAuctionCreateRoute = DashboardAuctionCreateRouteImport.update({
+  id: '/auction/create',
+  path: '/auction/create',
+  getParentRoute: () => DashboardRouteRoute,
+} as any)
+const DashboardPicIdIndexRoute = DashboardPicIdIndexRouteImport.update({
+  id: '/pic/$id/',
+  path: '/pic/$id/',
+  getParentRoute: () => DashboardRouteRoute,
+} as any)
+const DashboardOrganizerIdIndexRoute =
+  DashboardOrganizerIdIndexRouteImport.update({
+    id: '/organizer/$id/',
+    path: '/organizer/$id/',
+    getParentRoute: () => DashboardRouteRoute,
+  } as any)
 const DashboardObjectTypeIdIndexRoute =
   DashboardObjectTypeIdIndexRouteImport.update({
     id: '/object-type/$id/',
@@ -63,6 +117,22 @@ const DashboardItemIdIndexRoute = DashboardItemIdIndexRouteImport.update({
   path: '/item/$id/',
   getParentRoute: () => DashboardRouteRoute,
 } as any)
+const DashboardAuctionIdIndexRoute = DashboardAuctionIdIndexRouteImport.update({
+  id: '/auction/$id/',
+  path: '/auction/$id/',
+  getParentRoute: () => DashboardRouteRoute,
+} as any)
+const DashboardPicIdEditRoute = DashboardPicIdEditRouteImport.update({
+  id: '/pic/$id/edit',
+  path: '/pic/$id/edit',
+  getParentRoute: () => DashboardRouteRoute,
+} as any)
+const DashboardOrganizerIdEditRoute =
+  DashboardOrganizerIdEditRouteImport.update({
+    id: '/organizer/$id/edit',
+    path: '/organizer/$id/edit',
+    getParentRoute: () => DashboardRouteRoute,
+  } as any)
 const DashboardObjectTypeIdEditRoute =
   DashboardObjectTypeIdEditRouteImport.update({
     id: '/object-type/$id/edit',
@@ -74,81 +144,158 @@ const DashboardItemIdEditRoute = DashboardItemIdEditRouteImport.update({
   path: '/item/$id/edit',
   getParentRoute: () => DashboardRouteRoute,
 } as any)
+const DashboardAuctionIdEditRoute = DashboardAuctionIdEditRouteImport.update({
+  id: '/auction/$id/edit',
+  path: '/auction/$id/edit',
+  getParentRoute: () => DashboardRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/dashboard': typeof DashboardRouteRouteWithChildren
+  '/dashboard/auction/create': typeof DashboardAuctionCreateRoute
   '/dashboard/item/create': typeof DashboardItemCreateRoute
   '/dashboard/object-type/create': typeof DashboardObjectTypeCreateRoute
+  '/dashboard/organizer/create': typeof DashboardOrganizerCreateRoute
+  '/dashboard/pic/create': typeof DashboardPicCreateRoute
+  '/dashboard/auction': typeof DashboardAuctionIndexRoute
   '/dashboard/item': typeof DashboardItemIndexRoute
   '/dashboard/object-type': typeof DashboardObjectTypeIndexRoute
+  '/dashboard/organizer': typeof DashboardOrganizerIndexRoute
+  '/dashboard/pic': typeof DashboardPicIndexRoute
+  '/dashboard/auction/$id/edit': typeof DashboardAuctionIdEditRoute
   '/dashboard/item/$id/edit': typeof DashboardItemIdEditRoute
   '/dashboard/object-type/$id/edit': typeof DashboardObjectTypeIdEditRoute
+  '/dashboard/organizer/$id/edit': typeof DashboardOrganizerIdEditRoute
+  '/dashboard/pic/$id/edit': typeof DashboardPicIdEditRoute
+  '/dashboard/auction/$id': typeof DashboardAuctionIdIndexRoute
   '/dashboard/item/$id': typeof DashboardItemIdIndexRoute
   '/dashboard/object-type/$id': typeof DashboardObjectTypeIdIndexRoute
+  '/dashboard/organizer/$id': typeof DashboardOrganizerIdIndexRoute
+  '/dashboard/pic/$id': typeof DashboardPicIdIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/dashboard': typeof DashboardRouteRouteWithChildren
+  '/dashboard/auction/create': typeof DashboardAuctionCreateRoute
   '/dashboard/item/create': typeof DashboardItemCreateRoute
   '/dashboard/object-type/create': typeof DashboardObjectTypeCreateRoute
+  '/dashboard/organizer/create': typeof DashboardOrganizerCreateRoute
+  '/dashboard/pic/create': typeof DashboardPicCreateRoute
+  '/dashboard/auction': typeof DashboardAuctionIndexRoute
   '/dashboard/item': typeof DashboardItemIndexRoute
   '/dashboard/object-type': typeof DashboardObjectTypeIndexRoute
+  '/dashboard/organizer': typeof DashboardOrganizerIndexRoute
+  '/dashboard/pic': typeof DashboardPicIndexRoute
+  '/dashboard/auction/$id/edit': typeof DashboardAuctionIdEditRoute
   '/dashboard/item/$id/edit': typeof DashboardItemIdEditRoute
   '/dashboard/object-type/$id/edit': typeof DashboardObjectTypeIdEditRoute
+  '/dashboard/organizer/$id/edit': typeof DashboardOrganizerIdEditRoute
+  '/dashboard/pic/$id/edit': typeof DashboardPicIdEditRoute
+  '/dashboard/auction/$id': typeof DashboardAuctionIdIndexRoute
   '/dashboard/item/$id': typeof DashboardItemIdIndexRoute
   '/dashboard/object-type/$id': typeof DashboardObjectTypeIdIndexRoute
+  '/dashboard/organizer/$id': typeof DashboardOrganizerIdIndexRoute
+  '/dashboard/pic/$id': typeof DashboardPicIdIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/dashboard': typeof DashboardRouteRouteWithChildren
+  '/dashboard/auction/create': typeof DashboardAuctionCreateRoute
   '/dashboard/item/create': typeof DashboardItemCreateRoute
   '/dashboard/object-type/create': typeof DashboardObjectTypeCreateRoute
+  '/dashboard/organizer/create': typeof DashboardOrganizerCreateRoute
+  '/dashboard/pic/create': typeof DashboardPicCreateRoute
+  '/dashboard/auction/': typeof DashboardAuctionIndexRoute
   '/dashboard/item/': typeof DashboardItemIndexRoute
   '/dashboard/object-type/': typeof DashboardObjectTypeIndexRoute
+  '/dashboard/organizer/': typeof DashboardOrganizerIndexRoute
+  '/dashboard/pic/': typeof DashboardPicIndexRoute
+  '/dashboard/auction/$id/edit': typeof DashboardAuctionIdEditRoute
   '/dashboard/item/$id/edit': typeof DashboardItemIdEditRoute
   '/dashboard/object-type/$id/edit': typeof DashboardObjectTypeIdEditRoute
+  '/dashboard/organizer/$id/edit': typeof DashboardOrganizerIdEditRoute
+  '/dashboard/pic/$id/edit': typeof DashboardPicIdEditRoute
+  '/dashboard/auction/$id/': typeof DashboardAuctionIdIndexRoute
   '/dashboard/item/$id/': typeof DashboardItemIdIndexRoute
   '/dashboard/object-type/$id/': typeof DashboardObjectTypeIdIndexRoute
+  '/dashboard/organizer/$id/': typeof DashboardOrganizerIdIndexRoute
+  '/dashboard/pic/$id/': typeof DashboardPicIdIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
     | '/dashboard'
+    | '/dashboard/auction/create'
     | '/dashboard/item/create'
     | '/dashboard/object-type/create'
+    | '/dashboard/organizer/create'
+    | '/dashboard/pic/create'
+    | '/dashboard/auction'
     | '/dashboard/item'
     | '/dashboard/object-type'
+    | '/dashboard/organizer'
+    | '/dashboard/pic'
+    | '/dashboard/auction/$id/edit'
     | '/dashboard/item/$id/edit'
     | '/dashboard/object-type/$id/edit'
+    | '/dashboard/organizer/$id/edit'
+    | '/dashboard/pic/$id/edit'
+    | '/dashboard/auction/$id'
     | '/dashboard/item/$id'
     | '/dashboard/object-type/$id'
+    | '/dashboard/organizer/$id'
+    | '/dashboard/pic/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/dashboard'
+    | '/dashboard/auction/create'
     | '/dashboard/item/create'
     | '/dashboard/object-type/create'
+    | '/dashboard/organizer/create'
+    | '/dashboard/pic/create'
+    | '/dashboard/auction'
     | '/dashboard/item'
     | '/dashboard/object-type'
+    | '/dashboard/organizer'
+    | '/dashboard/pic'
+    | '/dashboard/auction/$id/edit'
     | '/dashboard/item/$id/edit'
     | '/dashboard/object-type/$id/edit'
+    | '/dashboard/organizer/$id/edit'
+    | '/dashboard/pic/$id/edit'
+    | '/dashboard/auction/$id'
     | '/dashboard/item/$id'
     | '/dashboard/object-type/$id'
+    | '/dashboard/organizer/$id'
+    | '/dashboard/pic/$id'
   id:
     | '__root__'
     | '/'
     | '/dashboard'
+    | '/dashboard/auction/create'
     | '/dashboard/item/create'
     | '/dashboard/object-type/create'
+    | '/dashboard/organizer/create'
+    | '/dashboard/pic/create'
+    | '/dashboard/auction/'
     | '/dashboard/item/'
     | '/dashboard/object-type/'
+    | '/dashboard/organizer/'
+    | '/dashboard/pic/'
+    | '/dashboard/auction/$id/edit'
     | '/dashboard/item/$id/edit'
     | '/dashboard/object-type/$id/edit'
+    | '/dashboard/organizer/$id/edit'
+    | '/dashboard/pic/$id/edit'
+    | '/dashboard/auction/$id/'
     | '/dashboard/item/$id/'
     | '/dashboard/object-type/$id/'
+    | '/dashboard/organizer/$id/'
+    | '/dashboard/pic/$id/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -172,6 +319,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/dashboard/pic/': {
+      id: '/dashboard/pic/'
+      path: '/pic'
+      fullPath: '/dashboard/pic'
+      preLoaderRoute: typeof DashboardPicIndexRouteImport
+      parentRoute: typeof DashboardRouteRoute
+    }
+    '/dashboard/organizer/': {
+      id: '/dashboard/organizer/'
+      path: '/organizer'
+      fullPath: '/dashboard/organizer'
+      preLoaderRoute: typeof DashboardOrganizerIndexRouteImport
+      parentRoute: typeof DashboardRouteRoute
+    }
     '/dashboard/object-type/': {
       id: '/dashboard/object-type/'
       path: '/object-type'
@@ -184,6 +345,27 @@ declare module '@tanstack/react-router' {
       path: '/item'
       fullPath: '/dashboard/item'
       preLoaderRoute: typeof DashboardItemIndexRouteImport
+      parentRoute: typeof DashboardRouteRoute
+    }
+    '/dashboard/auction/': {
+      id: '/dashboard/auction/'
+      path: '/auction'
+      fullPath: '/dashboard/auction'
+      preLoaderRoute: typeof DashboardAuctionIndexRouteImport
+      parentRoute: typeof DashboardRouteRoute
+    }
+    '/dashboard/pic/create': {
+      id: '/dashboard/pic/create'
+      path: '/pic/create'
+      fullPath: '/dashboard/pic/create'
+      preLoaderRoute: typeof DashboardPicCreateRouteImport
+      parentRoute: typeof DashboardRouteRoute
+    }
+    '/dashboard/organizer/create': {
+      id: '/dashboard/organizer/create'
+      path: '/organizer/create'
+      fullPath: '/dashboard/organizer/create'
+      preLoaderRoute: typeof DashboardOrganizerCreateRouteImport
       parentRoute: typeof DashboardRouteRoute
     }
     '/dashboard/object-type/create': {
@@ -200,6 +382,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardItemCreateRouteImport
       parentRoute: typeof DashboardRouteRoute
     }
+    '/dashboard/auction/create': {
+      id: '/dashboard/auction/create'
+      path: '/auction/create'
+      fullPath: '/dashboard/auction/create'
+      preLoaderRoute: typeof DashboardAuctionCreateRouteImport
+      parentRoute: typeof DashboardRouteRoute
+    }
+    '/dashboard/pic/$id/': {
+      id: '/dashboard/pic/$id/'
+      path: '/pic/$id'
+      fullPath: '/dashboard/pic/$id'
+      preLoaderRoute: typeof DashboardPicIdIndexRouteImport
+      parentRoute: typeof DashboardRouteRoute
+    }
+    '/dashboard/organizer/$id/': {
+      id: '/dashboard/organizer/$id/'
+      path: '/organizer/$id'
+      fullPath: '/dashboard/organizer/$id'
+      preLoaderRoute: typeof DashboardOrganizerIdIndexRouteImport
+      parentRoute: typeof DashboardRouteRoute
+    }
     '/dashboard/object-type/$id/': {
       id: '/dashboard/object-type/$id/'
       path: '/object-type/$id'
@@ -212,6 +415,27 @@ declare module '@tanstack/react-router' {
       path: '/item/$id'
       fullPath: '/dashboard/item/$id'
       preLoaderRoute: typeof DashboardItemIdIndexRouteImport
+      parentRoute: typeof DashboardRouteRoute
+    }
+    '/dashboard/auction/$id/': {
+      id: '/dashboard/auction/$id/'
+      path: '/auction/$id'
+      fullPath: '/dashboard/auction/$id'
+      preLoaderRoute: typeof DashboardAuctionIdIndexRouteImport
+      parentRoute: typeof DashboardRouteRoute
+    }
+    '/dashboard/pic/$id/edit': {
+      id: '/dashboard/pic/$id/edit'
+      path: '/pic/$id/edit'
+      fullPath: '/dashboard/pic/$id/edit'
+      preLoaderRoute: typeof DashboardPicIdEditRouteImport
+      parentRoute: typeof DashboardRouteRoute
+    }
+    '/dashboard/organizer/$id/edit': {
+      id: '/dashboard/organizer/$id/edit'
+      path: '/organizer/$id/edit'
+      fullPath: '/dashboard/organizer/$id/edit'
+      preLoaderRoute: typeof DashboardOrganizerIdEditRouteImport
       parentRoute: typeof DashboardRouteRoute
     }
     '/dashboard/object-type/$id/edit': {
@@ -228,29 +452,60 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardItemIdEditRouteImport
       parentRoute: typeof DashboardRouteRoute
     }
+    '/dashboard/auction/$id/edit': {
+      id: '/dashboard/auction/$id/edit'
+      path: '/auction/$id/edit'
+      fullPath: '/dashboard/auction/$id/edit'
+      preLoaderRoute: typeof DashboardAuctionIdEditRouteImport
+      parentRoute: typeof DashboardRouteRoute
+    }
   }
 }
 
 interface DashboardRouteRouteChildren {
+  DashboardAuctionCreateRoute: typeof DashboardAuctionCreateRoute
   DashboardItemCreateRoute: typeof DashboardItemCreateRoute
   DashboardObjectTypeCreateRoute: typeof DashboardObjectTypeCreateRoute
+  DashboardOrganizerCreateRoute: typeof DashboardOrganizerCreateRoute
+  DashboardPicCreateRoute: typeof DashboardPicCreateRoute
+  DashboardAuctionIndexRoute: typeof DashboardAuctionIndexRoute
   DashboardItemIndexRoute: typeof DashboardItemIndexRoute
   DashboardObjectTypeIndexRoute: typeof DashboardObjectTypeIndexRoute
+  DashboardOrganizerIndexRoute: typeof DashboardOrganizerIndexRoute
+  DashboardPicIndexRoute: typeof DashboardPicIndexRoute
+  DashboardAuctionIdEditRoute: typeof DashboardAuctionIdEditRoute
   DashboardItemIdEditRoute: typeof DashboardItemIdEditRoute
   DashboardObjectTypeIdEditRoute: typeof DashboardObjectTypeIdEditRoute
+  DashboardOrganizerIdEditRoute: typeof DashboardOrganizerIdEditRoute
+  DashboardPicIdEditRoute: typeof DashboardPicIdEditRoute
+  DashboardAuctionIdIndexRoute: typeof DashboardAuctionIdIndexRoute
   DashboardItemIdIndexRoute: typeof DashboardItemIdIndexRoute
   DashboardObjectTypeIdIndexRoute: typeof DashboardObjectTypeIdIndexRoute
+  DashboardOrganizerIdIndexRoute: typeof DashboardOrganizerIdIndexRoute
+  DashboardPicIdIndexRoute: typeof DashboardPicIdIndexRoute
 }
 
 const DashboardRouteRouteChildren: DashboardRouteRouteChildren = {
+  DashboardAuctionCreateRoute: DashboardAuctionCreateRoute,
   DashboardItemCreateRoute: DashboardItemCreateRoute,
   DashboardObjectTypeCreateRoute: DashboardObjectTypeCreateRoute,
+  DashboardOrganizerCreateRoute: DashboardOrganizerCreateRoute,
+  DashboardPicCreateRoute: DashboardPicCreateRoute,
+  DashboardAuctionIndexRoute: DashboardAuctionIndexRoute,
   DashboardItemIndexRoute: DashboardItemIndexRoute,
   DashboardObjectTypeIndexRoute: DashboardObjectTypeIndexRoute,
+  DashboardOrganizerIndexRoute: DashboardOrganizerIndexRoute,
+  DashboardPicIndexRoute: DashboardPicIndexRoute,
+  DashboardAuctionIdEditRoute: DashboardAuctionIdEditRoute,
   DashboardItemIdEditRoute: DashboardItemIdEditRoute,
   DashboardObjectTypeIdEditRoute: DashboardObjectTypeIdEditRoute,
+  DashboardOrganizerIdEditRoute: DashboardOrganizerIdEditRoute,
+  DashboardPicIdEditRoute: DashboardPicIdEditRoute,
+  DashboardAuctionIdIndexRoute: DashboardAuctionIdIndexRoute,
   DashboardItemIdIndexRoute: DashboardItemIdIndexRoute,
   DashboardObjectTypeIdIndexRoute: DashboardObjectTypeIdIndexRoute,
+  DashboardOrganizerIdIndexRoute: DashboardOrganizerIdIndexRoute,
+  DashboardPicIdIndexRoute: DashboardPicIdIndexRoute,
 }
 
 const DashboardRouteRouteWithChildren = DashboardRouteRoute._addFileChildren(
