@@ -1,16 +1,17 @@
 import {createFileRoute, Link, Outlet, useLocation} from "@tanstack/react-router";
-import {useIsMobile} from "@/hooks/use-mobile";
 import {SidebarInset, SidebarProvider, SidebarTrigger} from "@/components/animate-ui/radix/sidebar";
 import {Separator} from "@/components/ui/separator";
 import {
     Breadcrumb,
     BreadcrumbItem,
     BreadcrumbLink,
-    BreadcrumbList, BreadcrumbPage,
+    BreadcrumbList,
+    BreadcrumbPage,
     BreadcrumbSeparator
 } from "@/components/ui/breadcrumb";
 import {AppSidebar} from "@/components/app-sidebar";
 import {ModeToggle} from "@/components/mode-toggle";
+import {AnimatePresence, motion} from "motion/react";
 
 export const Route = createFileRoute('/dashboard')({
     component: RouteComponent,
@@ -61,7 +62,17 @@ function RouteComponent() {
                 </header>
                 <div className="flex flex-1 flex-col">
                     <div className="container mx-auto h-full p-4">
-                        <Outlet/>
+                        <AnimatePresence mode={"wait"}>
+                            <motion.div
+                                key="content"
+                                initial={{opacity: 0}}
+                                animate={{opacity: 1}}
+                                exit={{opacity: 0}}
+                                transition={{duration: 0.2, ease: "easeIn"}}
+                            >
+                                <Outlet/>
+                            </motion.div>
+                        </AnimatePresence>
                     </div>
                 </div>
             </SidebarInset>

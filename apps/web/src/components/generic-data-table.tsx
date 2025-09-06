@@ -10,6 +10,7 @@ import {
 } from "@tanstack/react-table"
 import {GetEntityList} from "@/api/EntityList"
 import {DataTable} from "@/components/data-table"
+import {AnimatePresence, motion} from "motion/react"
 
 interface GenericDataTableProps<T> {
     entity: string
@@ -83,15 +84,25 @@ export function GenericDataTable<T>({
         getSortedRowModel: getSortedRowModel(),
     })
     return (
-        <>
-            <DataTable
-                columns={columns}
-                data={data?.content?.data ?? []}
-                table={table}
-                isLoading={isFetching && !isLoading}
-                onSearchChange={setSearch}
-                currentEntity={currentEntity}
-            />
-        </>
+        <AnimatePresence mode={"wait"}>
+            {data && !isLoading && (
+                <motion.div
+                    key="content"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.5, ease: "easeOut" }}
+                >
+                    <DataTable
+                        columns={columns}
+                        data={data?.content?.data ?? []}
+                        table={table}
+                        isLoading={isFetching}
+                        onSearchChange={setSearch}
+                        currentEntity={currentEntity}
+                    />
+                </motion.div>
+            )}
+        </AnimatePresence>
     )
 }

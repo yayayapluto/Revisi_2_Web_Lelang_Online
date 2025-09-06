@@ -50,7 +50,9 @@ function RootComponent() {
 			>
 				<div className="grid grid-rows-[auto_1fr] h-full max-w-screen">
 					{/*<Header />*/}
-					{isFetching ? <Loader /> : <Outlet />}
+					{isFetching
+						? <Loader />
+						: <Outlet />}
 				</div>
 				<Toaster richColors />
 			</ThemeProvider>
