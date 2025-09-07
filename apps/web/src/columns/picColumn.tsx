@@ -58,10 +58,10 @@ export const PicColumn: ColumnDef<Pic>[] = [
                         <DropdownMenuLabel>Actions</DropdownMenuLabel>
                         <DropdownMenuSeparator/>
                         <DropdownMenuItem>
-                            <Link to={"/dashboard/object-type/$id"} params={{id: `${row.original.id}`}}>View Details</Link>
+                            <Link to={"/dashboard/pic/$id"} params={{id: `${row.original.id}`}}>View Details</Link>
                         </DropdownMenuItem>
                         <DropdownMenuItem>
-                            <Link to={"/dashboard/object-type/$id/edit"} params={{id: `${row.original.id}`}}>Edit</Link>
+                            <Link to={"/dashboard/pic/$id/edit"} params={{id: `${row.original.id}`}}>Edit</Link>
                         </DropdownMenuItem>
                         <DropdownMenuItem onSelect={e => {
                             e.preventDefault()
