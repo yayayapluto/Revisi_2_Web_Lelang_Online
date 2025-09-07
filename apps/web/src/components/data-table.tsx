@@ -1,7 +1,7 @@
 // DataTable.tsx
 "use client"
 
-import {type ColumnDef, flexRender, type Table,} from "@tanstack/react-table"
+import {type ColumnDef, flexRender, getCoreRowModel, type Table, useReactTable,} from "@tanstack/react-table"
 import {AnimatePresence, motion} from "framer-motion"
 
 import {Table as UITable, TableBody, TableCell, TableHead, TableHeader, TableRow,} from "@/components/ui/table"
@@ -14,19 +14,23 @@ import {Input} from "@/components/ui/input";
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
     data: TData[]
-    table: Table<TData>
+    table?: Table<TData>
     isLoading?: boolean
-    onSearchChange: (value: string) => void
+    onSearchChange?: (value: string) => void
     currentEntity?: string
+    usePagination?: boolean
 }
 
 export function DataTable<TData, TValue>({
                                              columns,
                                              data,
-                                             table,
+                                             table = useReactTable({
+                                                 data, columns, getCoreRowModel: getCoreRowModel()
+                                             }),
                                              isLoading = false,
                                              onSearchChange,
-                                             currentEntity
+                                             currentEntity,
+                                             usePagination = true,
                                          }: DataTableProps<TData, TValue>) {
 
     const [search, setSearch] = useState("")
@@ -40,21 +44,23 @@ export function DataTable<TData, TValue>({
         <div className={"space-y-4"}>
             {/* View Options */}
             <motion.div
-                className={"flex items-center gap-2 lg:justify-between"}
+                className={`flex items-center gap-2 lg:justify-between`}
                 initial={{opacity: 0}}
                 animate={{opacity: 1}}
                 transition={{duration: 0.3}}
             >
-                <Input className={"lg:max-w-64 capitalize"} type={"text"} placeholder={`Search ${currentEntity}...`} value={search}
-                       onChange={(e) => handleSearch(e.target.value)}/>
-                <DataTableViewOptions table={table}/>
+                {onSearchChange &&
+                    <Input className={"lg:max-w-64 capitalize"} type={"text"} placeholder={`Search ${currentEntity}...`}
+                           value={search}
+                           onChange={(e) => handleSearch(e.target.value)}/>}
+                {table && <DataTableViewOptions table={table}/>}
             </motion.div>
 
             {/* Table Container */}
             <div
                 className="overflow-hidden rounded-md border"
             >
-                <UITable className="w-full">
+                <UITable className="max-w-full">
                     {/* Header */}
                     <TableHeader>
                         {table.getHeaderGroups().map((headerGroup) => (
@@ -135,7 +141,7 @@ export function DataTable<TData, TValue>({
                 </UITable>
             </div>
 
-            <DataTablePagination table={table}/>
+            {usePagination && <DataTablePagination table={table}/>}
         </div>
     )
 }

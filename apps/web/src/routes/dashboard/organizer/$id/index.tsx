@@ -1,15 +1,27 @@
 import {createFileRoute, Link} from '@tanstack/react-router'
-import {useQuery} from "@tanstack/react-query";
-import {GetEntityDetail} from "@/api/EntityDetail";
-import type {ObjectType} from "@/types/objectType";
-import {Skeleton} from "@/components/ui/skeleton";
-import {Button} from "@/components/ui/button";
-import {ArrowUpRight, EditIcon, Trash, TrendingUp} from "lucide-react";
-import {Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from '@/components/ui/card';
-import {type ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent} from "@/components/ui/chart";
-import {Bar, BarChart, CartesianGrid, LabelList, XAxis, YAxis} from 'recharts';
-import {getCoreRowModel, getPaginationRowModel, getSortedRowModel, useReactTable} from "@tanstack/react-table";
-import {CurrencyFormatter} from "@/utils/currency-formatter";
+import {useQuery} from '@tanstack/react-query'
+import {GetEntityDetail} from '@/api/EntityDetail'
+import {Button} from '@/components/ui/button'
+import {EditIcon, Trash} from 'lucide-react'
+import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle,} from '@/components/ui/card'
+import {ChartContainer, ChartTooltip, type ChartConfig, ChartTooltipContent,} from '@/components/ui/chart'
+import type {Organizer} from '@/types/organizer'
+import React from 'react'
+import {
+    Bar,
+    BarChart,
+    CartesianGrid,
+    LabelList,
+    Line,
+    LineChart,
+    PolarAngleAxis,
+    PolarGrid,
+    Radar,
+    RadarChart,
+    XAxis
+} from "recharts";
+import {DataTable} from "@/components/data-table";
+import {AuctionColumn} from "@/columns/auctionColumn";
 
 export const Route = createFileRoute('/dashboard/organizer/$id/')({
     component: RouteComponent,
@@ -17,212 +29,332 @@ export const Route = createFileRoute('/dashboard/organizer/$id/')({
 
 function RouteComponent() {
     const {id} = Route.useParams()
-    const {data, isLoading, isFetching} = useQuery({
-        queryKey: ["object-type", id],
-        queryFn: () => GetEntityDetail<ObjectType>({
-            id: id,
-            entityName: "objectTypes"
-        })
+    const {data} = useQuery({
+        queryKey: ['organizer', id],
+        queryFn: () =>
+            GetEntityDetail<Organizer>({
+                id,
+                entityName: 'organizers',
+            }),
     })
 
-    const CARD_DATA = [
+    const auctions = data?.content?.auctions || []
+
+    const auctionStatusChartData = [
         {
-            title: "Highest Price",
-            value: data?.content?.items
-                ?.sort((a, b) => b.price - a.price)[0],
+            type: 'Upcoming',
+            total:
+                data?.content?.auctions.filter(
+                    (auction) => new Date(auction.start_date) > new Date()
+                ).length || 0,
         },
         {
-            title: "Lowest Price",
-            value: data?.content?.items
-                ?.sort((a, b) => a.price - b.price)[0],
+            type: 'Ongoing',
+            total:
+                data?.content?.auctions.filter(
+                    (auction) =>
+                        new Date(auction.start_date) <= new Date() &&
+                        new Date(auction.end_date) >= new Date()
+                ).length || 0,
         },
         {
-            title: "Average Price",
-            value: data?.content?.items
-                ? data.content.items.reduce((prev, val) => prev + val.price, 0) /
-                data.content.items.length
-                : 0,
-        },
-        {
-            title: "Total Deposit Price",
-            value: data?.content?.items
-                ? data.content.items.reduce((prev, val) => prev + val.deposit_price, 0)
-                : 0,
+            type: 'Finished',
+            total:
+                data?.content?.auctions.filter(
+                    (auction) => new Date(auction.end_date) < new Date()
+                ).length || 0,
         },
     ]
-
-    const chartData = data?.content?.items?.sort((a, b) => b.price - a.price).map(item => ({
-        name: item.name,
-        value: item.price,
-    })) ?? []
-
-    const chartConfig = {
-        name: {
-            label: "Name",
-            color: "blue",
+    const auctionStatusChartConfig = {
+        Upcoming: {
+            label: 'Upcoming',
+        },
+        Ongoing: {
+            label: 'Ongoing',
+        },
+        Finished: {
+            label: 'Finished',
         },
     } satisfies ChartConfig
 
+    const objectTypeCounts = auctions.reduce<Record<string, number>>((acc, auction) => {
+        const objectTypeName = auction.item.object_type.name
+        if (!objectTypeName) return acc
+        acc[objectTypeName] = (acc[objectTypeName] || 0) + 1
+        return acc
+    }, {})
+    const objectTypeChartData = Object.entries(objectTypeCounts).map(([name, count]) => ({
+        type: name,
+        total: count,
+    }));
+    const objectTypeChartConfig = Object.fromEntries(
+        Object.entries(objectTypeCounts).map(([name, _], index) => [
+            name,
+            {
+                label: name,
+            },
+        ])
+    ) satisfies ChartConfig;
+
+    const PICCounts = auctions.reduce<Record<string, number>>((acc, auction) => {
+        const PICName = auction.pic.name
+        if (!PICName) return acc
+        acc[PICName] = (acc[PICName] || 0) + 1
+        return acc
+    }, {})
+    const PICChartData = Object.entries(PICCounts).map(([name, count]) => ({
+        name: name,
+        total: count,
+    }));
+    const PICChartConfig = Object.fromEntries(
+        Object.entries(objectTypeCounts).map(([name, _], index) => [
+            name,
+            {
+                label: name,
+            },
+        ])
+    ) satisfies ChartConfig;
+
     return (
-        <div className={"space-y-4"}>
+        <div className="space-y-6 max-w-screen">
             <div className="flex items-center justify-between">
-                <h1 className="text-2xl font-semibold capitalize">{data?.content?.name}</h1>
+                <h1 className="text-2xl font-semibold capitalize">
+                    {data?.content?.name}
+                </h1>
                 <div className="space-x-2">
-                    <Link to={"/dashboard/object-type/$id/edit"} params={{id: id}}>
+                    <Link to="/dashboard/object-type/$id/edit" params={{id}}>
                         <Button>
-                            <EditIcon/>
+                            <EditIcon className="mr-2 h-4 w-4"/>
                             Edit
                         </Button>
                     </Link>
-                    <Button variant={"outline"}><Trash/></Button>
+                    <Button variant="outline">
+                        <Trash className="h-4 w-4"/>
+                    </Button>
                 </div>
             </div>
-            <div className="flex flex-col lg:flex-row gap-4">
-                <div className="flex text-sm font-medium capitalize space-x-1 items-center">
-                    <span>Created at</span>
-                    <span>:</span>
-                    <span className="text-muted-foreground">{new Date(data?.content?.created_at!).toUTCString()}</span>
+
+            <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-6 text-sm">
+                <div className="flex items-center space-x-1.5">
+                    <span className="font-medium">Created at:</span>
+                    <span className="text-muted-foreground">
+            {data?.content?.created_at
+                ? new Date(data.content.created_at).toLocaleString()
+                : '—'}
+          </span>
                 </div>
-                <div className="flex text-sm font-medium capitalize space-x-1 items-center">
-                    <span>Updated at</span>
-                    <span>:</span>
-                    <span className="text-muted-foreground">{new Date(data?.content?.updated_at!).toUTCString()}</span>
+                <div className="flex items-center space-x-1.5">
+                    <span className="font-medium">Updated at:</span>
+                    <span className="text-muted-foreground">
+            {data?.content?.updated_at
+                ? new Date(data.content.updated_at).toLocaleString()
+                : '—'}
+          </span>
                 </div>
             </div>
-            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-6">
-                <div className="col-span-6 grid gap-4 lg:grid-cols-4">
-                    {CARD_DATA.map((data) => {
-                        return (
-                            <Card>
-                                <CardHeader>
-                                    <CardDescription>
-                                        {data.title}
-                                    </CardDescription>
-                                    <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
-                                        {CurrencyFormatter(typeof data?.value === "number"
-                                            ? data?.value
-                                            : data?.value?.price ?? 0)}
-                                    </CardTitle>
-                                    <CardAction>
-                                        {
-                                            typeof data?.value === "number"
-                                                ? <></>
-                                                : (
-                                                    <Link to={"/dashboard/item/$id"} params={{id: data?.value?.id?.toString()!}}>
-                                                        <Button variant={"link"}>
-                                                            See Details
-                                                            <ArrowUpRight/>
-                                                        </Button>
-                                                    </Link>
-                                                )
-                                        }
-                                    </CardAction>
-                                </CardHeader>
-                                <CardFooter className="flex-col items-start gap-1.5 text-sm">
-                                    <div className="line-clamp-1 flex gap-2 font-medium">
-                                        Current {data.title}
+
+            <div className="grid gap-6 lg:grid-cols-6">
+                <Card className="lg:col-span-3" >
+                    <CardHeader>
+                        <CardTitle>Organizer Details</CardTitle>
+                        <CardDescription>
+                            Comprehensive information about this organizer
+                        </CardDescription>
+                    </CardHeader>
+                    <CardContent className="grid lg:grid-cols-2 gap-4">
+                        {data?.content &&
+                            Object.entries(data.content).map(([key, value]) => {
+                                const skippedKeys = [
+                                    'id',
+                                    'auctions',
+                                    'bank_name',
+                                    'account_number',
+                                    'account_name',
+                                    'created_at',
+                                    'updated_at',
+                                ]
+                                if (skippedKeys.includes(key) || value === null) return null
+
+                                return (
+                                    <div key={key}>
+                                        <h2 className="text-sm font-medium capitalize">
+                                            {key.split('_').join(' ')}
+                                        </h2>
+                                        <p className="line-clamp-4 text-justify text-muted-foreground">
+                                            {typeof value !== 'object' && value}
+                                        </p>
                                     </div>
-                                    <div className="text-muted-foreground">
-                                        {
-                                            typeof data?.value !== "number" ? (
-                                                <>Item Name: {data?.value?.name ?? "-"}</>
-                                            ) : (
-                                                <>-</>
-                                            )
-                                        }
+                                )
+                            })}
+                    </CardContent>
+                </Card>
+                <Card className="lg:col-span-3" >
+                    <CardHeader>
+                        <CardTitle>Bank Information</CardTitle>
+                        <CardDescription>Linked financial account details</CardDescription>
+                    </CardHeader>
+                    <CardContent className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        {data?.content &&
+                            Object.entries(data.content).map(([key, value]) => {
+                                const skippedKeys = [
+                                    'id',
+                                    'auctions',
+                                    'name',
+                                    'address',
+                                    'created_at',
+                                    'updated_at',
+                                ]
+                                if (skippedKeys.includes(key) || value === null) return null
+
+                                return (
+                                    <div key={key}>
+                                        <h2 className="text-sm font-medium capitalize">
+                                            {key.split('_').join(' ')}
+                                        </h2>
+                                        <p className="line-clamp-4 text-justify text-muted-foreground">
+                                            {typeof value !== 'object' && value}
+                                        </p>
                                     </div>
-                                </CardFooter>
-                            </Card>
-                        )
-                    })}
-                </div>
-                <div className="col-span-6 grid lg:grid-cols-2 gap-4">
-                    <Card>
-                        <CardHeader>
-                            <CardTitle>Item Chart</CardTitle>
-                            <CardDescription>Highest to lowest by price</CardDescription>
-                        </CardHeader>
-                        <CardContent>
-                            <ChartContainer config={chartConfig}>
-                                <BarChart
-                                    accessibilityLayer
-                                    data={chartData}
-                                    layout="vertical"
-                                    margin={{
-                                        left: -20,
+                                )
+                            })}
+                    </CardContent>
+                </Card>
+
+                <Card className="lg:col-span-2" >
+                    <CardHeader>
+                        <CardTitle>Bar Chart - Label</CardTitle>
+                        <CardDescription>January - June 2024</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                        <ChartContainer config={auctionStatusChartConfig}>
+                            <BarChart
+                                accessibilityLayer
+                                data={auctionStatusChartData}
+                                margin={{
+                                    top: 20,
+                                }}
+                            >
+                                <CartesianGrid vertical={false} />
+                                <XAxis
+                                    dataKey="type"
+                                    tickLine={false}
+                                    tickMargin={10}
+                                    axisLine={false}
+                                    // tickFormatter={(value) => value.slice(0, 3)}
+                                />
+                                <ChartTooltip
+                                    cursor={true}
+                                    content={<ChartTooltipContent />}
+                                />
+                                <Bar dataKey="total" fill="var(--chart-1)" radius={8}>
+                                    <LabelList
+                                        position="top"
+                                        offset={12}
+                                        className="fill-foreground"
+                                        fontSize={12}
+                                    />
+                                </Bar>
+                            </BarChart>
+                        </ChartContainer>
+                    </CardContent>
+                    <CardFooter className="flex-col items-start gap-2 text-sm">
+                        <div className="text-muted-foreground leading-none">
+                            Showing total auction by status
+                        </div>
+                    </CardFooter>
+                </Card>
+                <Card className="lg:col-span-2" >
+                    <CardHeader>
+                        <CardTitle>Line Chart - Custom Label</CardTitle>
+                        <CardDescription>January - June 2024</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                        <ChartContainer config={objectTypeChartConfig}>
+                            <LineChart
+                                accessibilityLayer
+                                data={objectTypeChartData}
+                                margin={{
+                                    top: 24,
+                                    left: 24,
+                                    right: 24,
+                                }}
+                            >
+                                <CartesianGrid vertical={false} />
+                                <ChartTooltip
+                                    cursor={false}
+                                    content={
+                                        <ChartTooltipContent
+                                            indicator="line"
+                                            nameKey="type"
+                                            hideLabel
+                                        />
+                                    }
+                                />
+                                <Line
+                                    dataKey="total"
+                                    type="natural"
+                                    stroke="var(--chart-1)"
+                                    strokeWidth={2}
+                                    dot={{
+                                        fill: "var(--chart-1)",
+                                    }}
+                                    activeDot={{
+                                        r: 6,
                                     }}
                                 >
-                                    <XAxis type="number" dataKey="value" hide />
-                                    <YAxis
-                                        dataKey="name"
-                                        type="category"
-                                        tickLine={false}
-                                        tickMargin={10}
-                                        axisLine={false}
-                                        // tickFormatter={(value) => value.slice(0, 3)}
-                                        hide
+                                    <LabelList
+                                        position="top"
+                                        offset={12}
+                                        className="fill-foreground"
+                                        fontSize={12}
+                                        dataKey="type"
+                                        formatter={(value: keyof typeof objectTypeChartConfig) =>
+                                            objectTypeChartConfig[value]?.label
+                                        }
                                     />
-                                    <ChartTooltip
-                                        cursor={true}
-                                        content={<ChartTooltipContent />}
-                                    />
+                                </Line>
+                            </LineChart>
+                        </ChartContainer>
+                    </CardContent>
+                    <CardFooter className="flex-col items-start gap-2 text-sm">
+                        <div className="text-muted-foreground leading-none">
+                            Showing total visitors for the last 6 months
+                        </div>
+                    </CardFooter>
+                </Card>
+                <Card className="lg:col-span-2" >
+                    <CardHeader className="items-center pb-4">
+                        <CardTitle>Radar Chart</CardTitle>
+                        <CardDescription>
+                            Showing total visitors for the last 6 months
+                        </CardDescription>
+                    </CardHeader>
+                    <CardContent className="pb-0">
+                        <ChartContainer
+                            config={PICChartConfig}
+                            className="mx-auto aspect-square max-h-[250px]"
+                        >
+                            <RadarChart data={PICChartData}>
+                                <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
+                                <PolarAngleAxis dataKey="name" />
+                                <PolarGrid />
+                                <Radar
+                                    dataKey="total"
+                                    fill="var(--chart-1)"
+                                    fillOpacity={0.6}
+                                />
+                            </RadarChart>
+                        </ChartContainer>
+                    </CardContent>
+                    <CardFooter className="flex-col gap-2 text-sm">
+                        <div className="text-muted-foreground flex items-center gap-2 leading-none">
+                            January - June 2024
+                        </div>
+                    </CardFooter>
+                </Card>
 
-                                    <Bar dataKey="value" fill="oklch(87% 0 0)" radius={5}>
-                                    </Bar>
-                                </BarChart>
-                            </ChartContainer>
-                        </CardContent>
-                        <CardFooter className="flex-col items-start gap-2 text-sm">
-                            <div className="flex gap-2 leading-none font-medium">
-                                Trending up by 5.2% this month <TrendingUp className="h-4 w-4"/>
-                            </div>
-                            <div className="text-muted-foreground leading-none">
-                                Showing total visitors for the last 6 months
-                            </div>
-                        </CardFooter>
-                    </Card>
-                    <Skeleton className={"w-full flex items-center justify-center"}>
-                        Chart untuk lelang dengan tipe objek ini
-                    </Skeleton>
-                </div>
-                <div className="col-span-6 space-y-2">
-                    <h1 className="text-xl font-semibold">Items List</h1>
-                    <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
-                        {data?.content?.items!.map((item) => {
-                            return (
-                                <Card>
-                                    <CardHeader>
-                                        <img className={"rounded-sm size-full"} src={item.file.path} alt=""/>
-                                        <CardTitle className={"capitalize"}>
-                                            {item.name}
-                                        </CardTitle>
-                                        <CardDescription className={"grid grid-cols-2 w-full"}>
-                                            <p>(Deposit)</p>
-                                            <p className={"text-end"}>{CurrencyFormatter(item.deposit_price)}</p>
-                                            <p>(Price)</p>
-                                            <p className={"text-end"}>{CurrencyFormatter(item.price)}</p>
-                                        </CardDescription>
-                                    </CardHeader>
-                                    <CardContent>
-                                        <p className={"text-justify line-clamp-3 "}>{item.description} Lorem
-                                            ipsum dolor sit amet, consectetur adipisicing elit. Aspernatur consectetur
-                                            culpa cumque cupiditate, dolores eius expedita illo ipsam, mollitia nemo
-                                            numquam officiis quae qui quisquam velit! Commodi, est magni nemo
-                                            perferendis porro quaerat recusandae temporibus totam voluptatum. Cum
-                                            distinctio, error explicabo incidunt neque similique suscipit. Cumque
-                                            dignissimos modi quibusdam quidem?</p>
-                                    </CardContent>
-                                    <CardFooter>
-                                        <Link to={"/dashboard/item/$id"} params={{id: item.id.toString()}}>
-                                            <Button variant={"outline"} className={"w-full"}>
-                                                See Details
-                                            </Button>
-                                        </Link>
-                                    </CardFooter>
-                                </Card>
-                            )
-                        })}
-                    </div>
+                <div className="lg:col-span-6">
+                    <DataTable columns={AuctionColumn} data={auctions} usePagination={false}/>
                 </div>
             </div>
         </div>

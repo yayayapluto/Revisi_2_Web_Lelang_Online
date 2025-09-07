@@ -35,7 +35,7 @@ export const AuctionColumn: ColumnDef<Auction>[] = [
         header: ({column}) => (
             <DataTableColumnHeader column={column} title={"End Date"}/>
         ),
-        cell: ({row}) => DateFormatter(row.original.start_date)
+        cell: ({row}) => DateFormatter(row.original.end_date)
     },
     {
         accessorKey: "item.name",
