@@ -17,7 +17,7 @@ import {
     PolarAngleAxis,
     PolarGrid,
     Radar,
-    RadarChart,
+    RadarChart, ResponsiveContainer,
     XAxis
 } from "recharts";
 import {DataTable} from "@/components/data-table";
@@ -116,8 +116,8 @@ function RouteComponent() {
     ) satisfies ChartConfig;
 
     return (
-        <div className="space-y-6 max-w-screen">
-            <div className="flex items-center justify-between">
+        <div className="space-y-6">
+            <div className="flex flex-col gap-4 md:gap-0 md:flex-row md:items-center justify-between">
                 <h1 className="text-2xl font-semibold capitalize">
                     {data?.content?.name}
                 </h1>
@@ -133,7 +133,6 @@ function RouteComponent() {
                     </Button>
                 </div>
             </div>
-
             <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-6 text-sm">
                 <div className="flex items-center space-x-1.5">
                     <span className="font-medium">Created at:</span>
@@ -154,14 +153,14 @@ function RouteComponent() {
             </div>
 
             <div className="grid gap-6 lg:grid-cols-6">
-                <Card className="lg:col-span-3" >
+                <Card className="lg:col-span-3 overflow-x-auto" >
                     <CardHeader>
                         <CardTitle>Organizer Details</CardTitle>
                         <CardDescription>
                             Comprehensive information about this organizer
                         </CardDescription>
                     </CardHeader>
-                    <CardContent className="grid lg:grid-cols-2 gap-4">
+                    <CardContent className="grid gap-4">
                         {data?.content &&
                             Object.entries(data.content).map(([key, value]) => {
                                 const skippedKeys = [
@@ -188,12 +187,12 @@ function RouteComponent() {
                             })}
                     </CardContent>
                 </Card>
-                <Card className="lg:col-span-3" >
+                <Card className="lg:col-span-3 overflow-x-auto" >
                     <CardHeader>
                         <CardTitle>Bank Information</CardTitle>
                         <CardDescription>Linked financial account details</CardDescription>
                     </CardHeader>
-                    <CardContent className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <CardContent className="grid md:grid-cols-2 gap-4">
                         {data?.content &&
                             Object.entries(data.content).map(([key, value]) => {
                                 const skippedKeys = [
@@ -220,41 +219,42 @@ function RouteComponent() {
                     </CardContent>
                 </Card>
 
-                <Card className="lg:col-span-2" >
+                <Card className="lg:col-span-3 overflow-x-auto">
                     <CardHeader>
                         <CardTitle>Bar Chart - Label</CardTitle>
                         <CardDescription>January - June 2024</CardDescription>
                     </CardHeader>
                     <CardContent>
                         <ChartContainer config={auctionStatusChartConfig}>
-                            <BarChart
-                                accessibilityLayer
-                                data={auctionStatusChartData}
-                                margin={{
-                                    top: 20,
-                                }}
-                            >
-                                <CartesianGrid vertical={false} />
-                                <XAxis
-                                    dataKey="type"
-                                    tickLine={false}
-                                    tickMargin={10}
-                                    axisLine={false}
-                                    // tickFormatter={(value) => value.slice(0, 3)}
-                                />
-                                <ChartTooltip
-                                    cursor={true}
-                                    content={<ChartTooltipContent />}
-                                />
-                                <Bar dataKey="total" fill="var(--chart-1)" radius={8}>
-                                    <LabelList
-                                        position="top"
-                                        offset={12}
-                                        className="fill-foreground"
-                                        fontSize={12}
+                            <ResponsiveContainer width="100%" height={300}>
+                                <BarChart
+                                    accessibilityLayer
+                                    data={auctionStatusChartData}
+                                    margin={{
+                                        top: 20,
+                                    }}
+                                >
+                                    <CartesianGrid vertical={false} />
+                                    <XAxis
+                                        dataKey="type"
+                                        tickLine={false}
+                                        tickMargin={10}
+                                        axisLine={false}
                                     />
-                                </Bar>
-                            </BarChart>
+                                    <ChartTooltip
+                                        cursor={true}
+                                        content={<ChartTooltipContent />}
+                                    />
+                                    <Bar dataKey="total" fill="var(--chart-1)" radius={8}>
+                                        <LabelList
+                                            position="top"
+                                            offset={12}
+                                            className="fill-foreground"
+                                            fontSize={12}
+                                        />
+                                    </Bar>
+                                </BarChart>
+                            </ResponsiveContainer>
                         </ChartContainer>
                     </CardContent>
                     <CardFooter className="flex-col items-start gap-2 text-sm">
@@ -263,66 +263,7 @@ function RouteComponent() {
                         </div>
                     </CardFooter>
                 </Card>
-                <Card className="lg:col-span-2" >
-                    <CardHeader>
-                        <CardTitle>Line Chart - Custom Label</CardTitle>
-                        <CardDescription>January - June 2024</CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                        <ChartContainer config={objectTypeChartConfig}>
-                            <LineChart
-                                accessibilityLayer
-                                data={objectTypeChartData}
-                                margin={{
-                                    top: 24,
-                                    left: 24,
-                                    right: 24,
-                                }}
-                            >
-                                <CartesianGrid vertical={false} />
-                                <ChartTooltip
-                                    cursor={false}
-                                    content={
-                                        <ChartTooltipContent
-                                            indicator="line"
-                                            nameKey="type"
-                                            hideLabel
-                                        />
-                                    }
-                                />
-                                <Line
-                                    dataKey="total"
-                                    type="natural"
-                                    stroke="var(--chart-1)"
-                                    strokeWidth={2}
-                                    dot={{
-                                        fill: "var(--chart-1)",
-                                    }}
-                                    activeDot={{
-                                        r: 6,
-                                    }}
-                                >
-                                    <LabelList
-                                        position="top"
-                                        offset={12}
-                                        className="fill-foreground"
-                                        fontSize={12}
-                                        dataKey="type"
-                                        formatter={(value: keyof typeof objectTypeChartConfig) =>
-                                            objectTypeChartConfig[value]?.label
-                                        }
-                                    />
-                                </Line>
-                            </LineChart>
-                        </ChartContainer>
-                    </CardContent>
-                    <CardFooter className="flex-col items-start gap-2 text-sm">
-                        <div className="text-muted-foreground leading-none">
-                            Showing total visitors for the last 6 months
-                        </div>
-                    </CardFooter>
-                </Card>
-                <Card className="lg:col-span-2" >
+                <Card className="lg:col-span-3 overflow-x-auto" >
                     <CardHeader className="items-center pb-4">
                         <CardTitle>Radar Chart</CardTitle>
                         <CardDescription>
@@ -332,18 +273,20 @@ function RouteComponent() {
                     <CardContent className="pb-0">
                         <ChartContainer
                             config={PICChartConfig}
-                            className="mx-auto aspect-square max-h-[250px]"
+                            className="mx-auto aspect-square max-h-[450px]"
                         >
-                            <RadarChart data={PICChartData}>
-                                <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
-                                <PolarAngleAxis dataKey="name" />
-                                <PolarGrid />
-                                <Radar
-                                    dataKey="total"
-                                    fill="var(--chart-1)"
-                                    fillOpacity={0.6}
-                                />
-                            </RadarChart>
+                            <ResponsiveContainer width="100%" height={300}>
+                                <RadarChart data={PICChartData}>
+                                    <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
+                                    <PolarAngleAxis dataKey="name" />
+                                    <PolarGrid />
+                                    <Radar
+                                        dataKey="total"
+                                        fill="var(--chart-1)"
+                                        fillOpacity={0.6}
+                                    />
+                                </RadarChart>
+                            </ResponsiveContainer>
                         </ChartContainer>
                     </CardContent>
                     <CardFooter className="flex-col gap-2 text-sm">
@@ -352,8 +295,69 @@ function RouteComponent() {
                         </div>
                     </CardFooter>
                 </Card>
+                <Card className="lg:col-span-6 overflow-x-auto" >
+                    <CardHeader>
+                        <CardTitle>Line Chart - Custom Label</CardTitle>
+                        <CardDescription>January - June 2024</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                        <ChartContainer config={objectTypeChartConfig}>
+                            <ResponsiveContainer width="100%" height={300}>
+                                <LineChart
+                                    accessibilityLayer
+                                    data={objectTypeChartData}
+                                    margin={{
+                                        top: 24,
+                                        left: 24,
+                                        right: 24,
+                                    }}
+                                >
+                                    <CartesianGrid vertical={false} />
+                                    <ChartTooltip
+                                        cursor={false}
+                                        content={
+                                            <ChartTooltipContent
+                                                indicator="line"
+                                                nameKey="type"
+                                                hideLabel
+                                            />
+                                        }
+                                    />
+                                    <Line
+                                        dataKey="total"
+                                        type="natural"
+                                        stroke="var(--chart-1)"
+                                        strokeWidth={2}
+                                        dot={{
+                                            fill: "var(--chart-1)",
+                                        }}
+                                        activeDot={{
+                                            r: 6,
+                                        }}
+                                    >
+                                        <LabelList
+                                            position="top"
+                                            offset={12}
+                                            className="fill-foreground"
+                                            fontSize={12}
+                                            dataKey="type"
+                                            formatter={(value: keyof typeof objectTypeChartConfig) =>
+                                                objectTypeChartConfig[value]?.label
+                                            }
+                                        />
+                                    </Line>
+                                </LineChart>
+                            </ResponsiveContainer>
+                        </ChartContainer>
+                    </CardContent>
+                    <CardFooter className="flex-col items-start gap-2 text-sm">
+                        <div className="text-muted-foreground leading-none">
+                            Showing total visitors for the last 6 months
+                        </div>
+                    </CardFooter>
+                </Card>
 
-                <div className="lg:col-span-6">
+                <div className="lg:col-span-6 overflow-x-auto">
                     <DataTable columns={AuctionColumn} data={auctions} usePagination={false}/>
                 </div>
             </div>

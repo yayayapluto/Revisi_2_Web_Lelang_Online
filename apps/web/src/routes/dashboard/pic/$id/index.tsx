@@ -31,7 +31,7 @@ function RouteComponent() {
 
     return (
         <div className={"space-y-4"}>
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col gap-4 md:gap-0 md:flex-row md:items-center justify-between">
                 <h1 className="text-2xl font-semibold capitalize">{data?.content?.name}</h1>
                 <div className="space-x-2">
                     <Link to={"/dashboard/object-type/$id/edit"} params={{id: id}}>

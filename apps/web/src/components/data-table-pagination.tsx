@@ -25,7 +25,7 @@ export function DataTablePagination<TData>({
                 animate={{opacity: 1}}
                 transition={{duration: 0.3, delay: 0.1}}
             >
-                <p className="text-sm font-medium">Rows per page</p>
+                <p className="text-sm font-medium hidden md:block">Rows per page</p>
                 <motion.div
                     whileTap={{scale: 0.95}}
                 >

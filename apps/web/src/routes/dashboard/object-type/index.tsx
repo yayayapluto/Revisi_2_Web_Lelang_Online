@@ -23,9 +23,9 @@ function RouteComponent() {
                         onClick={() => navigate({to: `${location.pathname.replace(`/list`, ``)}/create`})}>
                     <PlusCircleIcon/> Add {entity}</Button>
             </div>
-            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-                {[1, 2, 3, 4].map(() => (<Skeleton className={"h-40 rounded-lg"}/>))}
-            </div>
+            {/*<div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">*/}
+            {/*    {[1, 2, 3, 4].map(() => (<Skeleton className={"h-40 rounded-lg"}/>))}*/}
+            {/*</div>*/}
             <GenericDataTable<ObjectType>
                 entity="objectTypes"
                 columns={ObjectTypeColumn}

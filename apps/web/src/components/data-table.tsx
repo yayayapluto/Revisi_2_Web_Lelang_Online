@@ -58,9 +58,9 @@ export function DataTable<TData, TValue>({
 
             {/* Table Container */}
             <div
-                className="overflow-hidden rounded-md border"
+                className="overflow-x-auto rounded-md border"
             >
-                <UITable className="max-w-full">
+                <UITable className={"min-w-full"}>
                     {/* Header */}
                     <TableHeader>
                         {table.getHeaderGroups().map((headerGroup) => (

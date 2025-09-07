@@ -65,7 +65,7 @@ function RouteComponent() {
 
     return (
         <div className={"space-y-4"}>
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col gap-4 md:gap-0 md:flex-row md:items-center justify-between">
                 <h1 className="text-2xl font-semibold capitalize">{data?.content?.name}</h1>
                 <div className="space-x-2">
                     <Link to={"/dashboard/object-type/$id/edit"} params={{id: id}}>
@@ -168,6 +168,10 @@ function RouteComponent() {
                                     />
 
                                     <Bar dataKey="value" fill="oklch(87% 0 0)" radius={5}>
+                                        <LabelList
+                                        position={"inside"}
+                                        dataKey="name"
+                                        />
                                     </Bar>
                                 </BarChart>
                             </ChartContainer>
@@ -187,32 +191,27 @@ function RouteComponent() {
                 </div>
                 <div className="col-span-6 space-y-2">
                     <h1 className="text-xl font-semibold">Items List</h1>
-                    <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
                         {data?.content?.items!.map((item) => {
                             return (
-                                <Card>
-                                    <CardHeader>
+                                <Card className={"p-1 lg:p-2"}>
+                                    <CardHeader className={"p-1 lg:p-2"}>
                                         <img className={"rounded-sm size-full"} src={item.file.path} alt=""/>
-                                        <CardTitle className={"capitalize"}>
+                                        <CardTitle className={"text-sm md:text-sm capitalize"}>
                                             {item.name}
                                         </CardTitle>
-                                        <CardDescription className={"grid grid-cols-2 w-full"}>
-                                            <p>(Deposit)</p>
-                                            <p className={"text-end"}>{CurrencyFormatter(item.deposit_price)}</p>
-                                            <p>(Price)</p>
-                                            <p className={"text-end"}>{CurrencyFormatter(item.price)}</p>
+                                        <CardDescription className={"text-xs md:text-sm w-full"}>
+                                            <div className={"grid grid-cols-2 text-xs md:text-sm"}>
+                                                <p>(Deposit)</p>
+                                                <p className={"md:text-end"}>{CurrencyFormatter(item.deposit_price)}</p>
+                                            </div>
+                                            <div className={"grid grid-cols-2 text-xs md:text-sm"}>
+                                                <p>(Price)</p>
+                                                <p className={"md:text-end"}>{CurrencyFormatter(item.price)}</p>
+                                            </div>
                                         </CardDescription>
                                     </CardHeader>
-                                    <CardContent>
-                                        <p className={"text-justify line-clamp-3 "}>{item.description} Lorem
-                                            ipsum dolor sit amet, consectetur adipisicing elit. Aspernatur consectetur
-                                            culpa cumque cupiditate, dolores eius expedita illo ipsam, mollitia nemo
-                                            numquam officiis quae qui quisquam velit! Commodi, est magni nemo
-                                            perferendis porro quaerat recusandae temporibus totam voluptatum. Cum
-                                            distinctio, error explicabo incidunt neque similique suscipit. Cumque
-                                            dignissimos modi quibusdam quidem?</p>
-                                    </CardContent>
-                                    <CardFooter>
+                                    <CardFooter className={"p-1 lg:p-2"}>
                                         <Link to={"/dashboard/item/$id"} params={{id: item.id.toString()}}>
                                             <Button variant={"outline"} className={"w-full"}>
                                                 See Details
