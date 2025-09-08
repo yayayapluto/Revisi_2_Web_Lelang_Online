@@ -1,6 +1,6 @@
 import type {ColumnDef} from "@tanstack/react-table";
 import {Button} from "@/components/ui/button"
-import {EllipsisIcon} from "lucide-react";
+import {ArrowUpRight, CornerUpRight, EllipsisIcon, SquareArrowOutUpRight} from "lucide-react";
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -43,14 +43,32 @@ export const AuctionColumn: ColumnDef<Auction>[] = [
     {
         accessorKey: "item.name",
         header: "Item",
+        cell: ({row}) => (
+            <Link className={"flex items-center gap-1"} to={"/dashboard/item/$id"} params={{id: row.original.item.id.toString()}}>
+                {row.original.item.name}
+                <SquareArrowOutUpRight size={12}/>
+            </Link>
+        )
     },
     {
         accessorKey: "organizer.name",
         header: "Organizer",
+        cell: ({row}) => (
+            <Link className={"flex items-center gap-1"} to={"/dashboard/organizer/$id"} params={{id: row.original.organizer.id.toString()}}>
+                {row.original.organizer.name}
+                <SquareArrowOutUpRight size={12}/>
+            </Link>
+        )
     },
     {
         accessorKey: "pic.name",
         header: "PIC",
+        cell: ({row}) => (
+            <Link className={"flex items-center gap-1"} to={"/dashboard/pic/$id"} params={{id: row.original.pic.id.toString()}}>
+                {row.original.pic.name}
+                <SquareArrowOutUpRight size={12}/>
+            </Link>
+        )
     },
     {
         accessorKey: "created_at",
