@@ -14,16 +14,10 @@ export function DataTablePagination<TData>({
     return (
         <motion.div
             className="flex items-center justify-between space-x-6 lg:space-x-8"
-            initial={{opacity: 0}}
-            animate={{opacity: 1}}
-            transition={{duration: 0.3}}
         >
             {/* Rows per page */}
             <motion.div
                 className="flex items-center space-x-2"
-                initial={{opacity: 0}}
-                animate={{opacity: 1}}
-                transition={{duration: 0.3, delay: 0.1}}
             >
                 <p className="text-sm font-medium hidden md:block">Rows per page</p>
                 <motion.div
@@ -52,9 +46,6 @@ export function DataTablePagination<TData>({
             {/* Page info */}
             <motion.div
                 className="flex w-[100px] items-center justify-center text-sm font-medium"
-                initial={{opacity: 0}}
-                animate={{opacity: 1}}
-                transition={{duration: 0.3, delay: 0.2}}
                 key={`${table.getState().pagination.pageIndex}-${table.getPageCount()}`} // Re-animate on page change
             >
                 Page {table.getState().pagination.pageIndex + 1} of{" "}
@@ -64,9 +55,6 @@ export function DataTablePagination<TData>({
             {/* Navigation buttons */}
             <motion.div
                 className="flex items-center space-x-2"
-                initial={{opacity: 0}}
-                animate={{opacity: 1}}
-                transition={{duration: 0.3, delay: 0.3}}
             >
                 {/* First page */}
                 <motion.div
