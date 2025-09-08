@@ -1,5 +1,5 @@
-import type { Mandatory } from "@/types/mandatory"
-import type { File } from "@/types/file"
+import type {Mandatory} from "@/types/mandatory"
+import type {File} from "@/types/file"
 
 export type ItemThumbnail = Mandatory & {
     name: string

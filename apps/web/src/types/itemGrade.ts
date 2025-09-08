@@ -1,4 +1,4 @@
-import type { Mandatory } from "@/types/mandatory"
+import type {Mandatory} from "@/types/mandatory"
 
 export type ItemGrade = Mandatory & {
     item_id: number

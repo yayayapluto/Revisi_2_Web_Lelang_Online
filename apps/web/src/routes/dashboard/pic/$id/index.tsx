@@ -1,15 +1,10 @@
 import {createFileRoute, Link} from '@tanstack/react-router'
 import {useQuery} from "@tanstack/react-query";
 import {GetEntityDetail} from "@/api/EntityDetail";
-import type {ObjectType} from "@/types/objectType";
 import {Skeleton} from "@/components/ui/skeleton";
 import {Button} from "@/components/ui/button";
-import {ArrowUpRight, EditIcon, Trash, TrendingUp} from "lucide-react";
-import {Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from '@/components/ui/card';
-import {type ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent} from "@/components/ui/chart";
-import {Bar, BarChart, CartesianGrid, LabelList, XAxis, YAxis} from 'recharts';
-import {getCoreRowModel, getPaginationRowModel, getSortedRowModel, useReactTable} from "@tanstack/react-table";
-import {CurrencyFormatter} from "@/utils/currency-formatter";
+import {EditIcon, Trash} from "lucide-react";
+import {Card, CardContent, CardHeader, CardTitle} from '@/components/ui/card';
 import type {Pic} from "@/types/pic";
 import React from "react";
 import {DataTable} from "@/components/data-table";

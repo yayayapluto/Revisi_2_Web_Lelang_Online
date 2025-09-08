@@ -88,10 +88,10 @@ export function GenericDataTable<T>({
             {data && !isLoading && (
                 <motion.div
                     key="content"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.5, ease: "easeOut" }}
+                    initial={{opacity: 0}}
+                    animate={{opacity: 1}}
+                    exit={{opacity: 0}}
+                    transition={{duration: 0.5, ease: "easeOut"}}
                 >
                     <DataTable
                         columns={columns}

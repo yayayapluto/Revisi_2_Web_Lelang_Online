@@ -1,18 +1,23 @@
 import type {ColumnDef} from "@tanstack/react-table";
 import type {ObjectType} from "@/types/objectType";
-import { Button } from "@/components/ui/button"
+import {Button} from "@/components/ui/button"
 import {EllipsisIcon} from "lucide-react";
 import {
     DropdownMenu,
-    DropdownMenuContent, DropdownMenuItem,
+    DropdownMenuContent,
+    DropdownMenuItem,
     DropdownMenuLabel,
     DropdownMenuSeparator,
     DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
 import {Link} from "@tanstack/react-router";
 import {
-    AlertDialog, AlertDialogAction, AlertDialogCancel,
-    AlertDialogContent, AlertDialogDescription, AlertDialogFooter,
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
     AlertDialogHeader,
     AlertDialogTitle,
     AlertDialogTrigger
@@ -53,7 +58,8 @@ export const ObjectTypeColumn: ColumnDef<ObjectType>[] = [
                         <DropdownMenuLabel>Actions</DropdownMenuLabel>
                         <DropdownMenuSeparator/>
                         <DropdownMenuItem>
-                            <Link to={"/dashboard/object-type/$id"} params={{id: `${row.original.id}`}}>View Details</Link>
+                            <Link to={"/dashboard/object-type/$id"} params={{id: `${row.original.id}`}}>View
+                                Details</Link>
                         </DropdownMenuItem>
                         <DropdownMenuItem>
                             <Link to={"/dashboard/object-type/$id/edit"} params={{id: `${row.original.id}`}}>Edit</Link>
@@ -67,9 +73,11 @@ export const ObjectTypeColumn: ColumnDef<ObjectType>[] = [
                                 </AlertDialogTrigger>
                                 <AlertDialogContent>
                                     <AlertDialogHeader>
-                                        <AlertDialogTitle>Are you sure want to delete '{row.original.name}'?</AlertDialogTitle>
+                                        <AlertDialogTitle>Are you sure want to delete
+                                            '{row.original.name}'?</AlertDialogTitle>
                                         <AlertDialogDescription>
-                                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laborum, perferendis!
+                                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laborum,
+                                            perferendis!
                                         </AlertDialogDescription>
                                     </AlertDialogHeader>
                                     <AlertDialogFooter>

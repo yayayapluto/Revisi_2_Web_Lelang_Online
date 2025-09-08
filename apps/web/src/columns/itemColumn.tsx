@@ -1,5 +1,4 @@
 import type {ColumnDef} from "@tanstack/react-table";
-import type {ObjectType} from "@/types/objectType";
 import {DataTableColumnHeader} from "@/components/data-table-column-header";
 import {
     DropdownMenu,
@@ -22,10 +21,9 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
-import { Button } from "@/components/ui/button"
+import {Button} from "@/components/ui/button"
 import type {Item} from "@/types/item";
 import {CurrencyFormatter} from "@/utils/currency-formatter";
-import {Checkbox} from "@/components/ui/checkbox";
 import {HoverCard, HoverCardContent, HoverCardTrigger} from "@/components/ui/hover-card";
 
 export const ItemColumn: ColumnDef<Item>[] = [
@@ -56,12 +54,12 @@ export const ItemColumn: ColumnDef<Item>[] = [
     {
         accessorKey: "object_type",
         header: "Object Type",
-        cell : ({row}) => row.original.object_type.name
+        cell: ({row}) => row.original.object_type.name
     },
     {
         accessorKey: "file",
         header: "Main Thumbnail",
-        cell : ({row}) => (
+        cell: ({row}) => (
             <HoverCard>
                 <HoverCardTrigger>{row.original.file.path}</HoverCardTrigger>
                 <HoverCardContent className={"w-full p-2"}>
@@ -106,9 +104,11 @@ export const ItemColumn: ColumnDef<Item>[] = [
                                 </AlertDialogTrigger>
                                 <AlertDialogContent>
                                     <AlertDialogHeader>
-                                        <AlertDialogTitle>Are you sure want to delete '{row.original.name}'?</AlertDialogTitle>
+                                        <AlertDialogTitle>Are you sure want to delete
+                                            '{row.original.name}'?</AlertDialogTitle>
                                         <AlertDialogDescription>
-                                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laborum, perferendis!
+                                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laborum,
+                                            perferendis!
                                         </AlertDialogDescription>
                                     </AlertDialogHeader>
                                     <AlertDialogFooter>

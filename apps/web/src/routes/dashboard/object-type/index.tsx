@@ -1,7 +1,6 @@
 import {createFileRoute, useNavigate} from '@tanstack/react-router'
 import {Button} from "@/components/ui/button";
 import {PlusCircleIcon} from "lucide-react";
-import {Skeleton} from "@/components/ui/skeleton";
 import {GenericDataTable} from "@/components/generic-data-table";
 import type {ObjectType} from "@/types/objectType";
 import {ObjectTypeColumn} from "@/columns/objectTypeColumn";

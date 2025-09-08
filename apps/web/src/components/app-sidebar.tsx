@@ -38,8 +38,8 @@ const DATA = [
                 url: '/dashboard/object-type',
                 icon: BoxIcon,
                 items: [
-                    { title: 'All', url: "/dashboard/object-type" },
-                    { title: 'Add New', url: "#" },
+                    {title: 'All', url: "/dashboard/object-type"},
+                    {title: 'Add New', url: "#"},
                 ],
             },
             {
@@ -47,8 +47,8 @@ const DATA = [
                 url: '/dashboard/item',
                 icon: FileTextIcon,
                 items: [
-                    { title: 'All', url: "/dashboard/item" },
-                    { title: 'Add New', url: "#" },
+                    {title: 'All', url: "/dashboard/item"},
+                    {title: 'Add New', url: "#"},
                 ],
             },
             {
@@ -56,8 +56,8 @@ const DATA = [
                 url: '/dashboard/organizer',
                 icon: Users,
                 items: [
-                    { title: 'All', url: "/dashboard/organizer" },
-                    { title: 'Add New', url: "#" },
+                    {title: 'All', url: "/dashboard/organizer"},
+                    {title: 'Add New', url: "#"},
                 ],
             },
             {
@@ -65,8 +65,8 @@ const DATA = [
                 url: '/dashboard/pic',
                 icon: Contact,
                 items: [
-                    { title: 'All', url: "/dashboard/pic" },
-                    { title: 'Add New', url: "#" },
+                    {title: 'All', url: "/dashboard/pic"},
+                    {title: 'Add New', url: "#"},
                 ],
             },
         ],
@@ -79,8 +79,8 @@ const DATA = [
                 url: '/dashboard/auction',
                 icon: Gavel,
                 items: [
-                    { title: 'All', url: "/dashboard/auction" },
-                    { title: 'Add New', url: "#" },
+                    {title: 'All', url: "/dashboard/auction"},
+                    {title: 'Add New', url: "#"},
                 ],
             },
             {
@@ -88,7 +88,7 @@ const DATA = [
                 url: '#',
                 icon: UserPlus,
                 items: [
-                    { title: 'All', url: "/dashboard/auction-bidders" },
+                    {title: 'All', url: "/dashboard/auction-bidders"},
                 ],
             },
             {
@@ -96,8 +96,8 @@ const DATA = [
                 url: '#',
                 icon: TrendingUp,
                 items: [
-                    { title: 'All', url: "/dashboard/bids" },
-                    { title: 'Live Monitor', url: "/dashboard/bids/live" },
+                    {title: 'All', url: "/dashboard/bids"},
+                    {title: 'Live Monitor', url: "/dashboard/bids/live"},
                 ],
             },
             {
@@ -105,8 +105,8 @@ const DATA = [
                 url: '#',
                 icon: Medal,
                 items: [
-                    { title: 'All', url: "/dashboard/winners" },
-                    { title: 'Unpaid', url: "/dashboard/winners?status=pending" },
+                    {title: 'All', url: "/dashboard/winners"},
+                    {title: 'Unpaid', url: "/dashboard/winners?status=pending"},
                 ],
             },
         ],
@@ -164,7 +164,8 @@ export function AppSidebar({...props}: React.ComponentProps<typeof Sidebar>) {
                                                     {item.items?.map((subItem) => (
                                                         <SidebarMenuSubItem key={subItem.title}>
                                                             <SidebarMenuSubButton asChild>
-                                                                <Link to={subItem.url} className={"capitalize"}>{subItem.title}</Link>
+                                                                <Link to={subItem.url}
+                                                                      className={"capitalize"}>{subItem.title}</Link>
                                                             </SidebarMenuSubButton>
                                                         </SidebarMenuSubItem>
                                                     ))}

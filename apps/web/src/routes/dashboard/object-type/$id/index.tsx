@@ -7,8 +7,7 @@ import {Button} from "@/components/ui/button";
 import {ArrowUpRight, EditIcon, Trash, TrendingUp} from "lucide-react";
 import {Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from '@/components/ui/card';
 import {type ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent} from "@/components/ui/chart";
-import {Bar, BarChart, CartesianGrid, LabelList, XAxis, YAxis} from 'recharts';
-import {getCoreRowModel, getPaginationRowModel, getSortedRowModel, useReactTable} from "@tanstack/react-table";
+import {Bar, BarChart, LabelList, XAxis, YAxis} from 'recharts';
 import {CurrencyFormatter} from "@/utils/currency-formatter";
 
 export const Route = createFileRoute('/dashboard/object-type/$id/')({
@@ -108,7 +107,8 @@ function RouteComponent() {
                                             typeof data?.value === "number"
                                                 ? <></>
                                                 : (
-                                                    <Link to={"/dashboard/item/$id"} params={{id: data?.value?.id?.toString()!}}>
+                                                    <Link to={"/dashboard/item/$id"}
+                                                          params={{id: data?.value?.id?.toString()!}}>
                                                         <Button variant={"link"}>
                                                             See Details
                                                             <ArrowUpRight/>
@@ -152,7 +152,7 @@ function RouteComponent() {
                                         left: -20,
                                     }}
                                 >
-                                    <XAxis type="number" dataKey="value" hide />
+                                    <XAxis type="number" dataKey="value" hide/>
                                     <YAxis
                                         dataKey="name"
                                         type="category"
@@ -164,13 +164,13 @@ function RouteComponent() {
                                     />
                                     <ChartTooltip
                                         cursor={true}
-                                        content={<ChartTooltipContent />}
+                                        content={<ChartTooltipContent/>}
                                     />
 
                                     <Bar dataKey="value" fill="oklch(87% 0 0)" radius={5}>
                                         <LabelList
-                                        position={"inside"}
-                                        dataKey="name"
+                                            position={"inside"}
+                                            dataKey="name"
                                         />
                                     </Bar>
                                 </BarChart>

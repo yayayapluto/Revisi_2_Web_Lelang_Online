@@ -3,8 +3,6 @@ import {Button} from "@/components/ui/button";
 import {PlusCircleIcon} from "lucide-react";
 import {Skeleton} from "@/components/ui/skeleton";
 import {GenericDataTable} from "@/components/generic-data-table";
-import type {ObjectType} from "@/types/objectType";
-import {ObjectTypeColumn} from "@/columns/objectTypeColumn";
 import {OrganizerColumn} from "@/columns/organizerColumn";
 import type {Organizer} from "@/types/organizer";
 

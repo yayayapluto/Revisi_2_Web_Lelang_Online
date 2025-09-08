@@ -1,24 +1,27 @@
 import type {ColumnDef} from "@tanstack/react-table";
-import type {ObjectType} from "@/types/objectType";
-import { Button } from "@/components/ui/button"
+import {Button} from "@/components/ui/button"
 import {EllipsisIcon} from "lucide-react";
 import {
     DropdownMenu,
-    DropdownMenuContent, DropdownMenuItem,
+    DropdownMenuContent,
+    DropdownMenuItem,
     DropdownMenuLabel,
     DropdownMenuSeparator,
     DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
 import {Link} from "@tanstack/react-router";
 import {
-    AlertDialog, AlertDialogAction, AlertDialogCancel,
-    AlertDialogContent, AlertDialogDescription, AlertDialogFooter,
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
     AlertDialogHeader,
     AlertDialogTitle,
     AlertDialogTrigger
 } from "@/components/ui/alert-dialog";
 import {DataTableColumnHeader} from "@/components/data-table-column-header";
-import type {Pic} from "@/types/pic";
 import type {Auction} from "@/types/auction";
 import {DateFormatter} from "@/utils/date-formatter";
 
@@ -87,7 +90,8 @@ export const AuctionColumn: ColumnDef<Auction>[] = [
                                     <AlertDialogHeader>
                                         <AlertDialogTitle>Are you sure want to delete this auction?</AlertDialogTitle>
                                         <AlertDialogDescription>
-                                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laborum, perferendis!
+                                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laborum,
+                                            perferendis!
                                         </AlertDialogDescription>
                                     </AlertDialogHeader>
                                     <AlertDialogFooter>

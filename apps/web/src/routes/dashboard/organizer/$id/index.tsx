@@ -4,7 +4,7 @@ import {GetEntityDetail} from '@/api/EntityDetail'
 import {Button} from '@/components/ui/button'
 import {EditIcon, Trash} from 'lucide-react'
 import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle,} from '@/components/ui/card'
-import {ChartContainer, ChartTooltip, type ChartConfig, ChartTooltipContent,} from '@/components/ui/chart'
+import {type ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent,} from '@/components/ui/chart'
 import type {Organizer} from '@/types/organizer'
 import React from 'react'
 import {
@@ -17,7 +17,8 @@ import {
     PolarAngleAxis,
     PolarGrid,
     Radar,
-    RadarChart, ResponsiveContainer,
+    RadarChart,
+    ResponsiveContainer,
     XAxis
 } from "recharts";
 import {DataTable} from "@/components/data-table";
@@ -153,7 +154,7 @@ function RouteComponent() {
             </div>
 
             <div className="grid gap-6 lg:grid-cols-6">
-                <Card className="lg:col-span-3 overflow-x-auto" >
+                <Card className="lg:col-span-3 overflow-x-auto">
                     <CardHeader>
                         <CardTitle>Organizer Details</CardTitle>
                         <CardDescription>
@@ -187,7 +188,7 @@ function RouteComponent() {
                             })}
                     </CardContent>
                 </Card>
-                <Card className="lg:col-span-3 overflow-x-auto" >
+                <Card className="lg:col-span-3 overflow-x-auto">
                     <CardHeader>
                         <CardTitle>Bank Information</CardTitle>
                         <CardDescription>Linked financial account details</CardDescription>
@@ -234,7 +235,7 @@ function RouteComponent() {
                                         top: 20,
                                     }}
                                 >
-                                    <CartesianGrid vertical={false} />
+                                    <CartesianGrid vertical={false}/>
                                     <XAxis
                                         dataKey="type"
                                         tickLine={false}
@@ -243,7 +244,7 @@ function RouteComponent() {
                                     />
                                     <ChartTooltip
                                         cursor={true}
-                                        content={<ChartTooltipContent />}
+                                        content={<ChartTooltipContent/>}
                                     />
                                     <Bar dataKey="total" fill="var(--chart-1)" radius={8}>
                                         <LabelList
@@ -263,7 +264,7 @@ function RouteComponent() {
                         </div>
                     </CardFooter>
                 </Card>
-                <Card className="lg:col-span-3 overflow-x-auto" >
+                <Card className="lg:col-span-3 overflow-x-auto">
                     <CardHeader className="items-center pb-4">
                         <CardTitle>Radar Chart</CardTitle>
                         <CardDescription>
@@ -277,9 +278,9 @@ function RouteComponent() {
                         >
                             <ResponsiveContainer width="100%" height={300}>
                                 <RadarChart data={PICChartData}>
-                                    <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
-                                    <PolarAngleAxis dataKey="name" />
-                                    <PolarGrid />
+                                    <ChartTooltip cursor={false} content={<ChartTooltipContent/>}/>
+                                    <PolarAngleAxis dataKey="name"/>
+                                    <PolarGrid/>
                                     <Radar
                                         dataKey="total"
                                         fill="var(--chart-1)"
@@ -295,7 +296,7 @@ function RouteComponent() {
                         </div>
                     </CardFooter>
                 </Card>
-                <Card className="lg:col-span-6 overflow-x-auto" >
+                <Card className="lg:col-span-6 overflow-x-auto">
                     <CardHeader>
                         <CardTitle>Line Chart - Custom Label</CardTitle>
                         <CardDescription>January - June 2024</CardDescription>
@@ -312,7 +313,7 @@ function RouteComponent() {
                                         right: 24,
                                     }}
                                 >
-                                    <CartesianGrid vertical={false} />
+                                    <CartesianGrid vertical={false}/>
                                     <ChartTooltip
                                         cursor={false}
                                         content={
