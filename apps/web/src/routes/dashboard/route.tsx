@@ -60,7 +60,7 @@ function RouteComponent() {
                         <ModeToggle/>
                     </div>
                 </header>
-                <div className="w-full max-w-screen h-full p-4 md:p-6 overflow-auto">
+                <div className="w-full max-w-screen h-full p-4 md:p-6">
                     <AnimatePresence mode={"wait"}>
                         <motion.div
                             key={location.pathname}

@@ -56,7 +56,7 @@ function RouteComponent() {
     return (
         <div className={"space-y-4"}>
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-6 items-start">
-                <div className="md:col-span-2 sticky lg:top-18">
+                <div className="md:col-span-2 sticky lg:top-20">
                     <Carousel className="relative" setApi={setApi}>
                         <CarouselContent>
                             {ITEM_THUMBNAILS.map((item, i) => (
@@ -73,15 +73,15 @@ function RouteComponent() {
                         <CarouselPrevious className="left-2"/>
                         <CarouselNext className="right-2"/>
                     </Carousel>
-                    <Carousel>
+                    <Carousel className={"mt-4"}>
                         <CarouselContent>
                             {ITEM_THUMBNAILS.map((item, i) => (
-                                <CarouselItem className={"basis-1/4"} onClick={() => api?.scrollTo(i)}>
+                                <CarouselItem className={"basis-1/4 md:basis-1/3"} onClick={() => api?.scrollTo(i)}>
                                     <img
                                         src={item}
                                         loading="lazy"
                                         className={`
-                                    size-36 cursor-pointer rounded-sm transition-opacity duration-300 ease-in-out
+                                    w-full h-auto aspect-square cursor-pointer rounded transition-opacity duration-300 ease-in-out
                                     ${current === (i + 1)
                                             ? 'opacity-100'
                                             : 'opacity-50 hover:opacity-75'
