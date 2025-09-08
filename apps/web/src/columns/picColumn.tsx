@@ -23,6 +23,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import {DataTableColumnHeader} from "@/components/data-table-column-header";
 import type {Pic} from "@/types/pic";
+import {useEntityDelete} from "@/hooks/use-entity-delete";
 
 export const PicColumn: ColumnDef<Pic>[] = [
     {
@@ -53,6 +54,8 @@ export const PicColumn: ColumnDef<Pic>[] = [
     {
         id: "actions",
         cell: ({row}) => {
+            const {mutate, isPending} = useEntityDelete("pics")
+
             return (
                 <DropdownMenu>
                     <DropdownMenuTrigger>
@@ -85,7 +88,12 @@ export const PicColumn: ColumnDef<Pic>[] = [
                                     </AlertDialogHeader>
                                     <AlertDialogFooter>
                                         <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                        <AlertDialogAction>Delete</AlertDialogAction>
+                                        <AlertDialogAction
+                                            onClick={() => mutate({id: row.original.id})}
+                                            disabled={isPending}
+                                        >
+                                            {isPending ? "Deleting..." : "Delete"}
+                                        </AlertDialogAction>
                                     </AlertDialogFooter>
                                 </AlertDialogContent>
                             </AlertDialog>

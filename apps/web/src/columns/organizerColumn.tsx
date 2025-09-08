@@ -23,6 +23,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import {DataTableColumnHeader} from "@/components/data-table-column-header";
 import type {Organizer} from "@/types/organizer";
+import {useEntityDelete} from "@/hooks/use-entity-delete";
 
 export const OrganizerColumn: ColumnDef<Organizer>[] = [
     {
@@ -69,6 +70,8 @@ export const OrganizerColumn: ColumnDef<Organizer>[] = [
     {
         id: "actions",
         cell: ({row}) => {
+            const {mutate, isPending} = useEntityDelete("organizers")
+
             return (
                 <DropdownMenu>
                     <DropdownMenuTrigger>
@@ -102,7 +105,12 @@ export const OrganizerColumn: ColumnDef<Organizer>[] = [
                                     </AlertDialogHeader>
                                     <AlertDialogFooter>
                                         <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                        <AlertDialogAction>Delete</AlertDialogAction>
+                                        <AlertDialogAction
+                                            onClick={() => mutate({id: row.original.id})}
+                                            disabled={isPending}
+                                        >
+                                            {isPending ? "Deleting..." : "Delete"}
+                                        </AlertDialogAction>
                                     </AlertDialogFooter>
                                 </AlertDialogContent>
                             </AlertDialog>

@@ -25,6 +25,7 @@ import {Button} from "@/components/ui/button"
 import type {Item} from "@/types/item";
 import {CurrencyFormatter} from "@/utils/currency-formatter";
 import {HoverCard, HoverCardContent, HoverCardTrigger} from "@/components/ui/hover-card";
+import {useEntityDelete} from "@/hooks/use-entity-delete";
 
 export const ItemColumn: ColumnDef<Item>[] = [
     {
@@ -81,6 +82,8 @@ export const ItemColumn: ColumnDef<Item>[] = [
     {
         id: "actions",
         cell: ({row}) => {
+            const {mutate, isPending} = useEntityDelete("items")
+
             return (
                 <DropdownMenu>
                     <DropdownMenuTrigger>
@@ -113,7 +116,12 @@ export const ItemColumn: ColumnDef<Item>[] = [
                                     </AlertDialogHeader>
                                     <AlertDialogFooter>
                                         <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                        <AlertDialogAction>Delete</AlertDialogAction>
+                                        <AlertDialogAction
+                                            onClick={() => mutate({id: row.original.id})}
+                                            disabled={isPending}
+                                        >
+                                            {isPending ? "Deleting..." : "Delete"}
+                                        </AlertDialogAction>
                                     </AlertDialogFooter>
                                 </AlertDialogContent>
                             </AlertDialog>

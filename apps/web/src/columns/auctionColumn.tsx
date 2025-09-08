@@ -24,6 +24,7 @@ import {
 import {DataTableColumnHeader} from "@/components/data-table-column-header";
 import type {Auction} from "@/types/auction";
 import {DateFormatter} from "@/utils/date-formatter";
+import {useEntityDelete} from "@/hooks/use-entity-delete";
 
 export const AuctionColumn: ColumnDef<Auction>[] = [
     {
@@ -83,6 +84,8 @@ export const AuctionColumn: ColumnDef<Auction>[] = [
     {
         id: "actions",
         cell: ({row}) => {
+            const {mutate, isPending} = useEntityDelete("auctions")
+
             return (
                 <DropdownMenu>
                     <DropdownMenuTrigger>
@@ -114,7 +117,12 @@ export const AuctionColumn: ColumnDef<Auction>[] = [
                                     </AlertDialogHeader>
                                     <AlertDialogFooter>
                                         <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                        <AlertDialogAction>Delete</AlertDialogAction>
+                                        <AlertDialogAction
+                                            onClick={() => mutate({id: row.original.id})}
+                                            disabled={isPending}
+                                        >
+                                            {isPending ? "Deleting..." : "Delete"}
+                                        </AlertDialogAction>
                                     </AlertDialogFooter>
                                 </AlertDialogContent>
                             </AlertDialog>

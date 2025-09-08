@@ -23,6 +23,8 @@ import {
     AlertDialogTrigger
 } from "@/components/ui/alert-dialog";
 import {DataTableColumnHeader} from "@/components/data-table-column-header";
+import {EntityDelete} from "@/api/EntityDelete";
+import {useEntityDelete} from "@/hooks/use-entity-delete";
 
 export const ObjectTypeColumn: ColumnDef<ObjectType>[] = [
     {
@@ -49,6 +51,8 @@ export const ObjectTypeColumn: ColumnDef<ObjectType>[] = [
     {
         id: "actions",
         cell: ({row}) => {
+            const {mutate, isPending} = useEntityDelete("objectTypes")
+
             return (
                 <DropdownMenu>
                     <DropdownMenuTrigger>
@@ -58,23 +62,23 @@ export const ObjectTypeColumn: ColumnDef<ObjectType>[] = [
                         <DropdownMenuLabel>Actions</DropdownMenuLabel>
                         <DropdownMenuSeparator/>
                         <DropdownMenuItem>
-                            <Link to={"/dashboard/object-type/$id"} params={{id: `${row.original.id}`}}>View
-                                Details</Link>
+                            <Link to={"/dashboard/object-type/$id"} params={{id: `${row.original.id}`}}>
+                                View Details
+                            </Link>
                         </DropdownMenuItem>
                         <DropdownMenuItem>
-                            <Link to={"/dashboard/object-type/$id/edit"} params={{id: `${row.original.id}`}}>Edit</Link>
+                            <Link to={"/dashboard/object-type/$id/edit"} params={{id: `${row.original.id}`}}>
+                                Edit
+                            </Link>
                         </DropdownMenuItem>
-                        <DropdownMenuItem onSelect={e => {
-                            e.preventDefault()
-                        }}>
+                        <DropdownMenuItem onSelect={e => e.preventDefault()}>
                             <AlertDialog>
-                                <AlertDialogTrigger>
-                                    Delete
-                                </AlertDialogTrigger>
+                                <AlertDialogTrigger>Delete</AlertDialogTrigger>
                                 <AlertDialogContent>
                                     <AlertDialogHeader>
-                                        <AlertDialogTitle>Are you sure want to delete
-                                            '{row.original.name}'?</AlertDialogTitle>
+                                        <AlertDialogTitle>
+                                            Are you sure want to delete '{row.original.name}'?
+                                        </AlertDialogTitle>
                                         <AlertDialogDescription>
                                             Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laborum,
                                             perferendis!
@@ -82,7 +86,12 @@ export const ObjectTypeColumn: ColumnDef<ObjectType>[] = [
                                     </AlertDialogHeader>
                                     <AlertDialogFooter>
                                         <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                        <AlertDialogAction>Delete</AlertDialogAction>
+                                        <AlertDialogAction
+                                            onClick={() => mutate({id: row.original.id})}
+                                            disabled={isPending}
+                                        >
+                                            {isPending ? "Deleting..." : "Delete"}
+                                        </AlertDialogAction>
                                     </AlertDialogFooter>
                                 </AlertDialogContent>
                             </AlertDialog>
@@ -92,4 +101,5 @@ export const ObjectTypeColumn: ColumnDef<ObjectType>[] = [
             )
         }
     }
+
 ]
