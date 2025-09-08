@@ -1,15 +1,22 @@
 import {createFileRoute, Link} from '@tanstack/react-router'
 import {useQuery} from "@tanstack/react-query";
 import {GetEntityDetail} from "@/api/EntityDetail";
-import type {ObjectType} from "@/types/objectType";
-import {Skeleton} from "@/components/ui/skeleton";
+import type {Auction} from "@/types/auction";
+import React from "react";
+import {
+    Carousel,
+    type CarouselApi,
+    CarouselContent,
+    CarouselItem,
+    CarouselNext,
+    CarouselPrevious
+} from "@/components/ui/carousel";
 import {Button} from "@/components/ui/button";
-import {ArrowUpRight, EditIcon, Trash, TrendingUp} from "lucide-react";
-import {Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from '@/components/ui/card';
-import {type ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent} from "@/components/ui/chart";
-import {Bar, BarChart, CartesianGrid, LabelList, XAxis, YAxis} from 'recharts';
-import {getCoreRowModel, getPaginationRowModel, getSortedRowModel, useReactTable} from "@tanstack/react-table";
-import {CurrencyFormatter} from "@/utils/currency-formatter";
+import {EditIcon, Trash} from "lucide-react";
+import {Badge} from "@/components/ui/badge";
+import {Tabs, TabsContent, TabsContents, TabsList, TabsTrigger} from "@/components/animate-ui/radix/tabs";
+import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
+import {DateFormatter} from "@/utils/date-formatter";
 
 export const Route = createFileRoute('/dashboard/auction/$id/')({
     component: RouteComponent,
@@ -17,211 +24,329 @@ export const Route = createFileRoute('/dashboard/auction/$id/')({
 
 function RouteComponent() {
     const {id} = Route.useParams()
-    const {data, isLoading, isFetching} = useQuery({
-        queryKey: ["object-type", id],
-        queryFn: () => GetEntityDetail<ObjectType>({
+    const {data} = useQuery({
+        queryKey: ["auction", id],
+        queryFn: () => GetEntityDetail<Auction>({
             id: id,
-            entityName: "objectTypes"
+            entityName: "auctions"
         })
     })
 
-    const CARD_DATA = [
-        {
-            title: "Highest Price",
-            value: data?.content?.items
-                ?.sort((a, b) => b.price - a.price)[0],
-        },
-        {
-            title: "Lowest Price",
-            value: data?.content?.items
-                ?.sort((a, b) => a.price - b.price)[0],
-        },
-        {
-            title: "Average Price",
-            value: data?.content?.items
-                ? data.content.items.reduce((prev, val) => prev + val.price, 0) /
-                data.content.items.length
-                : 0,
-        },
-        {
-            title: "Total Deposit Price",
-            value: data?.content?.items
-                ? data.content.items.reduce((prev, val) => prev + val.deposit_price, 0)
-                : 0,
-        },
+    const ITEM_THUMBNAILS = [
+        data?.content?.item.file.path,
+        ...(data?.content?.item.item_thumbnails?.map((t) => t.file.path) ?? [])
     ]
+    console.log(ITEM_THUMBNAILS)
 
-    const chartData = data?.content?.items?.sort((a, b) => b.price - a.price).map(item => ({
-        name: item.name,
-        value: item.price,
-    })) ?? []
+    const [api, setApi] = React.useState<CarouselApi>()
+    const [current, setCurrent] = React.useState(0)
+    const [count, setCount] = React.useState(0)
 
-    const chartConfig = {
-        name: {
-            label: "Name",
-            color: "blue",
-        },
-    } satisfies ChartConfig
+    React.useEffect(() => {
+        if (!api) {
+            return
+        }
 
+        setCount(api.scrollSnapList().length)
+        setCurrent(api.selectedScrollSnap() + 1)
+
+        api.on("select", () => {
+            setCurrent(api.selectedScrollSnap() + 1)
+        })
+    }, [api])
+
+    const auctionStatus = (
+        new Date(data?.content?.start_date!) > new Date()
+            ? "Up Coming"
+            : new Date(data?.content?.start_date!) <= new Date() && new Date(data?.content?.end_date!) >= new Date()
+                ? "On Going"
+                : "Finished"
+    )
+
+    const auctionBadge = (auctionStatus === "Up Coming" ? "outline" : auctionStatus === "On Going" ? "default" : "secondary")
+
+    const auction = data?.content
+    const item = auction?.item
+    const organizer = auction?.organizer
+    const pic = auction?.pic
+
+    const auctionDuration = Math.ceil(
+        Math.abs(new Date(auction?.start_date!).getTime() - new Date(auction?.end_date!).getTime()) / (1000 * 60 * 60 * 24)
+    )
     return (
         <div className={"space-y-4"}>
             <div className="flex flex-col gap-4 md:gap-0 md:flex-row md:items-center justify-between">
-                <h1 className="text-2xl font-semibold capitalize">{data?.content?.name}</h1>
+                <div className={"flex flex-row items-center gap-4"}>
+                    <h1 className="text-2xl font-semibold capitalize">
+                        {data?.content?.item.name}
+                    </h1>
+                    <Badge variant={auctionBadge}>
+                        {auctionStatus}
+                    </Badge>
+                </div>
                 <div className="space-x-2">
-                    <Link to={"/dashboard/object-type/$id/edit"} params={{id: id}}>
+                    <Link to="/dashboard/object-type/$id/edit" params={{id}}>
                         <Button>
-                            <EditIcon/>
+                            <EditIcon className="mr-2 h-4 w-4"/>
                             Edit
                         </Button>
                     </Link>
-                    <Button variant={"outline"}><Trash/></Button>
+                    <Button variant="outline">
+                        <Trash className="h-4 w-4"/>
+                    </Button>
                 </div>
             </div>
-            <div className="flex flex-col lg:flex-row gap-4">
-                <div className="flex text-sm font-medium capitalize space-x-1 items-center">
-                    <span>Created at</span>
-                    <span>:</span>
-                    <span className="text-muted-foreground">{new Date(data?.content?.created_at!).toUTCString()}</span>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 text-sm">
+                <div className="flex items-center space-x-1.5">
+                    <span className="font-medium">Created at:</span>
+                    <span className="text-muted-foreground">
+                        {data?.content?.created_at
+                            ? new Date(data.content.created_at).toLocaleString()
+                            : '—'}
+                    </span>
                 </div>
-                <div className="flex text-sm font-medium capitalize space-x-1 items-center">
-                    <span>Updated at</span>
-                    <span>:</span>
-                    <span className="text-muted-foreground">{new Date(data?.content?.updated_at!).toUTCString()}</span>
+                <div className="flex items-center space-x-1.5">
+                    <span className="font-medium">Updated at:</span>
+                    <span className="text-muted-foreground">
+                        {data?.content?.updated_at
+                            ? new Date(data.content.updated_at).toLocaleString()
+                            : '—'}
+                      </span>
+                </div>
+                <div className="flex items-center space-x-1.5">
+                    <span className="font-medium">Organizer:</span>
+                    <span className="text-muted-foreground">
+                        {data?.content?.organizer.name}
+                    </span>
+                </div>
+                <div className="flex items-center space-x-1.5">
+                    <span className="font-medium">PIC Name:</span>
+                    <span className="text-muted-foreground">
+                        {data?.content?.pic.name}
+                    </span>
+                </div>
+                <div className="flex items-center space-x-1.5">
+                    <span className="font-medium">PIC Contact:</span>
+                    <span className="text-muted-foreground">
+                        {data?.content?.pic.phone_number}
+                    </span>
                 </div>
             </div>
-            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-6">
-                <div className="col-span-6 grid gap-4 lg:grid-cols-4">
-                    {CARD_DATA.map((data) => {
-                        return (
+            <div className={"grid lg:grid-cols-6 gap-6"}>
+                <div className="lg:col-span-2 w-full max-w-full overflow-x-hidden min-w-0">
+                    <Carousel className={"w-full"} setApi={setApi}>
+                        <CarouselContent>
+                            {ITEM_THUMBNAILS.map((item, i) => (
+                                <CarouselItem key={i}>
+                                    <img
+                                        src={item}
+                                        loading="lazy"
+                                        className="w-full h-auto aspect-square object-cover rounded"
+                                        alt=""
+                                    />
+                                </CarouselItem>
+                            ))}
+                        </CarouselContent>
+                        <CarouselPrevious className="left-2"/>
+                        <CarouselNext className="right-2"/>
+                    </Carousel>
+                    <Carousel className={"w-full mt-4"}>
+                        <CarouselContent>
+                            {ITEM_THUMBNAILS.map((item, i) => (
+                                <CarouselItem className={"basis-1/5 md:basis-1/4"} onClick={() => api?.scrollTo(i)}>
+                                    <img
+                                        src={item}
+                                        loading="lazy"
+                                        className={`
+                                    w-full h-auto aspect-square object-cover cursor-pointer rounded transition-opacity duration-300 ease-in-out
+                                    ${current === (i + 1)
+                                            ? 'opacity-100'
+                                            : 'opacity-50 hover:opacity-75'
+                                        }`}
+                                        alt=""
+                                    />
+                                </CarouselItem>
+                            ))}
+                        </CarouselContent>
+                    </Carousel>
+                </div>
+                <div className="lg:col-span-4 w-full max-w-full min-w-0">
+                    <div className={"space-y-4"}>
+                        <div className={"grid lg:grid-cols-3 gap-4"}>
                             <Card>
                                 <CardHeader>
-                                    <CardDescription>
-                                        {data.title}
-                                    </CardDescription>
-                                    <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
-                                        {CurrencyFormatter(typeof data?.value === "number"
-                                            ? data?.value
-                                            : data?.value?.price ?? 0)}
+                                    <CardTitle>
+                                        Start Date
                                     </CardTitle>
-                                    <CardAction>
-                                        {
-                                            typeof data?.value === "number"
-                                                ? <></>
-                                                : (
-                                                    <Link to={"/dashboard/item/$id"} params={{id: data?.value?.id?.toString()!}}>
-                                                        <Button variant={"link"}>
-                                                            See Details
-                                                            <ArrowUpRight/>
-                                                        </Button>
-                                                    </Link>
-                                                )
-                                        }
-                                    </CardAction>
                                 </CardHeader>
-                                <CardFooter className="flex-col items-start gap-1.5 text-sm">
-                                    <div className="line-clamp-1 flex gap-2 font-medium">
-                                        Current {data.title}
-                                    </div>
-                                    <div className="text-muted-foreground">
-                                        {
-                                            typeof data?.value !== "number" ? (
-                                                <>Item Name: {data?.value?.name ?? "-"}</>
-                                            ) : (
-                                                <>-</>
-                                            )
-                                        }
-                                    </div>
-                                </CardFooter>
+                                <CardContent>
+                                    {DateFormatter(auction?.start_date!)}
+                                </CardContent>
                             </Card>
-                        )
-                    })}
-                </div>
-                <div className="col-span-6 grid lg:grid-cols-2 gap-4">
-                    <Card>
-                        <CardHeader>
-                            <CardTitle>Item Chart</CardTitle>
-                            <CardDescription>Highest to lowest by price</CardDescription>
-                        </CardHeader>
-                        <CardContent>
-                            <ChartContainer config={chartConfig}>
-                                <BarChart
-                                    accessibilityLayer
-                                    data={chartData}
-                                    layout="vertical"
-                                    margin={{
-                                        left: -20,
-                                    }}
-                                >
-                                    <XAxis type="number" dataKey="value" hide />
-                                    <YAxis
-                                        dataKey="name"
-                                        type="category"
-                                        tickLine={false}
-                                        tickMargin={10}
-                                        axisLine={false}
-                                        // tickFormatter={(value) => value.slice(0, 3)}
-                                        hide
-                                    />
-                                    <ChartTooltip
-                                        cursor={true}
-                                        content={<ChartTooltipContent />}
-                                    />
-
-                                    <Bar dataKey="value" fill="oklch(87% 0 0)" radius={5}>
-                                    </Bar>
-                                </BarChart>
-                            </ChartContainer>
-                        </CardContent>
-                        <CardFooter className="flex-col items-start gap-2 text-sm">
-                            <div className="flex gap-2 leading-none font-medium">
-                                Trending up by 5.2% this month <TrendingUp className="h-4 w-4"/>
-                            </div>
-                            <div className="text-muted-foreground leading-none">
-                                Showing total visitors for the last 6 months
-                            </div>
-                        </CardFooter>
-                    </Card>
-                    <Skeleton className={"w-full flex items-center justify-center"}>
-                        Chart untuk lelang dengan tipe objek ini
-                    </Skeleton>
-                </div>
-                <div className="col-span-6 space-y-2">
-                    <h1 className="text-xl font-semibold">Items List</h1>
-                    <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
-                        {data?.content?.items!.map((item) => {
-                            return (
-                                <Card>
-                                    <CardHeader>
-                                        <img className={"rounded-sm size-full"} src={item.file.path} alt=""/>
-                                        <CardTitle className={"capitalize"}>
-                                            {item.name}
-                                        </CardTitle>
-                                        <CardDescription className={"grid grid-cols-2 w-full"}>
-                                            <p>(Deposit)</p>
-                                            <p className={"text-end"}>{CurrencyFormatter(item.deposit_price)}</p>
-                                            <p>(Price)</p>
-                                            <p className={"text-end"}>{CurrencyFormatter(item.price)}</p>
-                                        </CardDescription>
-                                    </CardHeader>
-                                    <CardContent>
-                                        <p className={"text-justify line-clamp-3 "}>{item.description} Lorem
-                                            ipsum dolor sit amet, consectetur adipisicing elit. Aspernatur consectetur
-                                            culpa cumque cupiditate, dolores eius expedita illo ipsam, mollitia nemo
-                                            numquam officiis quae qui quisquam velit! Commodi, est magni nemo
-                                            perferendis porro quaerat recusandae temporibus totam voluptatum. Cum
-                                            distinctio, error explicabo incidunt neque similique suscipit. Cumque
-                                            dignissimos modi quibusdam quidem?</p>
-                                    </CardContent>
-                                    <CardFooter>
-                                        <Link to={"/dashboard/item/$id"} params={{id: item.id.toString()}}>
-                                            <Button variant={"outline"} className={"w-full"}>
-                                                See Details
-                                            </Button>
-                                        </Link>
-                                    </CardFooter>
-                                </Card>
-                            )
-                        })}
+                            <Card>
+                                <CardHeader>
+                                    <CardTitle>
+                                        End Date
+                                    </CardTitle>
+                                </CardHeader>
+                                <CardContent>
+                                    {DateFormatter(auction?.end_date!)}
+                                </CardContent>
+                            </Card>
+                            <Card>
+                                <CardHeader>
+                                    <CardTitle>
+                                        Duration
+                                    </CardTitle>
+                                </CardHeader>
+                                <CardContent>
+                                    {auctionDuration} Days
+                                </CardContent>
+                            </Card>
+                        </div>
+                        <Tabs defaultValue={"ItemDetailTab"} className={"top-16 sticky"}>
+                            <TabsList className={"max-w-full overflow-x-auto whitespace-nowrap"}>
+                                <TabsTrigger value="ItemDetailTab">Item Detail</TabsTrigger>
+                                <TabsTrigger value="ItemDocumentTab">Item Document</TabsTrigger>
+                                <TabsTrigger value="ItemGradeTab">Item Grade</TabsTrigger>
+                                <TabsTrigger value="OrganizerTab">Organizer</TabsTrigger>
+                                <TabsTrigger value="PicTab">PIC</TabsTrigger>
+                            </TabsList>
+                            <TabsContents>
+                                <TabsContent value="ItemDetailTab">
+                                    <Card>
+                                        <CardHeader>
+                                            <CardTitle>
+                                                Item Details
+                                            </CardTitle>
+                                            <CardDescription>
+                                                Detail information of item '{data?.content?.item.name}'
+                                            </CardDescription>
+                                        </CardHeader>
+                                        <CardContent>
+                                            <div className={"grid md:grid-cols-2 lg:grid-cols-3 gap-4"}>
+                                                {item?.item_detail && Object.entries(item.item_detail!).map(([k, v]) => {
+                                                    const skippedKeys = ["id", "created_at", "updated_at", "item_id"]
+                                                    if (skippedKeys.includes(k, 0) || v === null) return
+                                                    return (
+                                                        <div>
+                                                            <h1 className="text-md font-semibold capitalize">{k.split("_").join(" ")}</h1>
+                                                            <p className={"line-clamp-4 truncate text-justify text-muted-foreground"}>{
+                                                                (k === "stnk_date" ? DateFormatter(v, false) : v)
+                                                            }</p>
+                                                        </div>
+                                                    )
+                                                })}
+                                            </div>
+                                        </CardContent>
+                                    </Card>
+                                </TabsContent>
+                                <TabsContent value="ItemDocumentTab">
+                                    <Card>
+                                        <CardHeader>
+                                            <CardTitle>
+                                                Item Details
+                                            </CardTitle>
+                                            <CardDescription>
+                                                Document information of item '{data?.content?.item.name}'
+                                            </CardDescription>
+                                        </CardHeader>
+                                        <CardContent>
+                                            <div className={"grid md:grid-cols-2 lg:grid-cols-3 gap-4"}>
+                                                {item?.item_document && Object.entries(item.item_document!).map(([k, v]) => {
+                                                    const skippedKeys = ["id", "created_at", "updated_at", "item_id"]
+                                                    if (skippedKeys.includes(k, 0) || v === null) return
+                                                    return (
+                                                        <div>
+                                                            <h1 className="text-md font-semibold capitalize">{k.split("_").join(" ")}</h1>
+                                                            <p className={"line-clamp-4 truncate text-justify text-muted-foreground"}>{v ? "Yes" : "No"}</p>
+                                                        </div>
+                                                    )
+                                                })}
+                                            </div>
+                                        </CardContent>
+                                    </Card>
+                                </TabsContent>
+                                <TabsContent value="ItemGradeTab">
+                                    <Card>
+                                        <CardHeader>
+                                            <CardTitle>
+                                                Item Details
+                                            </CardTitle>
+                                            <CardDescription>
+                                                Grades of item '{data?.content?.item.name}'
+                                            </CardDescription>
+                                        </CardHeader>
+                                        <CardContent>
+                                            <div className={"grid md:grid-cols-2 lg:grid-cols-3 gap-4"}>
+                                                {item?.item_grade && Object.entries(item.item_grade!).map(([k, v]) => {
+                                                    const skippedKeys = ["id", "created_at", "updated_at", "item_id"]
+                                                    if (skippedKeys.includes(k, 0) || v === null) return
+                                                    return (
+                                                        <div>
+                                                            <h1 className="text-md font-semibold capitalize">{k.split("_").join(" ")}</h1>
+                                                            <p className={"line-clamp-4 truncate text-justify text-muted-foreground capitalize"}>{v}</p>
+                                                        </div>
+                                                    )
+                                                })}
+                                            </div>
+                                        </CardContent>
+                                    </Card>
+                                </TabsContent>
+                                <TabsContent value="OrganizerTab">
+                                    <Card>
+                                        <CardHeader>
+                                            <CardTitle>
+                                                Organizer
+                                            </CardTitle>
+                                            <CardDescription>
+                                                Organizer Information
+                                            </CardDescription>
+                                        </CardHeader>
+                                        <CardContent>
+                                            <div className={"grid md:grid-cols-2 gap-4"}>
+                                                {organizer && Object.entries(organizer!).map(([k, v]) => {
+                                                    const skippedKeys = ["id", "created_at", "updated_at"]
+                                                    if (skippedKeys.includes(k, 0) || v === null) return
+                                                    return (
+                                                        <div>
+                                                            <h1 className="text-md font-semibold capitalize">{k.split("_").join(" ")}</h1>
+                                                            <p className={"line-clamp-4 truncate text-justify text-muted-foreground capitalize"}>{v.toString()}</p>
+                                                        </div>
+                                                    )
+                                                })}
+                                            </div>
+                                        </CardContent>
+                                    </Card>
+                                </TabsContent>
+                                <TabsContent value="PicTab">
+                                    <Card>
+                                        <CardHeader>
+                                            <CardTitle>
+                                                PIC
+                                            </CardTitle>
+                                            <CardDescription>
+                                                PIC Information
+                                            </CardDescription>
+                                        </CardHeader>
+                                        <CardContent>
+                                            <div className={"grid md:grid-cols-2 gap-4"}>
+                                                {pic && Object.entries(pic!).map(([k, v]) => {
+                                                    const skippedKeys = ["id", "created_at", "updated_at"]
+                                                    if (skippedKeys.includes(k, 0) || v === null) return
+                                                    return (
+                                                        <div>
+                                                            <h1 className="text-md font-semibold capitalize">{k.split("_").join(" ")}</h1>
+                                                            <p className={"line-clamp-4 truncate text-justify text-muted-foreground capitalize"}>{v.toString()}</p>
+                                                        </div>
+                                                    )
+                                                })}
+                                            </div>
+                                        </CardContent>
+                                    </Card>
+                                </TabsContent>
+                            </TabsContents>
+                        </Tabs>
                     </div>
                 </div>
             </div>
