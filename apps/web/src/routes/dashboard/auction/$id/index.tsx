@@ -12,7 +12,7 @@ import {
     CarouselPrevious
 } from "@/components/ui/carousel";
 import {Button} from "@/components/ui/button";
-import {EditIcon, Trash} from "lucide-react";
+import {EditIcon, SquareArrowOutUpRight, Trash} from "lucide-react";
 import {Badge} from "@/components/ui/badge";
 import {Tabs, TabsContent, TabsContents, TabsList, TabsTrigger} from "@/components/animate-ui/radix/tabs";
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
@@ -116,13 +116,21 @@ function RouteComponent() {
                 <div className="flex items-center space-x-1.5">
                     <span className="font-medium">Organizer:</span>
                     <span className="text-muted-foreground">
-                        {data?.content?.organizer.name}
+                        <Link className={"flex items-center gap-1"} to={"/dashboard/organizer/$id"}
+                              params={{id: organizer?.id.toString()!}}>
+                            {organizer?.name}
+                            <SquareArrowOutUpRight size={12}/>
+                        </Link>
                     </span>
                 </div>
                 <div className="flex items-center space-x-1.5">
                     <span className="font-medium">PIC Name:</span>
                     <span className="text-muted-foreground">
-                        {data?.content?.pic.name}
+                        <Link className={"flex items-center gap-1"} to={"/dashboard/pic/$id"}
+                              params={{id: pic?.id.toString()!}}>
+                            {pic?.name}
+                            <SquareArrowOutUpRight size={12}/>
+                        </Link>
                     </span>
                 </div>
                 <div className="flex items-center space-x-1.5">
