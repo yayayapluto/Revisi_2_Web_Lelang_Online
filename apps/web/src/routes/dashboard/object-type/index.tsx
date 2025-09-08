@@ -1,11 +1,12 @@
-import {createFileRoute, useNavigate} from '@tanstack/react-router'
+import {createFileRoute} from '@tanstack/react-router'
 import {Button} from "@/components/ui/button";
-import {PlusCircleIcon} from "lucide-react";
+import {Loader, PlusCircleIcon} from "lucide-react";
 import {GenericDataTable} from "@/components/generic-data-table";
 import type {ObjectType} from "@/types/objectType";
 import {ObjectTypeColumn} from "@/columns/objectTypeColumn";
 import {
-    Sheet, SheetClose,
+    Sheet,
+    SheetClose,
     SheetContent,
     SheetDescription,
     SheetFooter,
@@ -13,51 +14,127 @@ import {
     SheetTitle,
     SheetTrigger
 } from "@/components/ui/sheet";
+import {type AnyFieldApi, useForm} from "@tanstack/react-form";
+import {z} from "zod";
 import {Label} from "@/components/ui/label";
 import {Input} from "@/components/ui/input";
+import {useEntityCreate} from "@/hooks/use-entity-create";
 
 export const Route = createFileRoute('/dashboard/object-type/')({
     component: RouteComponent,
 })
 
+function FieldInfo({field}: { field: AnyFieldApi }) {
+    return (
+        <>
+            {field.state.meta.isTouched && !field.state.meta.isValid ? (
+                <p className={"text-sm text-red-500"}>
+                    {field.state.meta.errors.join(', ')}
+                </p>
+            ) : null}
+            {/*{field.state.meta.isValidating ? <Loader className={"animate-spin"} /> : null}*/}
+        </>
+    )
+}
+
 function RouteComponent() {
     const entity = "Object Type"
-    const navigate = useNavigate()
+    const {mutate} = useEntityCreate("objectTypes");
+
+
+    const form = useForm({
+        defaultValues: {
+            name: "",
+        },
+        onSubmit: async ({value}) => {
+            mutate({data: value})
+        },
+    })
+
     return (
-        <div className={"space-y-4"}>
-            <div className="flex justify-between">
+        <div className="space-y-4">
+            <div className="flex justify-between items-center">
                 <h1 className="text-2xl font-semibold tracking-wide capitalize">
                     {entity}
                 </h1>
                 <Sheet>
-                    <SheetTrigger>
-                        <Button className={"cursor-pointer capitalize"}>
-                            <PlusCircleIcon/> Add {entity}
+                    <SheetTrigger asChild>
+                        <Button className="capitalize">
+                            <PlusCircleIcon className="mr-2 h-4 w-4"/> Add {entity}
                         </Button>
                     </SheetTrigger>
                     <SheetContent>
                         <SheetHeader>
                             <SheetTitle>Add New {entity}</SheetTitle>
                             <SheetDescription>
-                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Earum fugit harum laboriosam nulla quis totam!
+                                Fill in the details for a new {entity}.
                             </SheetDescription>
                         </SheetHeader>
-                        <div className="grid flex-1 auto-rows-min gap-4 px-4">
-                            <div className="grid gap-3">
-                                <Label htmlFor="new-objectType-name">Name</Label>
-                                <Input id="new-objectType-name" />
-                            </div>
-                        </div>
-                        <SheetFooter>
-                            <Button>Finish</Button>
-                            <Button variant={"outline"}>Revert</Button>
+
+                        {/* form body */}
+                        <form
+                            id="objectType-form"
+                            onSubmit={e => {
+                                e.preventDefault()
+                                e.stopPropagation()
+                                form.handleSubmit()
+                            }}
+                            className="grid flex-1 auto-rows-min gap-4 py-4 px-4"
+                        >
+                            <form.Field
+                                name="name"
+                                validators={{
+                                    onBlur: ({ value }) =>
+                                        !value
+                                            ? "A name is required"
+                                            : value.length < 3
+                                                ? "Name must be at least 3 characters"
+                                                : undefined,
+                                }}
+                                children={(field) => (
+                                    <div className="grid gap-3">
+                                        <Label htmlFor={field.name}>Name</Label>
+                                        <Input
+                                            id={field.name}
+                                            name={field.name}
+                                            value={field.state.value}
+                                            onBlur={field.handleBlur}
+                                            onChange={(e) => field.handleChange(e.target.value)}
+                                        />
+                                        <FieldInfo field={field} />
+                                    </div>
+                                )}
+                            />
+
+                            {/* hidden submit biar bisa di-trigger */}
+                            <button type="submit" hidden />
+                        </form>
+
+                        {/* footer di luar form */}
+                        <SheetFooter className="pt-4">
+                            <form.Subscribe
+                                selector={(state) => [state.canSubmit, state.isSubmitting]}
+                                children={([canSubmit, isSubmitting]) => (
+                                    <Button
+                                        type="submit"
+                                        form="objectType-form" // ⬅️ penting, nge-link ke form di atas
+                                        disabled={!canSubmit}
+                                    >
+                                        {isSubmitting ? "..." : "Submit"}
+                                    </Button>
+                                )}
+                            />
+                            <SheetClose asChild>
+                                <Button variant="outline" type="button">
+                                    Cancel
+                                </Button>
+                            </SheetClose>
                         </SheetFooter>
                     </SheetContent>
+
                 </Sheet>
             </div>
-            {/*<div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">*/}
-            {/*    {[1, 2, 3, 4].map(() => (<Skeleton className={"h-40 rounded-lg"}/>))}*/}
-            {/*</div>*/}
+
             <GenericDataTable<ObjectType>
                 entity="objectTypes"
                 columns={ObjectTypeColumn}

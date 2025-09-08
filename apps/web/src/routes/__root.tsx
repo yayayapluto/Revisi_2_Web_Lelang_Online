@@ -48,7 +48,7 @@ function RootComponent() {
                         ? <Loader/>
                         : <Outlet/>}
                 </div>
-                <Toaster richColors/>
+                <Toaster richColors position={"bottom-left"}/>
             </ThemeProvider>
             {/*<TanStackRouterDevtools position="bottom-left" />*/}
         </>
