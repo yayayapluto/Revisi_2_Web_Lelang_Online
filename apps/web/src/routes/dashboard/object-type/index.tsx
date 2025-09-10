@@ -19,29 +19,15 @@ import {z} from "zod";
 import {Label} from "@/components/ui/label";
 import {Input} from "@/components/ui/input";
 import {useEntityCreate} from "@/hooks/use-entity-create";
+import {FieldInfo} from "@/components/field-info";
 
 export const Route = createFileRoute('/dashboard/object-type/')({
     component: RouteComponent,
 })
 
-function FieldInfo({field}: { field: AnyFieldApi }) {
-    return (
-        <>
-            {field.state.meta.isTouched && !field.state.meta.isValid ? (
-                <p className={"text-sm text-red-500"}>
-                    {field.state.meta.errors.join(', ')}
-                </p>
-            ) : null}
-            {/*{field.state.meta.isValidating ? <Loader className={"animate-spin"} /> : null}*/}
-        </>
-    )
-}
-
 function RouteComponent() {
     const entity = "Object Type"
     const {mutate} = useEntityCreate("objectTypes");
-
-
     const form = useForm({
         defaultValues: {
             name: "",
@@ -71,7 +57,6 @@ function RouteComponent() {
                             </SheetDescription>
                         </SheetHeader>
 
-                        {/* form body */}
                         <form
                             id="objectType-form"
                             onSubmit={e => {
