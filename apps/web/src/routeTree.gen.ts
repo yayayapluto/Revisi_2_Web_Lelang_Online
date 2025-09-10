@@ -16,7 +16,6 @@ import { Route as DashboardOrganizerIndexRouteImport } from './routes/dashboard/
 import { Route as DashboardObjectTypeIndexRouteImport } from './routes/dashboard/object-type/index'
 import { Route as DashboardItemIndexRouteImport } from './routes/dashboard/item/index'
 import { Route as DashboardAuctionIndexRouteImport } from './routes/dashboard/auction/index'
-import { Route as DashboardItemCreateRouteImport } from './routes/dashboard/item/create'
 import { Route as DashboardAuctionCreateRouteImport } from './routes/dashboard/auction/create'
 import { Route as DashboardPicIdIndexRouteImport } from './routes/dashboard/pic/$id/index'
 import { Route as DashboardOrganizerIdIndexRouteImport } from './routes/dashboard/organizer/$id/index'
@@ -63,11 +62,6 @@ const DashboardItemIndexRoute = DashboardItemIndexRouteImport.update({
 const DashboardAuctionIndexRoute = DashboardAuctionIndexRouteImport.update({
   id: '/auction/',
   path: '/auction/',
-  getParentRoute: () => DashboardRouteRoute,
-} as any)
-const DashboardItemCreateRoute = DashboardItemCreateRouteImport.update({
-  id: '/item/create',
-  path: '/item/create',
   getParentRoute: () => DashboardRouteRoute,
 } as any)
 const DashboardAuctionCreateRoute = DashboardAuctionCreateRouteImport.update({
@@ -134,7 +128,6 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/dashboard': typeof DashboardRouteRouteWithChildren
   '/dashboard/auction/create': typeof DashboardAuctionCreateRoute
-  '/dashboard/item/create': typeof DashboardItemCreateRoute
   '/dashboard/auction': typeof DashboardAuctionIndexRoute
   '/dashboard/item': typeof DashboardItemIndexRoute
   '/dashboard/object-type': typeof DashboardObjectTypeIndexRoute
@@ -155,7 +148,6 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/dashboard': typeof DashboardRouteRouteWithChildren
   '/dashboard/auction/create': typeof DashboardAuctionCreateRoute
-  '/dashboard/item/create': typeof DashboardItemCreateRoute
   '/dashboard/auction': typeof DashboardAuctionIndexRoute
   '/dashboard/item': typeof DashboardItemIndexRoute
   '/dashboard/object-type': typeof DashboardObjectTypeIndexRoute
@@ -177,7 +169,6 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/dashboard': typeof DashboardRouteRouteWithChildren
   '/dashboard/auction/create': typeof DashboardAuctionCreateRoute
-  '/dashboard/item/create': typeof DashboardItemCreateRoute
   '/dashboard/auction/': typeof DashboardAuctionIndexRoute
   '/dashboard/item/': typeof DashboardItemIndexRoute
   '/dashboard/object-type/': typeof DashboardObjectTypeIndexRoute
@@ -200,7 +191,6 @@ export interface FileRouteTypes {
     | '/'
     | '/dashboard'
     | '/dashboard/auction/create'
-    | '/dashboard/item/create'
     | '/dashboard/auction'
     | '/dashboard/item'
     | '/dashboard/object-type'
@@ -221,7 +211,6 @@ export interface FileRouteTypes {
     | '/'
     | '/dashboard'
     | '/dashboard/auction/create'
-    | '/dashboard/item/create'
     | '/dashboard/auction'
     | '/dashboard/item'
     | '/dashboard/object-type'
@@ -242,7 +231,6 @@ export interface FileRouteTypes {
     | '/'
     | '/dashboard'
     | '/dashboard/auction/create'
-    | '/dashboard/item/create'
     | '/dashboard/auction/'
     | '/dashboard/item/'
     | '/dashboard/object-type/'
@@ -314,13 +302,6 @@ declare module '@tanstack/react-router' {
       path: '/auction'
       fullPath: '/dashboard/auction'
       preLoaderRoute: typeof DashboardAuctionIndexRouteImport
-      parentRoute: typeof DashboardRouteRoute
-    }
-    '/dashboard/item/create': {
-      id: '/dashboard/item/create'
-      path: '/item/create'
-      fullPath: '/dashboard/item/create'
-      preLoaderRoute: typeof DashboardItemCreateRouteImport
       parentRoute: typeof DashboardRouteRoute
     }
     '/dashboard/auction/create': {
@@ -405,7 +386,6 @@ declare module '@tanstack/react-router' {
 
 interface DashboardRouteRouteChildren {
   DashboardAuctionCreateRoute: typeof DashboardAuctionCreateRoute
-  DashboardItemCreateRoute: typeof DashboardItemCreateRoute
   DashboardAuctionIndexRoute: typeof DashboardAuctionIndexRoute
   DashboardItemIndexRoute: typeof DashboardItemIndexRoute
   DashboardObjectTypeIndexRoute: typeof DashboardObjectTypeIndexRoute
@@ -425,7 +405,6 @@ interface DashboardRouteRouteChildren {
 
 const DashboardRouteRouteChildren: DashboardRouteRouteChildren = {
   DashboardAuctionCreateRoute: DashboardAuctionCreateRoute,
-  DashboardItemCreateRoute: DashboardItemCreateRoute,
   DashboardAuctionIndexRoute: DashboardAuctionIndexRoute,
   DashboardItemIndexRoute: DashboardItemIndexRoute,
   DashboardObjectTypeIndexRoute: DashboardObjectTypeIndexRoute,

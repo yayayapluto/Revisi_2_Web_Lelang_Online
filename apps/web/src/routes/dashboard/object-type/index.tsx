@@ -27,6 +27,7 @@ export const Route = createFileRoute('/dashboard/object-type/')({
 
 function RouteComponent() {
     const entity = "Object Type"
+
     const {mutate} = useEntityCreate("objectTypes");
     const form = useForm({
         defaultValues: {

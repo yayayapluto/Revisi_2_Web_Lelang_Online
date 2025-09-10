@@ -39,7 +39,6 @@ const DATA = [
                 icon: BoxIcon,
                 items: [
                     {title: 'All', url: "/dashboard/object-type"},
-                    {title: 'Add New', url: "#"},
                 ],
             },
             {
@@ -48,7 +47,6 @@ const DATA = [
                 icon: FileTextIcon,
                 items: [
                     {title: 'All', url: "/dashboard/item"},
-                    {title: 'Add New', url: "#"},
                 ],
             },
             {
@@ -57,7 +55,6 @@ const DATA = [
                 icon: Users,
                 items: [
                     {title: 'All', url: "/dashboard/organizer"},
-                    {title: 'Add New', url: "#"},
                 ],
             },
             {
@@ -66,7 +63,6 @@ const DATA = [
                 icon: Contact,
                 items: [
                     {title: 'All', url: "/dashboard/pic"},
-                    {title: 'Add New', url: "#"},
                 ],
             },
         ],
@@ -80,7 +76,7 @@ const DATA = [
                 icon: Gavel,
                 items: [
                     {title: 'All', url: "/dashboard/auction"},
-                    {title: 'Add New', url: "#"},
+                    {title: 'Add New', url: "/dashboard/auction/create"},
                 ],
             },
             {

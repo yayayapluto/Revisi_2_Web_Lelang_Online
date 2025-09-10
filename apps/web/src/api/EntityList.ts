@@ -13,11 +13,11 @@ export const GetEntityList = <T>({
                                      sortDir,
                                  }: {
     entity: string
-    search: string
-    page: number
-    size: number
-    sortBy: string
-    sortDir: string
+    search?: string
+    page?: number
+    size?: number
+    sortBy?: string
+    sortDir?: string
 }) => {
     return axios
         .get<ApiResponse<Pagination<T>>>(`http://127.0.0.1:8080/api/${entity}`, {
