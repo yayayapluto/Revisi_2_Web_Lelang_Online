@@ -6,7 +6,7 @@ import {GenericDataTable} from "@/components/generic-data-table";
 import {PicColumn} from "@/columns/picColumn";
 import type {Pic} from "@/types/pic";
 import {
-    Sheet,
+    Sheet, SheetClose,
     SheetContent,
     SheetDescription,
     SheetFooter,
@@ -16,6 +16,11 @@ import {
 } from "@/components/ui/sheet";
 import {Label} from "@/components/ui/label";
 import {Input} from "@/components/ui/input";
+import {useEntityCreate} from "@/hooks/use-entity-create";
+import {useForm} from "@tanstack/react-form";
+import {OrganizerSchema} from "@/schemas/organizerSchema";
+import {PicSchema} from "@/schemas/picSchema";
+import {FieldInfo} from "@/components/field-info";
 
 export const Route = createFileRoute('/dashboard/pic/')({
     component: RouteComponent,
@@ -23,7 +28,24 @@ export const Route = createFileRoute('/dashboard/pic/')({
 
 function RouteComponent() {
     const entity = "Pic"
-    const navigate = useNavigate()
+
+    const {mutate} = useEntityCreate("pics");
+    const form = useForm({
+        defaultValues: {
+            name: "",
+            phone_number: "",
+        },
+
+        validators: {
+            onChange: PicSchema,
+        },
+
+        onSubmit: async ({value}) => {
+            console.log(value)
+            mutate({data: value})
+        },
+    })
+
     return (
         <div className={"space-y-4"}>
             <div className="flex justify-between">
@@ -43,19 +65,72 @@ function RouteComponent() {
                                 Lorem ipsum dolor sit amet, consectetur adipisicing elit. Earum fugit harum laboriosam nulla quis totam!
                             </SheetDescription>
                         </SheetHeader>
-                        <div className="grid flex-1 auto-rows-min gap-4 px-4">
-                            <div className="grid gap-3">
-                                <Label htmlFor="new-pic-name">Name</Label>
-                                <Input id="new-pic-name" />
-                            </div>
-                            <div className="grid gap-3">
-                                <Label htmlFor="new-pic-phoneNumber">Phone Number</Label>
-                                <Input id="new-pic-phoneNumber" />
-                            </div>
-                        </div>
-                        <SheetFooter>
-                            <Button>Finish</Button>
-                            <Button variant={"outline"}>Revert</Button>
+
+                        <form
+                            id="pic-form"
+                            onSubmit={e => {
+                                e.preventDefault()
+                                e.stopPropagation()
+                                form.handleSubmit()
+                            }}
+                            className="grid flex-1 auto-rows-min gap-4 py-4 px-4"
+                        >
+                            <form.Field
+                                name="name"
+                                children={(field) => (
+                                    <div className="grid gap-3">
+                                        <Label htmlFor={field.name}>Name</Label>
+                                        <Input
+                                            id={field.name}
+                                            name={field.name}
+                                            value={field.state.value}
+                                            onBlur={field.handleBlur}
+                                            onChange={(e) => field.handleChange(e.target.value)}
+                                        />
+                                        <FieldInfo field={field}/>
+                                    </div>
+                                )}
+                            />
+
+                            <form.Field
+                                name="phone_number"
+                                children={(field) => (
+                                    <div className="grid gap-3">
+                                        <Label htmlFor={field.name} className={"capitalize"}>{field.name.split("_").join(" ")}</Label>
+                                        <Input
+                                            id={field.name}
+                                            type={"number"}
+                                            name={field.name}
+                                            value={field.state.value}
+                                            onBlur={field.handleBlur}
+                                            onChange={(e) => field.handleChange(e.target.value as string)}
+                                        />
+                                        <FieldInfo field={field}/>
+                                    </div>
+                                )}
+                            />
+
+                            <button type="submit" hidden/>
+                        </form>
+
+                        <SheetFooter className="pt-4">
+                            <form.Subscribe
+                                selector={(state) => [state.canSubmit, state.isSubmitting]}
+                                children={([canSubmit, isSubmitting]) => (
+                                    <Button
+                                        type="submit"
+                                        form="pic-form"
+                                        disabled={!canSubmit}
+                                    >
+                                        {isSubmitting ? "..." : "Submit"}
+                                    </Button>
+                                )}
+                            />
+                            <SheetClose asChild>
+                                <Button variant="outline" type="button">
+                                    Cancel
+                                </Button>
+                            </SheetClose>
                         </SheetFooter>
                     </SheetContent>
                 </Sheet>
