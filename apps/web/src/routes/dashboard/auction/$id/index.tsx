@@ -248,7 +248,7 @@ function RouteComponent() {
                                             <div className={"grid md:grid-cols-2 lg:grid-cols-3 gap-4"}>
                                                 {item?.item_detail && Object.entries(item.item_detail!).map(([k, v]) => {
                                                     const skippedKeys = ["id", "created_at", "updated_at", "item_id"]
-                                                    if (skippedKeys.includes(k, 0) || v === null) return
+                                                    if (skippedKeys.includes(k, 0) || v === null || v === "" || v == 0) return
                                                     return (
                                                         <div>
                                                             <h1 className="text-md font-semibold capitalize">{k.split("_").join(" ")}</h1>
