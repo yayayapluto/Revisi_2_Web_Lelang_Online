@@ -73,7 +73,9 @@ export const AuctionColumn: ColumnDef<Auction>[] = [
     },
     {
         accessorKey: "created_at",
-        header: "Created At",
+        header: ({column}) => (
+            <DataTableColumnHeader column={column} title={"Crated At"}/>
+        ),
         cell: ({row}) => new Date(Date.parse(row.original.created_at)).toLocaleString(),
     },
     {
