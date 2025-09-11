@@ -41,14 +41,14 @@ const DATA = [
                     {title: 'All', url: "/dashboard/object-type"},
                 ],
             },
-            {
-                title: 'Item',
-                url: '/dashboard/item',
-                icon: FileTextIcon,
-                items: [
-                    {title: 'All', url: "/dashboard/item"},
-                ],
-            },
+            // {
+            //     title: 'Item',
+            //     url: '/dashboard/item',
+            //     icon: FileTextIcon,
+            //     items: [
+            //         {title: 'All', url: "/dashboard/item"},
+            //     ],
+            // },
             {
                 title: 'Organizer',
                 url: '/dashboard/organizer',

@@ -41,16 +41,16 @@ export const AuctionColumn: ColumnDef<Auction>[] = [
         ),
         cell: ({row}) => DateFormatter(row.original.end_date)
     },
-    {
-        accessorKey: "item.name",
-        header: "Item",
-        cell: ({row}) => (
-            <Link className={"flex items-center gap-1"} to={"/dashboard/item/$id"} params={{id: row.original.item.id.toString()}}>
-                {row.original.item.name}
-                <SquareArrowOutUpRight size={12}/>
-            </Link>
-        )
-    },
+    // {
+    //     accessorKey: "item.name",
+    //     header: "Item",
+    //     cell: ({row}) => (
+    //         <Link className={"flex items-center gap-1"} to={"/dashboard/item/$id"} params={{id: row.original.item.id.toString()}}>
+    //             {row.original.item.name}
+    //             <SquareArrowOutUpRight size={12}/>
+    //         </Link>
+    //     )
+    // },
     {
         accessorKey: "organizer.name",
         header: "Organizer",
