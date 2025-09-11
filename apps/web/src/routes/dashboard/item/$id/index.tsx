@@ -64,7 +64,7 @@ function RouteComponent() {
                                     <img
                                         src={item}
                                         loading="lazy"
-                                        className="size-full rounded"
+                                        className="size-full aspect-square object-cover rounded"
                                         alt=""
                                     />
                                 </CarouselItem>
@@ -81,7 +81,7 @@ function RouteComponent() {
                                         src={item}
                                         loading="lazy"
                                         className={`
-                                    w-full h-auto aspect-square cursor-pointer rounded transition-opacity duration-300 ease-in-out
+                                    size-full aspect-square object-cover rounded cursor-pointer transition-opacity duration-300 ease-in-out
                                     ${current === (i + 1)
                                             ? 'opacity-100'
                                             : 'opacity-50 hover:opacity-75'
