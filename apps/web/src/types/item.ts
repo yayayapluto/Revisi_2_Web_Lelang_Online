@@ -5,6 +5,7 @@ import type {ItemDetail} from "@/types/itemDetail";
 import type {ItemDocument} from "@/types/itemDocument";
 import type {ItemGrade} from "@/types/itemGrade";
 import type {ItemThumbnail} from "@/types/itemThumbnail";
+import type {Auction} from "@/types/auction";
 
 export type Item = Mandatory & {
     object_type_id: number
@@ -19,4 +20,5 @@ export type Item = Mandatory & {
     item_document?: ItemDocument
     item_grade?: ItemGrade
     item_thumbnails?: ItemThumbnail[]
+    auction?: Auction
 }

@@ -70,6 +70,8 @@ function RouteComponent() {
     const organizer = auction?.organizer
     const pic = auction?.pic
 
+    const objectType = auction?.item.object_type
+
     const auctionDuration = Math.ceil(
         Math.abs(new Date(auction?.start_date!).getTime() - new Date(auction?.end_date!).getTime()) / (1000 * 60 * 60 * 24)
     )
@@ -96,7 +98,7 @@ function RouteComponent() {
                     </Button>
                 </div>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 text-sm">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
                 <div className="flex items-center space-x-1.5">
                     <span className="font-medium">Created at:</span>
                     <span className="text-muted-foreground">
@@ -112,6 +114,16 @@ function RouteComponent() {
                             ? new Date(data.content.updated_at).toLocaleString()
                             : '—'}
                       </span>
+                </div>
+                <div className="flex items-center space-x-1.5">
+                    <span className="font-medium">Object Type:</span>
+                    <span className="text-muted-foreground">
+                        <Link className={"flex items-center gap-1"} to={"/dashboard/object-type/$id"}
+                              params={{id: objectType?.id.toString()!}}>
+                            {objectType?.name}
+                            <SquareArrowOutUpRight size={12}/>
+                        </Link>
+                    </span>
                 </div>
                 <div className="flex items-center space-x-1.5">
                     <span className="font-medium">Organizer:</span>
@@ -217,6 +229,7 @@ function RouteComponent() {
                                 <TabsTrigger value="ItemDetailTab">Item Detail</TabsTrigger>
                                 <TabsTrigger value="ItemDocumentTab">Item Document</TabsTrigger>
                                 <TabsTrigger value="ItemGradeTab">Item Grade</TabsTrigger>
+                                <TabsTrigger value="ObjectTypeTab">Object Type</TabsTrigger>
                                 <TabsTrigger value="OrganizerTab">Organizer</TabsTrigger>
                                 <TabsTrigger value="PicTab">PIC</TabsTrigger>
                             </TabsList>
@@ -314,6 +327,32 @@ function RouteComponent() {
                                         <CardContent>
                                             <div className={"grid md:grid-cols-2 gap-4"}>
                                                 {organizer && Object.entries(organizer!).map(([k, v]) => {
+                                                    const skippedKeys = ["id", "created_at", "updated_at"]
+                                                    if (skippedKeys.includes(k, 0) || v === null) return
+                                                    return (
+                                                        <div>
+                                                            <h1 className="text-md font-semibold capitalize">{k.split("_").join(" ")}</h1>
+                                                            <p className={"line-clamp-4 truncate text-justify text-muted-foreground capitalize"}>{v.toString()}</p>
+                                                        </div>
+                                                    )
+                                                })}
+                                            </div>
+                                        </CardContent>
+                                    </Card>
+                                </TabsContent>
+                                <TabsContent value="ObjectTypeTab">
+                                    <Card>
+                                        <CardHeader>
+                                            <CardTitle>
+                                                Object Type
+                                            </CardTitle>
+                                            <CardDescription>
+                                                Object Type Information
+                                            </CardDescription>
+                                        </CardHeader>
+                                        <CardContent>
+                                            <div className={"grid md:grid-cols-2 gap-4"}>
+                                                {objectType && Object.entries(objectType!).map(([k, v]) => {
                                                     const skippedKeys = ["id", "created_at", "updated_at"]
                                                     if (skippedKeys.includes(k, 0) || v === null) return
                                                     return (

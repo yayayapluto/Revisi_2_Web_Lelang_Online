@@ -193,33 +193,36 @@ function RouteComponent() {
                     <h1 className="text-xl font-semibold">Items List</h1>
                     <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
                         {data?.content?.items!.map((item) => {
-                            return (
-                                <Card className={"p-1 lg:p-2"}>
-                                    <CardHeader className={"p-1 lg:p-2"}>
-                                        <img className={"rounded-sm size-full"} src={item.file.path} alt=""/>
-                                        <CardTitle className={"text-sm md:text-sm capitalize"}>
-                                            {item.name}
-                                        </CardTitle>
-                                        <CardDescription className={"text-xs md:text-sm w-full"}>
-                                            <div className={"grid grid-cols-2 text-xs md:text-sm"}>
-                                                <p>(Deposit)</p>
-                                                <p className={"md:text-end"}>{CurrencyFormatter(item.deposit_price)}</p>
-                                            </div>
-                                            <div className={"grid grid-cols-2 text-xs md:text-sm"}>
-                                                <p>(Price)</p>
-                                                <p className={"md:text-end"}>{CurrencyFormatter(item.price)}</p>
-                                            </div>
-                                        </CardDescription>
-                                    </CardHeader>
-                                    <CardFooter className={"p-1 lg:p-2"}>
-                                        <Link to={"/dashboard/item/$id"} params={{id: item.id.toString()}}>
-                                            <Button variant={"outline"} className={"w-full"}>
-                                                See Details
-                                            </Button>
-                                        </Link>
-                                    </CardFooter>
-                                </Card>
-                            )
+                            return item.auction == null ? null :
+                                (
+                                    <Card className={"p-1 lg:p-2"}>
+                                        <CardHeader className={"p-1 lg:p-2"}>
+                                            <img className={"rounded-sm size-full aspect-square object-cover"}
+                                                 src={item.file.path} alt={`thumbnail for ${item.name}`}/>
+                                            <CardTitle className={"text-sm md:text-sm capitalize"}>
+                                                {item.name}
+                                            </CardTitle>
+                                            <CardDescription className={"text-xs md:text-sm w-full"}>
+                                                <div className={"grid grid-cols-2 text-xs md:text-sm"}>
+                                                    <p>(Deposit)</p>
+                                                    <p className={"md:text-end"}>{CurrencyFormatter(item.deposit_price)}</p>
+                                                </div>
+                                                <div className={"grid grid-cols-2 text-xs md:text-sm"}>
+                                                    <p>(Price)</p>
+                                                    <p className={"md:text-end"}>{CurrencyFormatter(item.price)}</p>
+                                                </div>
+                                            </CardDescription>
+                                        </CardHeader>
+                                        <CardFooter className={"p-1 lg:p-2"}>
+                                            <Link to={"/dashboard/auction/$id"}
+                                                  params={{id: item.auction!.id.toString()}}>
+                                                <Button variant={"outline"} className={"w-full"}>
+                                                    See Details
+                                                </Button>
+                                            </Link>
+                                        </CardFooter>
+                                    </Card>
+                                )
                         })}
                     </div>
                 </div>
