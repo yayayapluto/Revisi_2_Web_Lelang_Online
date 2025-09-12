@@ -14,18 +14,15 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as DashboardPicIndexRouteImport } from './routes/dashboard/pic/index'
 import { Route as DashboardOrganizerIndexRouteImport } from './routes/dashboard/organizer/index'
 import { Route as DashboardObjectTypeIndexRouteImport } from './routes/dashboard/object-type/index'
-import { Route as DashboardItemIndexRouteImport } from './routes/dashboard/item/index'
 import { Route as DashboardAuctionIndexRouteImport } from './routes/dashboard/auction/index'
 import { Route as DashboardAuctionCreateRouteImport } from './routes/dashboard/auction/create'
 import { Route as DashboardPicIdIndexRouteImport } from './routes/dashboard/pic/$id/index'
 import { Route as DashboardOrganizerIdIndexRouteImport } from './routes/dashboard/organizer/$id/index'
 import { Route as DashboardObjectTypeIdIndexRouteImport } from './routes/dashboard/object-type/$id/index'
-import { Route as DashboardItemIdIndexRouteImport } from './routes/dashboard/item/$id/index'
 import { Route as DashboardAuctionIdIndexRouteImport } from './routes/dashboard/auction/$id/index'
 import { Route as DashboardPicIdEditRouteImport } from './routes/dashboard/pic/$id/edit'
 import { Route as DashboardOrganizerIdEditRouteImport } from './routes/dashboard/organizer/$id/edit'
 import { Route as DashboardObjectTypeIdEditRouteImport } from './routes/dashboard/object-type/$id/edit'
-import { Route as DashboardItemIdEditRouteImport } from './routes/dashboard/item/$id/edit'
 import { Route as DashboardAuctionIdEditRouteImport } from './routes/dashboard/auction/$id/edit'
 
 const DashboardRouteRoute = DashboardRouteRouteImport.update({
@@ -54,11 +51,6 @@ const DashboardObjectTypeIndexRoute =
     path: '/object-type/',
     getParentRoute: () => DashboardRouteRoute,
   } as any)
-const DashboardItemIndexRoute = DashboardItemIndexRouteImport.update({
-  id: '/item/',
-  path: '/item/',
-  getParentRoute: () => DashboardRouteRoute,
-} as any)
 const DashboardAuctionIndexRoute = DashboardAuctionIndexRouteImport.update({
   id: '/auction/',
   path: '/auction/',
@@ -86,11 +78,6 @@ const DashboardObjectTypeIdIndexRoute =
     path: '/object-type/$id/',
     getParentRoute: () => DashboardRouteRoute,
   } as any)
-const DashboardItemIdIndexRoute = DashboardItemIdIndexRouteImport.update({
-  id: '/item/$id/',
-  path: '/item/$id/',
-  getParentRoute: () => DashboardRouteRoute,
-} as any)
 const DashboardAuctionIdIndexRoute = DashboardAuctionIdIndexRouteImport.update({
   id: '/auction/$id/',
   path: '/auction/$id/',
@@ -113,11 +100,6 @@ const DashboardObjectTypeIdEditRoute =
     path: '/object-type/$id/edit',
     getParentRoute: () => DashboardRouteRoute,
   } as any)
-const DashboardItemIdEditRoute = DashboardItemIdEditRouteImport.update({
-  id: '/item/$id/edit',
-  path: '/item/$id/edit',
-  getParentRoute: () => DashboardRouteRoute,
-} as any)
 const DashboardAuctionIdEditRoute = DashboardAuctionIdEditRouteImport.update({
   id: '/auction/$id/edit',
   path: '/auction/$id/edit',
@@ -129,17 +111,14 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof DashboardRouteRouteWithChildren
   '/dashboard/auction/create': typeof DashboardAuctionCreateRoute
   '/dashboard/auction': typeof DashboardAuctionIndexRoute
-  '/dashboard/item': typeof DashboardItemIndexRoute
   '/dashboard/object-type': typeof DashboardObjectTypeIndexRoute
   '/dashboard/organizer': typeof DashboardOrganizerIndexRoute
   '/dashboard/pic': typeof DashboardPicIndexRoute
   '/dashboard/auction/$id/edit': typeof DashboardAuctionIdEditRoute
-  '/dashboard/item/$id/edit': typeof DashboardItemIdEditRoute
   '/dashboard/object-type/$id/edit': typeof DashboardObjectTypeIdEditRoute
   '/dashboard/organizer/$id/edit': typeof DashboardOrganizerIdEditRoute
   '/dashboard/pic/$id/edit': typeof DashboardPicIdEditRoute
   '/dashboard/auction/$id': typeof DashboardAuctionIdIndexRoute
-  '/dashboard/item/$id': typeof DashboardItemIdIndexRoute
   '/dashboard/object-type/$id': typeof DashboardObjectTypeIdIndexRoute
   '/dashboard/organizer/$id': typeof DashboardOrganizerIdIndexRoute
   '/dashboard/pic/$id': typeof DashboardPicIdIndexRoute
@@ -149,17 +128,14 @@ export interface FileRoutesByTo {
   '/dashboard': typeof DashboardRouteRouteWithChildren
   '/dashboard/auction/create': typeof DashboardAuctionCreateRoute
   '/dashboard/auction': typeof DashboardAuctionIndexRoute
-  '/dashboard/item': typeof DashboardItemIndexRoute
   '/dashboard/object-type': typeof DashboardObjectTypeIndexRoute
   '/dashboard/organizer': typeof DashboardOrganizerIndexRoute
   '/dashboard/pic': typeof DashboardPicIndexRoute
   '/dashboard/auction/$id/edit': typeof DashboardAuctionIdEditRoute
-  '/dashboard/item/$id/edit': typeof DashboardItemIdEditRoute
   '/dashboard/object-type/$id/edit': typeof DashboardObjectTypeIdEditRoute
   '/dashboard/organizer/$id/edit': typeof DashboardOrganizerIdEditRoute
   '/dashboard/pic/$id/edit': typeof DashboardPicIdEditRoute
   '/dashboard/auction/$id': typeof DashboardAuctionIdIndexRoute
-  '/dashboard/item/$id': typeof DashboardItemIdIndexRoute
   '/dashboard/object-type/$id': typeof DashboardObjectTypeIdIndexRoute
   '/dashboard/organizer/$id': typeof DashboardOrganizerIdIndexRoute
   '/dashboard/pic/$id': typeof DashboardPicIdIndexRoute
@@ -170,17 +146,14 @@ export interface FileRoutesById {
   '/dashboard': typeof DashboardRouteRouteWithChildren
   '/dashboard/auction/create': typeof DashboardAuctionCreateRoute
   '/dashboard/auction/': typeof DashboardAuctionIndexRoute
-  '/dashboard/item/': typeof DashboardItemIndexRoute
   '/dashboard/object-type/': typeof DashboardObjectTypeIndexRoute
   '/dashboard/organizer/': typeof DashboardOrganizerIndexRoute
   '/dashboard/pic/': typeof DashboardPicIndexRoute
   '/dashboard/auction/$id/edit': typeof DashboardAuctionIdEditRoute
-  '/dashboard/item/$id/edit': typeof DashboardItemIdEditRoute
   '/dashboard/object-type/$id/edit': typeof DashboardObjectTypeIdEditRoute
   '/dashboard/organizer/$id/edit': typeof DashboardOrganizerIdEditRoute
   '/dashboard/pic/$id/edit': typeof DashboardPicIdEditRoute
   '/dashboard/auction/$id/': typeof DashboardAuctionIdIndexRoute
-  '/dashboard/item/$id/': typeof DashboardItemIdIndexRoute
   '/dashboard/object-type/$id/': typeof DashboardObjectTypeIdIndexRoute
   '/dashboard/organizer/$id/': typeof DashboardOrganizerIdIndexRoute
   '/dashboard/pic/$id/': typeof DashboardPicIdIndexRoute
@@ -192,17 +165,14 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/dashboard/auction/create'
     | '/dashboard/auction'
-    | '/dashboard/item'
     | '/dashboard/object-type'
     | '/dashboard/organizer'
     | '/dashboard/pic'
     | '/dashboard/auction/$id/edit'
-    | '/dashboard/item/$id/edit'
     | '/dashboard/object-type/$id/edit'
     | '/dashboard/organizer/$id/edit'
     | '/dashboard/pic/$id/edit'
     | '/dashboard/auction/$id'
-    | '/dashboard/item/$id'
     | '/dashboard/object-type/$id'
     | '/dashboard/organizer/$id'
     | '/dashboard/pic/$id'
@@ -212,17 +182,14 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/dashboard/auction/create'
     | '/dashboard/auction'
-    | '/dashboard/item'
     | '/dashboard/object-type'
     | '/dashboard/organizer'
     | '/dashboard/pic'
     | '/dashboard/auction/$id/edit'
-    | '/dashboard/item/$id/edit'
     | '/dashboard/object-type/$id/edit'
     | '/dashboard/organizer/$id/edit'
     | '/dashboard/pic/$id/edit'
     | '/dashboard/auction/$id'
-    | '/dashboard/item/$id'
     | '/dashboard/object-type/$id'
     | '/dashboard/organizer/$id'
     | '/dashboard/pic/$id'
@@ -232,17 +199,14 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/dashboard/auction/create'
     | '/dashboard/auction/'
-    | '/dashboard/item/'
     | '/dashboard/object-type/'
     | '/dashboard/organizer/'
     | '/dashboard/pic/'
     | '/dashboard/auction/$id/edit'
-    | '/dashboard/item/$id/edit'
     | '/dashboard/object-type/$id/edit'
     | '/dashboard/organizer/$id/edit'
     | '/dashboard/pic/$id/edit'
     | '/dashboard/auction/$id/'
-    | '/dashboard/item/$id/'
     | '/dashboard/object-type/$id/'
     | '/dashboard/organizer/$id/'
     | '/dashboard/pic/$id/'
@@ -290,13 +254,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardObjectTypeIndexRouteImport
       parentRoute: typeof DashboardRouteRoute
     }
-    '/dashboard/item/': {
-      id: '/dashboard/item/'
-      path: '/item'
-      fullPath: '/dashboard/item'
-      preLoaderRoute: typeof DashboardItemIndexRouteImport
-      parentRoute: typeof DashboardRouteRoute
-    }
     '/dashboard/auction/': {
       id: '/dashboard/auction/'
       path: '/auction'
@@ -332,13 +289,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardObjectTypeIdIndexRouteImport
       parentRoute: typeof DashboardRouteRoute
     }
-    '/dashboard/item/$id/': {
-      id: '/dashboard/item/$id/'
-      path: '/item/$id'
-      fullPath: '/dashboard/item/$id'
-      preLoaderRoute: typeof DashboardItemIdIndexRouteImport
-      parentRoute: typeof DashboardRouteRoute
-    }
     '/dashboard/auction/$id/': {
       id: '/dashboard/auction/$id/'
       path: '/auction/$id'
@@ -367,13 +317,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardObjectTypeIdEditRouteImport
       parentRoute: typeof DashboardRouteRoute
     }
-    '/dashboard/item/$id/edit': {
-      id: '/dashboard/item/$id/edit'
-      path: '/item/$id/edit'
-      fullPath: '/dashboard/item/$id/edit'
-      preLoaderRoute: typeof DashboardItemIdEditRouteImport
-      parentRoute: typeof DashboardRouteRoute
-    }
     '/dashboard/auction/$id/edit': {
       id: '/dashboard/auction/$id/edit'
       path: '/auction/$id/edit'
@@ -387,17 +330,14 @@ declare module '@tanstack/react-router' {
 interface DashboardRouteRouteChildren {
   DashboardAuctionCreateRoute: typeof DashboardAuctionCreateRoute
   DashboardAuctionIndexRoute: typeof DashboardAuctionIndexRoute
-  DashboardItemIndexRoute: typeof DashboardItemIndexRoute
   DashboardObjectTypeIndexRoute: typeof DashboardObjectTypeIndexRoute
   DashboardOrganizerIndexRoute: typeof DashboardOrganizerIndexRoute
   DashboardPicIndexRoute: typeof DashboardPicIndexRoute
   DashboardAuctionIdEditRoute: typeof DashboardAuctionIdEditRoute
-  DashboardItemIdEditRoute: typeof DashboardItemIdEditRoute
   DashboardObjectTypeIdEditRoute: typeof DashboardObjectTypeIdEditRoute
   DashboardOrganizerIdEditRoute: typeof DashboardOrganizerIdEditRoute
   DashboardPicIdEditRoute: typeof DashboardPicIdEditRoute
   DashboardAuctionIdIndexRoute: typeof DashboardAuctionIdIndexRoute
-  DashboardItemIdIndexRoute: typeof DashboardItemIdIndexRoute
   DashboardObjectTypeIdIndexRoute: typeof DashboardObjectTypeIdIndexRoute
   DashboardOrganizerIdIndexRoute: typeof DashboardOrganizerIdIndexRoute
   DashboardPicIdIndexRoute: typeof DashboardPicIdIndexRoute
@@ -406,17 +346,14 @@ interface DashboardRouteRouteChildren {
 const DashboardRouteRouteChildren: DashboardRouteRouteChildren = {
   DashboardAuctionCreateRoute: DashboardAuctionCreateRoute,
   DashboardAuctionIndexRoute: DashboardAuctionIndexRoute,
-  DashboardItemIndexRoute: DashboardItemIndexRoute,
   DashboardObjectTypeIndexRoute: DashboardObjectTypeIndexRoute,
   DashboardOrganizerIndexRoute: DashboardOrganizerIndexRoute,
   DashboardPicIndexRoute: DashboardPicIndexRoute,
   DashboardAuctionIdEditRoute: DashboardAuctionIdEditRoute,
-  DashboardItemIdEditRoute: DashboardItemIdEditRoute,
   DashboardObjectTypeIdEditRoute: DashboardObjectTypeIdEditRoute,
   DashboardOrganizerIdEditRoute: DashboardOrganizerIdEditRoute,
   DashboardPicIdEditRoute: DashboardPicIdEditRoute,
   DashboardAuctionIdIndexRoute: DashboardAuctionIdIndexRoute,
-  DashboardItemIdIndexRoute: DashboardItemIdIndexRoute,
   DashboardObjectTypeIdIndexRoute: DashboardObjectTypeIdIndexRoute,
   DashboardOrganizerIdIndexRoute: DashboardOrganizerIdIndexRoute,
   DashboardPicIdIndexRoute: DashboardPicIdIndexRoute,
