@@ -4,12 +4,12 @@ import {EntityCreate} from "@/api/EntityCreate"
 import type {ApiResponse} from "@/types/apiResponse"
 import {EntityEdit} from "@/api/EntityEdit";
 
-export const useEntityEdit = <T = any>(entityName: string) => {
+export const useEntityEdit = <T = any>(entityName: string, nested?: string) => {
     const queryClient = useQueryClient()
 
     return useMutation<ApiResponse<T>, Error, { data: any; id: number | string }>({
         mutationFn: ({data, id}) =>
-            EntityEdit({entityName, data, id})
+            EntityEdit({entityName, data, id, nested})
                 .then((res) => {
                     toast.success(res.message)
                     return res

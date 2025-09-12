@@ -92,12 +92,12 @@ export const ItemColumn: ColumnDef<Item>[] = [
                     <DropdownMenuContent>
                         <DropdownMenuLabel>Actions</DropdownMenuLabel>
                         <DropdownMenuSeparator/>
-                        <DropdownMenuItem>
-                            <Link to={"/dashboard/item/$id"} params={{id: `${row.original.id}`}}>View Details</Link>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem>
-                            <Link to={"/dashboard/item/$id/edit"} params={{id: `${row.original.id}`}}>Edit</Link>
-                        </DropdownMenuItem>
+                        {/*<DropdownMenuItem>*/}
+                        {/*    <Link to={"/dashboard/item/$id"} params={{id: `${row.original.id}`}}>View Details</Link>*/}
+                        {/*</DropdownMenuItem>*/}
+                        {/*<DropdownMenuItem>*/}
+                        {/*    <Link to={"/dashboard/item/$id/edit"} params={{id: `${row.original.id}`}}>Edit</Link>*/}
+                        {/*</DropdownMenuItem>*/}
                         <DropdownMenuItem onSelect={e => {
                             e.preventDefault()
                         }}>
