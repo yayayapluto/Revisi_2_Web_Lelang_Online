@@ -1,4 +1,4 @@
-import {createFileRoute, Link} from '@tanstack/react-router'
+import {createFileRoute, Link, useNavigate} from '@tanstack/react-router'
 import {useQuery} from "@tanstack/react-query";
 import {GetEntityDetail} from "@/api/EntityDetail";
 import type {Auction} from "@/types/auction";
@@ -17,6 +17,18 @@ import {Badge} from "@/components/ui/badge";
 import {Tabs, TabsContent, TabsContents, TabsList, TabsTrigger} from "@/components/animate-ui/radix/tabs";
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
 import {DateFormatter} from "@/utils/date-formatter";
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger
+} from "@/components/ui/alert-dialog";
+import {useEntityDelete} from "@/hooks/use-entity-delete";
 
 export const Route = createFileRoute('/dashboard/auction/$id/')({
     component: RouteComponent,
@@ -75,6 +87,9 @@ function RouteComponent() {
     const auctionDuration = Math.ceil(
         Math.abs(new Date(auction?.start_date!).getTime() - new Date(auction?.end_date!).getTime()) / (1000 * 60 * 60 * 24)
     )
+
+    const {mutate, isPending} = useEntityDelete("auctions")
+    const navigate = useNavigate()
     return (
         <div className={"space-y-4"}>
             <div className="flex flex-col gap-4 md:gap-0 md:flex-row md:items-center justify-between">
@@ -93,9 +108,38 @@ function RouteComponent() {
                             Edit
                         </Button>
                     </Link>
-                    <Button variant="outline">
-                        <Trash className="h-4 w-4"/>
-                    </Button>
+                    <AlertDialog>
+                        <AlertDialogTrigger>
+                            <Button variant={"outline"}>
+                                <Trash/>
+                            </Button>
+                        </AlertDialogTrigger>
+                        <AlertDialogContent>
+                            <AlertDialogHeader>
+                                <AlertDialogTitle>Are you sure want to delete this auction?</AlertDialogTitle>
+                                <AlertDialogDescription>
+                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laborum,
+                                    perferendis!
+                                </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                <AlertDialogAction
+                                    onClick={() => {
+                                        mutate(
+                                            {id: auction!.id.toString()},
+                                            {
+                                                onSuccess: () => navigate({to: "/dashboard/auction"})
+                                            }
+                                        )
+                                    }}
+                                    disabled={isPending}
+                                >
+                                    {isPending ? "Deleting..." : "Delete"}
+                                </AlertDialogAction>
+                            </AlertDialogFooter>
+                        </AlertDialogContent>
+                    </AlertDialog>
                 </div>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">

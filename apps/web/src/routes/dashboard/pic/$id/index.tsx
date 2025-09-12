@@ -1,4 +1,4 @@
-import {createFileRoute, Link} from '@tanstack/react-router'
+import {createFileRoute, Link, useNavigate} from '@tanstack/react-router'
 import {useQuery} from "@tanstack/react-query";
 import {GetEntityDetail} from "@/api/EntityDetail";
 import {Skeleton} from "@/components/ui/skeleton";
@@ -9,6 +9,16 @@ import type {Pic} from "@/types/pic";
 import React from "react";
 import {DataTable} from "@/components/data-table";
 import {AuctionColumn} from "@/columns/auctionColumn";
+import {useEntityDelete} from "@/hooks/use-entity-delete";
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent, AlertDialogDescription, AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger
+} from "@/components/ui/alert-dialog";
 
 export const Route = createFileRoute('/dashboard/pic/$id/')({
     component: RouteComponent,
@@ -24,6 +34,9 @@ function RouteComponent() {
         })
     })
 
+    const {mutate, isPending} = useEntityDelete("pics")
+    const navigate = useNavigate()
+
     return (
         <div className={"space-y-4"}>
             <div className="flex flex-col gap-4 md:gap-0 md:flex-row md:items-center justify-between">
@@ -35,7 +48,38 @@ function RouteComponent() {
                             Edit
                         </Button>
                     </Link>
-                    <Button variant={"outline"}><Trash/></Button>
+                    <AlertDialog>
+                        <AlertDialogTrigger>
+                            <Button variant={"outline"}>
+                                <Trash/>
+                            </Button>
+                        </AlertDialogTrigger>
+                        <AlertDialogContent>
+                            <AlertDialogHeader>
+                                <AlertDialogTitle>Are you sure want to delete this auction?</AlertDialogTitle>
+                                <AlertDialogDescription>
+                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laborum,
+                                    perferendis!
+                                </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                <AlertDialogAction
+                                    onClick={() => {
+                                        mutate(
+                                            {id: data!.content!.id.toString()},
+                                            {
+                                                onSuccess: () => navigate({to: "/dashboard/pic"})
+                                            }
+                                        )
+                                    }}
+                                    disabled={isPending}
+                                >
+                                    {isPending ? "Deleting..." : "Delete"}
+                                </AlertDialogAction>
+                            </AlertDialogFooter>
+                        </AlertDialogContent>
+                    </AlertDialog>
                 </div>
             </div>
             <div className="flex flex-col lg:flex-row gap-4">
