@@ -1,7 +1,7 @@
 import type {ColumnDef} from "@tanstack/react-table";
 import type {ObjectType} from "@/types/objectType";
 import {Button} from "@/components/ui/button"
-import {EllipsisIcon} from "lucide-react";
+import {EllipsisIcon, PlusCircleIcon} from "lucide-react";
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -25,6 +25,22 @@ import {
 import {DataTableColumnHeader} from "@/components/data-table-column-header";
 import {EntityDelete} from "@/api/EntityDelete";
 import {useEntityDelete} from "@/hooks/use-entity-delete";
+import {
+    Sheet,
+    SheetClose,
+    SheetContent,
+    SheetDescription,
+    SheetFooter,
+    SheetHeader,
+    SheetTitle,
+    SheetTrigger
+} from "@/components/ui/sheet";
+import {Label} from "@/components/ui/label";
+import {Input} from "@/components/ui/input";
+import {FieldInfo} from "@/components/field-info";
+import {useEntityCreate} from "@/hooks/use-entity-create";
+import {useForm} from "@tanstack/react-form";
+import {useEntityEdit} from "@/hooks/use-entity-edit";
 
 export const ObjectTypeColumn: ColumnDef<ObjectType>[] = [
     {
@@ -51,7 +67,18 @@ export const ObjectTypeColumn: ColumnDef<ObjectType>[] = [
     {
         id: "actions",
         cell: ({row}) => {
-            const {mutate, isPending} = useEntityDelete("objectTypes")
+            const {mutate: mutateDelete, isPending} = useEntityDelete("objectTypes")
+
+            const entity = "Object Type"
+            const {mutate: mutateEdit} = useEntityEdit("objectTypes");
+            const form = useForm({
+                defaultValues: {
+                    name: row.original.name ?? "",
+                },
+                onSubmit: async ({value}) => {
+                    mutateEdit({data: value, id: row.original.id})
+                },
+            })
 
             return (
                 <DropdownMenu>
@@ -66,10 +93,78 @@ export const ObjectTypeColumn: ColumnDef<ObjectType>[] = [
                                 View Details
                             </Link>
                         </DropdownMenuItem>
-                        <DropdownMenuItem>
-                            <Link to={"/dashboard/object-type/$id/edit"} params={{id: `${row.original.id}`}}>
-                                Edit
-                            </Link>
+                        <DropdownMenuItem onSelect={e => e.preventDefault()}>
+                            <Sheet>
+                                <SheetTrigger>
+                                    Edit
+                                </SheetTrigger>
+                                <SheetContent>
+                                    <SheetHeader>
+                                        <SheetTitle>Edit {entity}</SheetTitle>
+                                        <SheetDescription>
+                                            Fill in the details for a new {entity}.
+                                        </SheetDescription>
+                                    </SheetHeader>
+
+                                    <form
+                                        id="objectType-form"
+                                        onSubmit={e => {
+                                            e.preventDefault()
+                                            e.stopPropagation()
+                                            form.handleSubmit()
+                                        }}
+                                        className="grid flex-1 auto-rows-min gap-4 py-4 px-4"
+                                    >
+                                        <form.Field
+                                            name="name"
+                                            validators={{
+                                                onBlur: ({ value }) =>
+                                                    !value
+                                                        ? "A name is required"
+                                                        : value.length < 3
+                                                            ? "Name must be at least 3 characters"
+                                                            : undefined,
+                                            }}
+                                            children={(field) => (
+                                                <div className="grid gap-3">
+                                                    <Label htmlFor={field.name}>Name</Label>
+                                                    <Input
+                                                        id={field.name}
+                                                        name={field.name}
+                                                        value={field.state.value}
+                                                        onBlur={field.handleBlur}
+                                                        onChange={(e) => field.handleChange(e.target.value)}
+                                                    />
+                                                    <FieldInfo field={field} />
+                                                </div>
+                                            )}
+                                        />
+
+                                        <button type="submit" hidden />
+                                    </form>
+
+                                    <SheetFooter className="pt-4">
+                                        <form.Subscribe
+                                            selector={(state) => [state.canSubmit, state.isSubmitting]}
+                                            children={([canSubmit, isSubmitting]) => (
+                                                <Button
+                                                    type="submit"
+                                                    form="objectType-form"
+                                                    disabled={!canSubmit}
+                                                >
+                                                    {isSubmitting ? "..." : "Submit"}
+                                                </Button>
+                                            )}
+                                        />
+                                        <SheetClose asChild>
+                                            <Button variant="outline" type="button">
+                                                Cancel
+                                            </Button>
+                                        </SheetClose>
+                                    </SheetFooter>
+                                </SheetContent>
+
+                            </Sheet>
                         </DropdownMenuItem>
                         <DropdownMenuItem onSelect={e => e.preventDefault()}>
                             <AlertDialog>
@@ -87,7 +182,7 @@ export const ObjectTypeColumn: ColumnDef<ObjectType>[] = [
                                     <AlertDialogFooter>
                                         <AlertDialogCancel>Cancel</AlertDialogCancel>
                                         <AlertDialogAction
-                                            onClick={() => mutate({id: row.original.id})}
+                                            onClick={() => mutateDelete({id: row.original.id})}
                                             disabled={isPending}
                                         >
                                             {isPending ? "Deleting..." : "Delete"}

@@ -24,6 +24,21 @@ import {
 import {DataTableColumnHeader} from "@/components/data-table-column-header";
 import type {Organizer} from "@/types/organizer";
 import {useEntityDelete} from "@/hooks/use-entity-delete";
+import {useEntityEdit} from "@/hooks/use-entity-edit";
+import {useForm} from "@tanstack/react-form";
+import {
+    Sheet,
+    SheetClose,
+    SheetContent,
+    SheetDescription,
+    SheetFooter,
+    SheetHeader,
+    SheetTitle,
+    SheetTrigger
+} from "@/components/ui/sheet";
+import {Label} from "@/components/ui/label";
+import {Input} from "@/components/ui/input";
+import {FieldInfo} from "@/components/field-info";
 
 export const OrganizerColumn: ColumnDef<Organizer>[] = [
     {
@@ -70,7 +85,21 @@ export const OrganizerColumn: ColumnDef<Organizer>[] = [
     {
         id: "actions",
         cell: ({row}) => {
-            const {mutate, isPending} = useEntityDelete("organizers")
+            const {mutate: mutateDelete, isPending} = useEntityDelete("organizers")
+            const entity = "Organizer"
+            const {mutate: mutateEdit} = useEntityEdit("organizers");
+            const form = useForm({
+                defaultValues: {
+                    name: row.original.name ?? "",
+                    address: row.original.address ?? "",
+                    bank_name: row.original.bank_name ?? "",
+                    account_number: row.original.account_number ?? "",
+                    account_name: row.original.account_name ?? "",
+                },
+                onSubmit: async ({value}) => {
+                    mutateEdit({data: value, id: row.original.id})
+                },
+            })
 
             return (
                 <DropdownMenu>
@@ -84,8 +113,178 @@ export const OrganizerColumn: ColumnDef<Organizer>[] = [
                             <Link to={"/dashboard/organizer/$id"} params={{id: `${row.original.id}`}}>View
                                 Details</Link>
                         </DropdownMenuItem>
-                        <DropdownMenuItem>
-                            <Link to={"/dashboard/organizer/$id/edit"} params={{id: `${row.original.id}`}}>Edit</Link>
+                        <DropdownMenuItem onSelect={e => e.preventDefault()}>
+                            <Sheet>
+                                <SheetTrigger>
+                                    Edit
+                                </SheetTrigger>
+                                <SheetContent>
+                                    <SheetHeader>
+                                        <SheetTitle>Edit {entity}</SheetTitle>
+                                        <SheetDescription>
+                                            Fill in the details for a new {entity}.
+                                        </SheetDescription>
+                                    </SheetHeader>
+
+                                    <form
+                                        id="thisForm"
+                                        onSubmit={e => {
+                                            e.preventDefault()
+                                            e.stopPropagation()
+                                            form.handleSubmit()
+                                        }}
+                                        className="grid flex-1 auto-rows-min gap-4 py-4 px-4"
+                                    >
+                                        <form.Field
+                                            name="name"
+                                            validators={{
+                                                onBlur: ({ value }) =>
+                                                    !value
+                                                        ? "A name is required"
+                                                        : value.length < 3
+                                                            ? "Name must be at least 3 characters"
+                                                            : undefined,
+                                            }}
+                                            children={(field) => (
+                                                <div className="grid gap-3">
+                                                    <Label htmlFor={field.name}>Name</Label>
+                                                    <Input
+                                                        id={field.name}
+                                                        name={field.name}
+                                                        value={field.state.value}
+                                                        onBlur={field.handleBlur}
+                                                        onChange={(e) => field.handleChange(e.target.value)}
+                                                    />
+                                                    <FieldInfo field={field} />
+                                                </div>
+                                            )}
+                                        />
+
+                                        <form.Field
+                                            name="address"
+                                            validators={{
+                                                onBlur: ({ value }) =>
+                                                    !value
+                                                        ? "A address is required"
+                                                        : value.length < 3
+                                                            ? "Address must be at least 3 characters"
+                                                            : undefined,
+                                            }}
+                                            children={(field) => (
+                                                <div className="grid gap-3">
+                                                    <Label htmlFor={field.name}>Address</Label>
+                                                    <Input
+                                                        id={field.name}
+                                                        name={field.name}
+                                                        value={field.state.value}
+                                                        onBlur={field.handleBlur}
+                                                        onChange={(e) => field.handleChange(e.target.value)}
+                                                    />
+                                                    <FieldInfo field={field} />
+                                                </div>
+                                            )}
+                                        />
+
+                                        <form.Field
+                                            name="bank_name"
+                                            validators={{
+                                                onBlur: ({ value }) =>
+                                                    !value
+                                                        ? "A bank name is required"
+                                                        : value.length < 3
+                                                            ? "Bank name must be at least 3 characters"
+                                                            : undefined,
+                                            }}
+                                            children={(field) => (
+                                                <div className="grid gap-3">
+                                                    <Label htmlFor={field.name}>Bank Name</Label>
+                                                    <Input
+                                                        id={field.name}
+                                                        name={field.name}
+                                                        value={field.state.value}
+                                                        onBlur={field.handleBlur}
+                                                        onChange={(e) => field.handleChange(e.target.value)}
+                                                    />
+                                                    <FieldInfo field={field} />
+                                                </div>
+                                            )}
+                                        />
+
+                                        <form.Field
+                                            name="account_number"
+                                            validators={{
+                                                onBlur: ({ value }) =>
+                                                    !value
+                                                        ? "A account number is required"
+                                                        : value.length < 3
+                                                            ? "Account number must be at least 3 characters"
+                                                            : undefined,
+                                            }}
+                                            children={(field) => (
+                                                <div className="grid gap-3">
+                                                    <Label htmlFor={field.name}>Account number</Label>
+                                                    <Input
+                                                        id={field.name}
+                                                        name={field.name}
+                                                        value={field.state.value}
+                                                        onBlur={field.handleBlur}
+                                                        onChange={(e) => field.handleChange(e.target.value)}
+                                                    />
+                                                    <FieldInfo field={field} />
+                                                </div>
+                                            )}
+                                        />
+
+                                        <form.Field
+                                            name="account_name"
+                                            validators={{
+                                                onBlur: ({ value }) =>
+                                                    !value
+                                                        ? "A account name is required"
+                                                        : value.length < 3
+                                                            ? "Account name must be at least 3 characters"
+                                                            : undefined,
+                                            }}
+                                            children={(field) => (
+                                                <div className="grid gap-3">
+                                                    <Label htmlFor={field.name}>Account Name</Label>
+                                                    <Input
+                                                        id={field.name}
+                                                        name={field.name}
+                                                        value={field.state.value}
+                                                        onBlur={field.handleBlur}
+                                                        onChange={(e) => field.handleChange(e.target.value)}
+                                                    />
+                                                    <FieldInfo field={field} />
+                                                </div>
+                                            )}
+                                        />
+
+                                        <button type="submit" hidden />
+                                    </form>
+
+                                    <SheetFooter className="pt-4">
+                                        <form.Subscribe
+                                            selector={(state) => [state.canSubmit, state.isSubmitting]}
+                                            children={([canSubmit, isSubmitting]) => (
+                                                <Button
+                                                    type="submit"
+                                                    form="thisForm"
+                                                    disabled={!canSubmit}
+                                                >
+                                                    {isSubmitting ? "..." : "Submit"}
+                                                </Button>
+                                            )}
+                                        />
+                                        <SheetClose asChild>
+                                            <Button variant="outline" type="button">
+                                                Cancel
+                                            </Button>
+                                        </SheetClose>
+                                    </SheetFooter>
+                                </SheetContent>
+
+                            </Sheet>
                         </DropdownMenuItem>
                         <DropdownMenuItem onSelect={e => {
                             e.preventDefault()
@@ -106,7 +305,7 @@ export const OrganizerColumn: ColumnDef<Organizer>[] = [
                                     <AlertDialogFooter>
                                         <AlertDialogCancel>Cancel</AlertDialogCancel>
                                         <AlertDialogAction
-                                            onClick={() => mutate({id: row.original.id})}
+                                            onClick={() => mutateDelete({id: row.original.id})}
                                             disabled={isPending}
                                         >
                                             {isPending ? "Deleting..." : "Delete"}
